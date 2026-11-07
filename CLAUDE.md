@@ -15,7 +15,7 @@
 | `examples/<ниша>/` | Референсные посты автора с разбором структуры и видео. Общая структура в `story-method.md` применяется ко всем нишам. Факты в референсах не образец: проверять |
 
 ## Ниши
-1. AI / Tech
+1. AI / Tech — формат «история от первого лица», см. `guidelines/ai-first-person-format.md` (только для этой ниши)
 2. Interviews
 3. Dark History & Real-Life Stories
 4. Money Stories About Famous People

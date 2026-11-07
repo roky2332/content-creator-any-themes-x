@@ -1,0 +1,131 @@
+I feel sick. Claude Code just caught a free AliExpress flash drive from a Chinese seller sending out the 12 words to my $84,000 wallet…
+
+14 work files under NDA were sent too, and my boss doesn't know yet.
+
+It came as a little gift in my order, with a card that had my name on it, handwritten: "Thank you for your order". Sellers often put cheap extras like this in parcels, so I didn't think twice and made it my safe for things I never keep online.
+
+The first time I plugged it into my iPhone, the screen asked "Trust This Computer?". A flash drive should never ask that. I tapped Trust out of habit, the same way I tap every pop-up. I'll be honest, that was my mistake, and I knew better.
+
+That tap let it copy my phone. And every time I plugged it into my laptop, a second tiny chip inside made the laptop send everything new to a stranger's server. It took half a second, and nothing showed on the screen.
+
+Last night I set up Claude Code to check any device I connect to my phone. This afternoon I plugged the drive in, and after a few seconds of checks Claude Code wrote one line: "unplug the drive now". The video is the end of that check, and yes, I was swearing.
+
+The check found a hidden part on the drive with a log of what it had sent, and when:
+
+→ a copy of my iPhone → the day I tapped Trust
+→ passwords for Gmail, LinkedIn and my bank → day 1
+→ 14 work files under NDA → the evening I copied them
+→ the 12 words → this morning, 3 hours before I found it
+
+Leaked wallets usually get emptied within hours. I opened mine with the phone still in my hand, and the $84,000 was still there. So I moved fast:
+
+→ moved my savings to a new wallet → 20 minutes of watching the balance
+→ changed every password, starting with Gmail
+→ Claude Code checked my laptop and blocked the server
+
+Later I read that back in 2022 the FBI warned about USB sticks sent as gifts with a thank-you note. I hadn't heard of it.
+
+The wallet is safe now. The NDA files are not, and I've been writing the message to my boss for an hour.
+
+Photos of the chip are in the first comment, and how to test yours is in the second. Save this for the next time a parcel brings something you didn't buy.
+
+//
+
+Holy sh*t. Claude Code just found a hidden chip inside my Chinese power bank from Guangzhou. Every time I charged my iPhone, it quietly copied the whole phone…
+
+It also read our saved Wi-Fi password off my iPhone, got onto our home network and sent everything to a server.
+
+I bought it for $19 at an airport kiosk there 3 weeks ago. No brand, 30,000 mAh on the label, and it felt heavy.
+
+The first time I plugged in, the screen asked "Trust This Computer?". I tapped Trust without thinking and went on with my day. That one tap gave it access to everything.
+
+This morning I finally set up Claude Code to warn me when any device starts reading my files. An hour later, 10 seconds into charging, the screen filled with yellow warnings, then red ones: data was moving when it should only be charging.
+
+I asked Claude Code what was going on. My phone saw the power bank as a small computer with 64 GB of storage and its own internet connection.
+
+A USB cable has wires for power and wires for data, and a normal charger only uses the power ones. This one used both, and it had already copied all of this:
+
+→ /device → IMEI and serial number
+→ /contacts → 1,206 numbers
+→ /apps → every app I have, including my 2 bank apps
+→ /photos → 3,912 pictures, my passport among them
+→ /wifi → our network name and its key
+→ /wife's iPhone → her photos too, she charged from it twice and tapped Trust too
+
+Each time we plugged in, it used that key to get online and send out the new files:
+
+sends to → 47.***.***.12
+uploads → 19 in 3 weeks
+last one → last night at 2:14, while we slept
+
+I pulled the cable right away. Then Claude Code blocked that address on our router and walked me through changing the Wi-Fi password and the logins for my bank apps.
+
+I had it opened at a repair shop, and what was inside is in the first comment. A 30-second check for your own is in the second one. Save this and test every power bank in your house today.
+
+//
+
+Claude Code found spyware on my wife's phone. It had tracked her for 14 weeks and logged 9,408 places she had been…
+
+She thought she was just being paranoid, but someone really did know where she went every single day, down to the minute.
+
+Every 90 seconds, even with the screen off, her location went out to a single number.
+
+I plugged her iPhone into my MacBook and asked Claude Code what was running that she never installed. It flagged an app called "Device Sync" with no icon, which had come in with a free "Wi-Fi Booster" she installed in August and forgot about.
+
+Then it traced where all of this was going. The phone on the other end had been 2 miles from our house the whole time:
+
+reports to → +1 (312) *** **19
+carrier → Verizon
+device id → IMEI 35 ********** 82
+receiver last seen → 2.1 mi from our home
+last ping it sent → 41.8**, -87.6** · 1 min ago
+
+When she started feeling watched 2 weeks ago, she turned off location for every app, but this one kept sending it anyway. My guess is it found her through the Wi-Fi networks around her.
+
+Claude wiped the app on its own, and we passed everything it had recorded to the people who handle this. Who was on the other end, I don't know yet.
+
+I had no idea an app could follow someone like this without ever asking permission. If you want to check yours, plug your iPhone into a Mac, tap "Trust" and ask Claude Code which apps send data in the background and to whom.
+
+The 5 steps and the exact prompt I used are in the comments. Save this and check the phones in your family tonight.
+
+//
+
+Claude Code just found 152,467 of my wife's voice messages from iMessage, WhatsApp and Facebook Messenger, copied off her iPhone for 7 years…
+
+She is making me dinner and has no idea yet what I'm looking at. Most of those messages were with her mom and her friends.
+
+But 2,314 were with someone saved as "Matthew", almost all between 11 pm and 1 am, when I'm usually asleep.
+
+Each copy had the contact name, the date and the length. Every one of them was sent to a server within a minute, and nothing on her screen ever showed it.
+
+I plugged her phone into my laptop and asked Claude Code to find what was making the copies. It pointed to an app with no icon, named "AudioSync Service" so it would look like part of the system.
+
+Whenever I gave her a new iPhone, it moved over automatically with the rest of her data.
+
+When she pressed record in a messenger, it switched the microphone on as well and saved its own copy. If a message came in and she listened on speaker, the app copied that too, so it had both sides of every conversation.
+
+Every recording started at the exact second a messenger turned the mic on, and the times matched her chats exactly. The orange dot she kept seeing was showing 2 apps at once.
+
+Claude Code removed the app and blocked the server it was sending to. Someone collected 7 years of her voice, and today 3 seconds of audio is enough for AI to clone it. Why they needed it, I don't know.
+
+Any app with access to the microphone can do the same. If you want to check yours, plug your phone into a Mac, tap "Trust" and ask Claude Code which apps turn the mic on in the background and when. The exact prompt I used is in the first comment.
+
+//
+
+I still don't know how to tell my wife… Claude Code just found 4,812 of her photos sent to a server in Hong Kong, including the private ones she took only for me.
+
+Her iPhone sent every one of them while she was asleep next to me.
+
+Our son's first steps, her passport, screenshots of our bank app, the photos from our hotel room last summer. Everything from the last three years was there.
+
+It happened every night between 2 and 5 am with the screen off. Each photo had a time stamp and the same address, a server registered 40 days ago. She never saw a single sign of it, and the newest one left 6 minutes before I found it.
+
+I plugged her iPhone into my MacBook and asked Claude Code to find every app that touched her photos while she slept. It pointed to a free cleaner she installed last spring after the "iPhone Storage Full" message and completely forgot about. 4,812 photos.
+
+I started scrolling the list. Next to a few hundred of them I saw the album name: Hidden. She had locked that album with Face ID so nobody could open it.
+
+Face ID only stops a person who picks up the phone, while an app with Full Access to Photos opens the Hidden album like any other folder. There is no green dot for that, like there is for the camera. The cleaner had that access from the day she installed it.
+
+I deleted the app and switched every photo app to Limited Access. Who has already opened those photos, I don't know. In the morning I have to tell her.
+
+Any app you ever allowed to see all your photos can do the same. If you want to check yours, plug your iPhone into a Mac, tap "Trust" and ask Claude Code to find every app with Full Access and show where each one sends data at night. The exact prompt I used is in the first comment.
