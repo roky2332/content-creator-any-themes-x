@@ -57,6 +57,78 @@ V.terminal = `
 </div>
 `;
 
+// Pixel mascot (12x8 grid) drawn from the reference image
+function mascot(px, color = '#d97757') {
+  const g = ['..########..', '..#E####E#..', '############', '############', '..########..', '..########..', '..#.#..#.#..', '..#.#..#.#..'];
+  let r = '';
+  g.forEach((row, y) => [...row].forEach((c, x) => { if (c === '#') r += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${color}"/>`; if (c === 'E') r += `<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="#111"/>`; }));
+  return `<svg viewBox="0 0 12 8" width="${px * 12}" height="${px * 8}" shape-rendering="crispEdges">${r}</svg>`;
+}
+const TERM_CSS = `
+.glow{position:absolute;width:900px;height:900px;right:-200px;top:-260px;border-radius:50%;background:radial-gradient(circle,#6d7e7455,transparent 62%)}
+.glow2{position:absolute;width:700px;height:700px;left:-260px;bottom:-420px;border-radius:50%;background:radial-gradient(circle,#c0c5a522,transparent 60%)}
+.term{position:absolute;border-radius:16px;background:#0a0f0dee;border:1px solid #2a3530;box-shadow:0 30px 70px #0008}
+.bar{height:40px;border-bottom:1px solid #222c27;display:flex;align-items:center;gap:8px;padding:0 16px}
+.bar i{width:12px;height:12px;border-radius:50%;background:#3a4640}
+.bar span{margin-left:12px;font-size:14px;color:var(--mut)}
+.body{padding:22px 26px;font-size:21px;line-height:1.7}
+.p{color:var(--olive)} .c{color:var(--paper)} .d{color:var(--mut)} .ok{color:#9ed3a7} .w{color:#e8c46a} .or{color:#d97757}
+.cur{display:inline-block;width:12px;height:24px;background:var(--olive);vertical-align:-4px}
+`;
+const TERM_LINES = `
+    <div><span class="p">&gt;</span> <span class="c">claude "show me what's really going on"</span></div>
+    <div class="d">● scanning 48,221 items…</div>
+    <div class="w">● 3 things you should see</div>
+    <div class="ok">✓ new story every day</div>
+    <div><span class="p">&gt;</span> <span class="cur"></span></div>`;
+
+// A2. Terminal + mascot sitting on the window's top edge
+V.term_sit = `<style>${TERM_CSS}
+.term{right:90px;top:120px;width:700px}
+.m{position:absolute;right:150px;top:62px}
+.tag{position:absolute;right:90px;top:400px}
+</style>
+<div class="glow"></div><div class="glow2"></div>
+<div style="position:absolute;inset:0;opacity:.07">${logTexture(30, 7, '#c0c5a5')}</div>
+<div class="term mono"><div class="bar"><i></i><i></i><i></i><span>claude — ~/stories</span></div><div class="body">${TERM_LINES}</div></div>
+<div class="m">${mascot(7.5)}</div>
+<div class="tag mono" style="font-size:16px;letter-spacing:.2em;color:var(--sage2)">AI · CLAUDE CODE</div>
+`;
+
+// A3. Claude Code welcome box inside the terminal
+V.term_welcome = `<style>${TERM_CSS}
+.term{right:90px;top:70px;width:760px}
+.wb{border:1.5px solid #d97757;border-radius:10px;padding:14px 18px;display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.wb .t{font-size:20px;color:var(--paper)} .wb .t span{color:#d97757} .wb .s{font-size:15px;color:var(--mut);margin-top:4px}
+</style>
+<div class="glow"></div><div class="glow2"></div>
+<div style="position:absolute;inset:0;opacity:.07">${logTexture(30, 13, '#c0c5a5')}</div>
+<div class="term mono"><div class="bar"><i></i><i></i><i></i><span>claude — ~/stories</span></div>
+<div class="body">
+  <div class="wb">${mascot(5)}<div><div class="t"><span>✻</span> Welcome back</div><div class="s">real stories · found with AI · every day</div></div></div>
+  <div><span class="p">&gt;</span> <span class="c">claude "show me what's really going on"</span></div>
+  <div class="w">● 3 things you should see</div>
+  <div><span class="p">&gt;</span> <span class="cur"></span></div>
+</div></div>
+`;
+
+// A4. Mascot on the left-center with a speech line into the terminal + scrolling log on the right edge
+V.term_duo = `<style>${TERM_CSS}
+.term{right:90px;top:96px;width:640px}
+.m{position:absolute;left:470px;top:170px;filter:drop-shadow(0 18px 30px #0008)}
+.bub{position:absolute;left:430px;top:96px;font-size:17px;color:var(--olive);background:#0a0f0dcc;border:1px solid #2a3530;border-radius:12px;padding:8px 14px}
+.dash{position:absolute;left:560px;top:250px;width:240px;border-top:2px dashed #d9775788}
+.tag{position:absolute;right:90px;top:390px}
+</style>
+<div class="glow"></div><div class="glow2"></div>
+<div style="position:absolute;inset:0;opacity:.07">${logTexture(30, 31, '#c0c5a5')}</div>
+<div class="bub mono">found something…</div>
+<div class="m">${mascot(10)}</div>
+<div class="dash"></div>
+<div class="term mono"><div class="bar"><i></i><i></i><i></i><span>claude — ~/stories</span></div><div class="body">${TERM_LINES}</div></div>
+<div class="tag mono" style="font-size:16px;letter-spacing:.2em;color:var(--sage2)">AI · CLAUDE CODE</div>
+`;
+
 // B. Big type, minimal
 V.type = `
 <style>
