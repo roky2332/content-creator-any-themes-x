@@ -7,3 +7,4 @@
 - `interviews/` — Interviews
 - `dark-history/` — Dark History & Real-Life Stories (в мастер-промпте упомянуты 7 референсов)
 - `money-stories/` — Money Stories About Famous People
+- `sports/` — Sports Stories
