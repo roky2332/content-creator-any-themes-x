@@ -659,120 +659,153 @@ The story must still be factual, well-researched, and built around a clear confl
 
 # 7.5. SPORTS STORIES
 
-> Added 2026-11-07 at the author's request. The post structure, hook format and video search rules come from `story-method.md` and apply here as in every other niche.
+> Added 2026-11-07, rewritten the same day at the author's request. The post structure, hook format and video search rules come from `story-method.md` and apply here as in every other niche.
 
-This niche is not sports news, highlights or statistics.
+This niche is about **the sport itself**: the games, fights, moments and events people still talk about years later.
 
-It tells stories about people in sports: decisions, conflicts, money, falls and comebacks, and the moments that changed a career.
+The center of the story is what happened on the field, court or in the ring. Not contracts. Not salaries. Not who paid whom.
 
-A reader who doesn't follow the sport should still understand the story and want to watch the video.
+A reader who doesn't follow the sport should still feel the tension and want to watch the video.
+
+### NICHE BOUNDARY: SPORTS VS MONEY STORIES
+
+If the heart of the story is money (contracts, salaries, deferred payments, athletes going broke, endorsement deals), it belongs in **Money Stories About Famous People**, even if the person is an athlete.
+
+Sports Stories covers what happens in the competition and around it:
+- A game, fight, race or moment
+- A rivalry or a clash between people in the sport
+- A record, an upset, a comeback
+- A scandal that changed the result or the sport
+
+Money can appear as a detail, but it must not be the main angle.
 
 ### WHICH SPORTS TO COVER
 
-Priority is based on what Americans watch most (Gallup, August 2026: football 31%, basketball 11%, baseball 10%, soccer a record 9%) and on which sports produce the strongest stories for this account.
+Priority is based on what Americans watch most (Gallup, August 2026: football 31%, basketball 11%, baseball 10%, soccer a record 9%) and on which sports produce the strongest stories.
 
 **Core:**
-1. **NFL** - the largest audience, huge contracts, injuries, scandals
-2. **NBA** - the favorite of younger audiences, stars with strong personal brands and a big social media presence
+1. **NFL**
+2. **NBA**
 
-**Strong for money and dark stories:**
+**Strong for dramatic moments:**
 
-3. **Boxing and UFC/MMA** - the most dramatic money stories (Tyson, Mayweather, McGregor), lots of interviews, a male audience that matches X
+3. **Boxing and UFC/MMA** - iconic fights, knockouts, scandals, rivalries
 
 **Additional:**
 
-4. **MLB** - legends, doping scandals, record contracts
-5. **Soccer** - growing after the 2026 World Cup, plus global stars like Messi and Ronaldo
+4. **MLB**
+5. **Soccer** - growing after the 2026 World Cup, plus global stars and World Cup moments
 
-Other sports (hockey, golf, tennis, motorsport) only when the story is strong enough to work without knowing the sport (for example, Tiger Woods).
+Other sports (hockey, Olympics, tennis, golf, motorsport) when the moment is strong enough to work without knowing the sport.
 
 ### MAIN STORY CATEGORIES
 
-**1. Money and contracts**
-- Record deals and what was actually guaranteed
-- Athletes who turned down money
-- Salary disputes and holdouts
-- Athletes who went broke after earning millions
+**1. Legendary games**
+- Games decided in the last seconds
+- Impossible comebacks
+- Overtime classics, finals and championship games people still replay
 
-**2. Falls and comebacks**
-- Injuries, suspensions, prison, addiction
-- Returning after everyone wrote them off
+**2. Conflict games and fights**
+- Brawls on the court or field
+- Games that turned into wars between teams or fan bases
+- Fights with controversial endings, disqualifications, bites, low blows
 
-**3. One moment that changed everything**
-- A fatal mistake, a coach's decision, a referee's call, a legendary play
+**3. Upsets**
+- The underdog that wasn't supposed to win
+- The champion who lost to a nobody
 
-**4. Conflicts**
-- Player vs team, league, coach or teammate
-- Scandalous trades and transfers
+**4. Records**
+- Records that still stand, how they happened and how close anyone has come
+- Records broken in a single unforgettable night
 
-**5. The dark side of sports**
-- Doping, match fixing, scandals, abuse inside teams
-- Only verified facts; allegations are presented as allegations
+**5. Controversial calls and scandals that changed the result**
+- Referee mistakes, missed calls, rule disputes
+- Cheating, fixing and doping scandals tied to a specific game or season
 
-**6. Life after sports**
-- What happened to the legends, business ventures, unexpected careers
+**6. Rivalries**
+- Player vs player, team vs team, coach vs coach
+- The story behind the rivalry and its defining moment
 
-**7. Unbelievable stories**
-- Underdogs, records, events that are hard to believe
+**7. Iconic moments and events**
+- Shots, catches, knockouts and plays that became part of sports history
+- Moments where sport crossed into history, politics or culture
+
+**8. Unbelievable stories from the game**
+- Strange events, freak accidents, games stopped by something nobody expected
+
+### HOW TO BUILD A SPORTS STORY
+
+Use the general structure from `story-method.md`:
+
+1. **Dossier hook:** who, what was at stake and the most dramatic fact
+2. **Entry point:** the date, the place, the score or the moment before everything changed
+3. **"In the video below…":** the exact moment the viewer will see
+4. **The scene, beat by beat:** short fragments that rebuild the tension
+5. **The twist:** what happened next, what nobody expected, what it changed
+6. **One-line takeaway**
+7. **Binary final question**
+
+Build tension the way a game builds it. Give the stakes first, then the moment.
 
 ### SPORTS HOOKS
 
-Combine a recognizable name with a conflict or a surprising number.
+Combine a recognizable name or event with stakes and a twist.
 
 Examples:
 
-"He earned more than $X in his career. Five years after retiring, he filed for bankruptcy."
+"With 18 seconds left, his team was down by 3. What happened next is still the greatest finish in NBA Finals history."
 
-"One missed call cost his team the championship. The referee admitted it years later."
+"He was a 42-to-1 underdog. Nobody gave him a chance. Ten rounds later, the most feared man on the planet was on the canvas."
 
-Every number and claim in a hook must be verified.
+Every number, score, time and claim in a hook must be verified.
 
 ### VIDEO REQUIREMENTS FOR SPORTS
 
 Video is critical in this niche.
 
 Prioritize:
-- Interviews where the athlete talks about the specific moment or decision
-- Original footage of the game or event
-- Press conferences and archival TV segments
+- Footage of the actual moment (game, fight, play)
+- The original broadcast call, when available
+- Interviews where players, coaches or referees talk about that moment
 - Documentaries (ESPN 30 for 30 and similar)
+- Press conferences right after the event
 
-Broadcast rights for game footage are strict (NFL, NBA, UEFA and others). Interviews and documentaries are safer than raw game footage. Short game clips are possible, but mention the copyright risk to the author.
+Broadcast rights are strict (NFL, NBA, UFC, FIFA, UEFA and others). Official league and broadcaster channels are the safest sources. Mention the copyright risk to the author when the clip is a reupload of game footage.
 
 ### ACCURACY IN SPORTS
 
-Always distinguish between:
-- Total contract value and guaranteed money
-- Value over the whole contract and annual salary
-- Salary and endorsement income
-- Reported figures and confirmed figures
+Verify against official or reference sources: league websites, Basketball-Reference, Pro-Football-Reference, Baseball-Reference, BoxRec, Sherdog, Transfermarkt, FIFA.
 
-Verify statistics with official or reference sources: league websites, Basketball-Reference, Pro-Football-Reference, Baseball-Reference, BoxRec, Transfermarkt.
+Always check:
+- Final scores, dates, venues and opponents
+- Time left on the clock, round numbers, who scored and how
+- Records: whether it is the overall record, the playoff record or a franchise record, and whether it still stands
+- Every "first", "only", "greatest" and "most"
 
-Present doping, match fixing and violence claims as allegations until there is a court or federation decision. Mention when a sanction was overturned.
+Present cheating, doping and fixing claims as allegations until there is a court or federation decision. Mention when a result or sanction was overturned.
 
-Verify every "first", "only" and "most" before using it.
+Don't call a call "wrong" unless the league or referee admitted it or replay clearly shows it. Otherwise present it as disputed.
 
-Check dates and scores against official records.
+### DO NOT WRITE
 
-### NICHE BOUNDARY
+- Highlights without a story
+- Predictions and previews
+- News without a defining moment or consequence
+- Pure money stories (those go to Money Stories About Famous People)
 
-Do not write:
-- Pure highlights without a story
-- Predictions
-- Transfer or trade news without a conflict or consequence
-
-Do not promote betting or sportsbooks. Stories about gambling (match fixing, athletes with gambling problems) are allowed as investigations.
+Do not promote betting or sportsbooks. Betting scandals are allowed as investigations.
 
 ### FINAL QUESTIONS FOR SPORTS
 
-Ask about the decision, fairness or legacy.
+Ask about the moment, the call, the legacy or "what if".
 
 Examples:
 
-"Was he robbed, or did he throw it away himself?"
+"Greatest finish in NBA history, or does another moment beat it?"
 
-"Greatest comeback in sports, or a career that should have ended?"
+"Was he robbed by the referee, or did he lose it himself?"
+
+"If that shot misses, does his legacy look completely different?"
 
 # 8. RESEARCH AND FACT-CHECKING
 

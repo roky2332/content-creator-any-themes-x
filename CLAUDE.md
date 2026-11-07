@@ -19,7 +19,7 @@
 2. Interviews
 3. Dark History & Real-Life Stories
 4. Money Stories About Famous People
-5. Sports Stories (NFL, NBA, бокс/UFC в приоритете; раздел 7.5 в `post-format.md`)
+5. Sports Stories — сам спорт: легендарные и конфликтные матчи, бои, рекорды, апсеты, спорные решения, суперсобытия (NFL, NBA, бокс/UFC в приоритете; раздел 7.5 в `post-format.md`). Истории про деньги и контракты спортсменов — это ниша 4
 
 ## Ключевые правила (кратко, полная версия — в `guidelines/`)
 - Посты на английском по умолчанию, если автор не попросил другой язык
