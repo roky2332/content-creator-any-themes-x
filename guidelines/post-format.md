@@ -753,7 +753,7 @@ Combine a recognizable name or event with stakes and a twist.
 
 Examples:
 
-"With 18 seconds left, his team was down by 3. What happened next is still the greatest finish in NBA Finals history."
+"His team was down by 3 with seconds left in the NBA Finals. The arena staff was already bringing out the ropes for the other team's celebration. Then he caught the ball in the corner." (verify every detail before use)
 
 "He was a 42-to-1 underdog. Nobody gave him a chance. Ten rounds later, the most feared man on the planet was on the canvas."
 
