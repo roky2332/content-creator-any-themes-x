@@ -1,0 +1,39 @@
+<!doctype html><html><head><meta charset='utf-8'><style>:root{--w:1600px;--h:900px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0d;--panel:#141418;--line:#26262d;--txt:#f2f2f4;--mut:#8b8b96;
+--red:#ff4a2e;--redbg:rgba(255,74,46,.12);--grn:#5ee08a;--yel:#ffd34d}
+html,body{background:var(--bg);color:var(--txt);font-family:Inter,sans-serif}
+body{width:var(--w);height:var(--h);position:relative;overflow:hidden;
+background-image:radial-gradient(#ffffff10 1px,transparent 1px);background-size:22px 22px}
+.mono{font-family:'JetBrains Mono',monospace}
+.disp{font-family:'Inter Display',Inter,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.tag{display:inline-block;align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:6px}
+.tag.red{background:var(--red);color:#120804}
+.tag.out{border:1.5px solid var(--txt);color:var(--txt)}
+.corner{position:absolute;width:26px;height:26px;border-color:#ffffff55;border-style:solid}
+.c1{top:22px;left:22px;border-width:2px 0 0 2px}.c2{top:22px;right:22px;border-width:2px 2px 0 0}
+.c3{bottom:22px;left:22px;border-width:0 0 2px 2px}.c4{bottom:22px;right:22px;border-width:0 2px 2px 0}
+.src{position:absolute;bottom:34px;right:56px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--mut)}
+</style></head><body>
+<style>
+.wrap{position:absolute;inset:0;padding:70px 80px;display:flex;flex-direction:column;justify-content:center}
+.h{font-size:76px;margin-top:22px;text-transform:uppercase}
+.row{display:flex;align-items:stretch;margin-top:60px;gap:10px}
+.box{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 22px;min-height:330px}
+.box .n{color:var(--grn);font-size:18px} .box .t{font-weight:800;font-size:30px;margin-top:14px;line-height:1.15}
+.box .d{color:#bdbdc6;font-size:22px;margin-top:14px;line-height:1.35}
+.box.hot{border-color:var(--red);background:var(--redbg)} .box.hot .n,.box.hot .t{color:var(--red)}
+.arr{display:flex;align-items:center;color:var(--mut);font-size:34px}
+.target{margin-top:34px;display:flex;align-items:center;gap:20px;background:#0f0f12;border:1px dashed #ff4a2e88;border-radius:14px;padding:28px 30px;font-size:28px}
+.target .w{font-size:44px} .target b{color:var(--red)}
+</style>
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+<div class="wrap">
+ <span class="tag red">The funnel</span>
+ <div class="h disp">How a reel becomes <span style="color:var(--red)">a bank transfer</span></div>
+ <div class="row"><div class="box "><div class="n mono">01</div><div class="t">Instagram · TikTok<br>Facebook · Snapchat</div><div class="d">Free reels, copied from viral real girls</div></div><div class="arr">→</div><div class="box "><div class="n mono">02</div><div class="t">Landing page</div><div class="d">“Keep this our secret”</div></div><div class="arr">→</div><div class="box "><div class="n mono">03</div><div class="t">Telegram</div><div class="d">Content “a level higher”</div></div><div class="arr">→</div><div class="box "><div class="n mono">04</div><div class="t">Fanvue</div><div class="d">“Message me for the full”</div></div><div class="arr">→</div><div class="box hot"><div class="n mono">05</div><div class="t">Chatters</div><div class="d">“A bunch of Filipinos for $3 an hour”</div></div></div>
+ <div class="target"><div class="w">🐋</div><div>The target: <b>“older white men… those are the best spenders”</b> <span style="color:var(--mut)">[36:17]</span></div></div>
+</div>
+<div class="src">Source: FULL AI OFM COURSE 2026, YouTube</div>
+</body></html>

@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset='utf-8'><style>:root{--w:1600px;--h:900px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0d;--panel:#141418;--line:#26262d;--txt:#f2f2f4;--mut:#8b8b96;
+--red:#ff4a2e;--redbg:rgba(255,74,46,.12);--grn:#5ee08a;--yel:#ffd34d}
+html,body{background:var(--bg);color:var(--txt);font-family:Inter,sans-serif}
+body{width:var(--w);height:var(--h);position:relative;overflow:hidden;
+background-image:radial-gradient(#ffffff10 1px,transparent 1px);background-size:22px 22px}
+.mono{font-family:'JetBrains Mono',monospace}
+.disp{font-family:'Inter Display',Inter,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.tag{display:inline-block;align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:6px}
+.tag.red{background:var(--red);color:#120804}
+.tag.out{border:1.5px solid var(--txt);color:var(--txt)}
+.corner{position:absolute;width:26px;height:26px;border-color:#ffffff55;border-style:solid}
+.c1{top:22px;left:22px;border-width:2px 0 0 2px}.c2{top:22px;right:22px;border-width:2px 2px 0 0}
+.c3{bottom:22px;left:22px;border-width:0 0 2px 2px}.c4{bottom:22px;right:22px;border-width:0 2px 2px 0}
+.src{position:absolute;bottom:34px;right:56px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--mut)}
+</style></head><body>
+<style>
+.wrap{position:absolute;inset:0;padding:66px 80px;display:flex;flex-direction:column;justify-content:center}
+.h{font-size:68px;margin-top:20px;text-transform:uppercase}
+.cards{display:flex;gap:26px;margin-top:38px;align-items:stretch}
+.card{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px 34px}
+.card.hot{border-color:var(--red);background:var(--redbg)}
+.e{font-size:46px} .nm{font-size:52px;margin-top:10px}
+.ds{color:#c9c9d1;font-size:22px;margin-top:10px;line-height:1.35;min-height:60px}
+.lab{margin-top:26px;color:var(--mut);font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+.pr{font-size:92px;margin-top:6px;color:var(--grn)} .card.hot .pr{color:var(--red)}
+.vs{display:flex;align-items:center;font-family:'Inter Display';font-weight:900;font-size:40px;color:var(--mut)}
+.foot{margin-top:28px;font-size:22px;color:var(--mut)} .foot b{color:var(--txt)}
+</style>
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+<div class="wrap">
+ <span class="tag red">Differential pricing</span>
+ <div class="h disp">The price isn’t for the content. <span style="color:var(--red)">It’s for him.</span></div>
+ <div class="cards">
+  <div class="card "><div class="e">🛒</div><div class="nm disp">Jimmy</div>
+<div class="ds">College student. Stacks shelves part-time</div><div class="lab mono">pays for the same script</div><div class="pr disp">$100</div></div>
+  <div class="vs">vs</div>
+  <div class="card hot"><div class="e">🐋</div><div class="nm disp">John</div>
+<div class="ds">55. Recently divorced. Owns a trucking company in Texas</div><div class="lab mono">pays for the same script</div><div class="pr disp">$300–$1K</div></div>
+ </div>
+ <div class="foot"><b>“There’s a 900 difference and it’s the same thing”</b> · 62:53</div>
+</div>
+</body></html>

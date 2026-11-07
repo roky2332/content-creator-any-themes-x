@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset='utf-8'><style>:root{--w:1500px;--h:600px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0d;--panel:#141418;--line:#26262d;--txt:#f2f2f4;--mut:#8b8b96;
+--red:#ff4a2e;--redbg:rgba(255,74,46,.12);--grn:#5ee08a;--yel:#ffd34d}
+html,body{background:var(--bg);color:var(--txt);font-family:Inter,sans-serif}
+body{width:var(--w);height:var(--h);position:relative;overflow:hidden;
+background-image:radial-gradient(#ffffff10 1px,transparent 1px);background-size:22px 22px}
+.mono{font-family:'JetBrains Mono',monospace}
+.disp{font-family:'Inter Display',Inter,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.tag{display:inline-block;align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:6px}
+.tag.red{background:var(--red);color:#120804}
+.tag.out{border:1.5px solid var(--txt);color:var(--txt)}
+.corner{position:absolute;width:26px;height:26px;border-color:#ffffff55;border-style:solid}
+.c1{top:22px;left:22px;border-width:2px 0 0 2px}.c2{top:22px;right:22px;border-width:2px 2px 0 0}
+.c3{bottom:22px;left:22px;border-width:0 0 2px 2px}.c4{bottom:22px;right:22px;border-width:0 2px 2px 0}
+.src{position:absolute;bottom:34px;right:56px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--mut)}
+</style></head><body>
+<style>
+.wrap{position:absolute;inset:0;display:flex;align-items:center;gap:40px;padding:0 64px}
+.left{flex:1.15}
+.h1{font-size:84px;text-transform:uppercase}
+.h1 .r{color:var(--red)}
+.sub{margin-top:22px;font-size:22px;color:var(--mut);font-weight:500;line-height:1.35}
+.sub b{color:var(--txt)}
+.right{flex:1;position:relative}
+.ig{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;gap:18px;align-items:center}
+.av{width:84px;height:84px;border-radius:50%;padding:3px;background:conic-gradient(#f9ce34,#ee2a7b,#6228d7,#f9ce34)}
+.av>div{width:100%;height:100%;border-radius:50%;background:#0b0b0d;display:flex;align-items:center;justify-content:center}
+.nm{font-weight:700;font-size:22px} .st{color:var(--mut);font-size:16px;margin-top:4px}
+.bio{font-size:16px;margin-top:6px}
+.tree{margin-top:14px;background:#0f0f12;border:1px solid var(--line);border-radius:14px;padding:18px 22px;font-size:16px;line-height:1.75;color:#d8d8de}
+.tree .th{display:flex;align-items:center;gap:10px;color:var(--txt);font-weight:700;margin-bottom:4px}
+.tree .m{color:#6d6d78} .tree .r{color:var(--red)} .tree .r2{color:#ff8a72}
+.tree .hl{background:var(--redbg);border-radius:6px;padding:0 8px;margin-left:-8px;display:inline-block;font-weight:700}
+.stamp{position:absolute;top:-26px;right:-18px;transform:rotate(9deg);border:4px solid var(--red);color:var(--red);
+font-family:'Inter Display';font-weight:900;font-size:22px;letter-spacing:.06em;padding:8px 14px;border-radius:8px;background:#0b0b0dcc;text-transform:uppercase}
+</style>
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+<div class="wrap">
+ <div class="left">
+  <span class="tag red">Investigation · AI OFM</span>
+  <div class="h1 disp" style="margin-top:22px">She's not real.<br><span class="r">She's a folder.</span></div>
+  <div class="sub">A free 73-minute course teaches anyone to build fake Instagram girls and <b>sell them to lonely men who think they're real</b></div>
+ </div>
+ <div class="right">
+  <div class="stamp">No human inside</div>
+  <div class="ig">
+   <div class="av"><div><svg viewBox="0 0 64 52" width="46" height="37"><path d="M4 8a4 4 0 0 1 4-4h16l6 6h26a4 4 0 0 1 4 4v30a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#ff4a2e"/><path d="M4 18h56v26a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#ff6a50"/></svg></div></div>
+   <div><div class="nm">becky.private</div><div class="st">48.2K followers · 1,204 posts</div>
+   <div class="bio">bored and lonely tonight 🥺 link below</div></div>
+  </div>
+  
+<div class="tree mono">
+ <div class="th"><svg viewBox="0 0 64 52" width="24" height="19"><path d="M4 8a4 4 0 0 1 4-4h16l6 6h26a4 4 0 0 1 4 4v30a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#ff4a2e"/><path d="M4 18h56v26a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#ff6a50"/></svg> becky_private/</div>
+ <div>├── face_master.png <span class="m">// her face</span></div>
+ <div>├── persona.md <span class="m">// her personality</span></div>
+ <div>├── voice_clone.mp3 <span class="m">// her voice</span></div>
+ <div class="r">├── stolen_stories/ <span class="m r2">// her "life" (42 files)</span></div>
+ <div>├── fan_notes.json <span class="m">// whales: 12</span></div>
+ <div>├── scripts.md <span class="m">// "bored and lonely tonight"</span></div>
+ <div class="r hl">└── synthid_removed ✓</div>
+</div>
+
+ </div>
+</div>
+</body></html>

@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset='utf-8'><style>:root{--w:1600px;--h:900px}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0d;--panel:#141418;--line:#26262d;--txt:#f2f2f4;--mut:#8b8b96;
+--red:#ff4a2e;--redbg:rgba(255,74,46,.12);--grn:#5ee08a;--yel:#ffd34d}
+html,body{background:var(--bg);color:var(--txt);font-family:Inter,sans-serif}
+body{width:var(--w);height:var(--h);position:relative;overflow:hidden;
+background-image:radial-gradient(#ffffff10 1px,transparent 1px);background-size:22px 22px}
+.mono{font-family:'JetBrains Mono',monospace}
+.disp{font-family:'Inter Display',Inter,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.tag{display:inline-block;align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:6px}
+.tag.red{background:var(--red);color:#120804}
+.tag.out{border:1.5px solid var(--txt);color:var(--txt)}
+.corner{position:absolute;width:26px;height:26px;border-color:#ffffff55;border-style:solid}
+.c1{top:22px;left:22px;border-width:2px 0 0 2px}.c2{top:22px;right:22px;border-width:2px 2px 0 0}
+.c3{bottom:22px;left:22px;border-width:0 0 2px 2px}.c4{bottom:22px;right:22px;border-width:0 2px 2px 0}
+.src{position:absolute;bottom:34px;right:56px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--mut)}
+</style></head><body>
+<style>
+.wrap{position:absolute;inset:0;padding:70px 80px;display:flex;flex-direction:column;justify-content:center}
+.top{display:flex;justify-content:space-between;align-items:center;align-self:stretch}
+.h{font-size:76px;margin-top:22px;text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+th{text-align:left;font-family:'JetBrains Mono';font-size:15px;color:var(--mut);font-weight:500;padding:16px 22px;border-bottom:1px solid var(--line);letter-spacing:.08em;text-transform:uppercase}
+td{padding:24px 24px;border-bottom:1px solid var(--line);font-size:26px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.f{color:var(--grn);font-size:22px} .p{font-weight:700} .q{color:#cfcfd6} .t{color:var(--mut);font-size:16px;text-align:right}
+tr.hot td{background:var(--redbg)} tr.hot .f,tr.hot .p{color:var(--red)}
+tr.hot td:first-child{box-shadow:inset 4px 0 0 var(--red)}
+</style>
+<div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+<div class="wrap">
+ <div class="top"><span class="tag red">Anatomy of an AI model</span><span class="tag out">6 files</span></div>
+ <div class="h disp">Everything she is, <span style="color:var(--red)">someone made</span></div>
+ <table><tr><th>File</th><th>Replaces</th><th>What the course says</th><th style="text-align:right">Time</th></tr><tr class=""><td class="mono f">face_master.png</td><td class="p">Her face</td><td class="q">“Build the most feminine, submissive looking model you possibly can”</td><td class="mono t">09:22</td></tr><tr class=""><td class="mono f">replicated_reels/</td><td class="p">Her body</td><td class="q">“Sophie Rain’s video… swapping it with our model’s face”</td><td class="mono t">18:57</td></tr><tr class=""><td class="mono f">stolen_stories/</td><td class="p">Her life</td><td class="q">“They’re never going to put two and two together”</td><td class="mono t">28:56</td></tr><tr class=""><td class="mono f">voice_clone.mp3</td><td class="p">Her voice</td><td class="q">“Train up a voice… to nudge people to pay”</td><td class="mono t">54:34</td></tr><tr class=""><td class="mono f">fan_notes.json</td><td class="p">Her memory</td><td class="q">“You know about their dog, you know about their day”</td><td class="mono t">56:21</td></tr><tr class="hot"><td class="mono f">metadata_remover</td><td class="p">The proof</td><td class="q">“Removing the metadata and the synth ID”</td><td class="mono t">03:22</td></tr></table>
+</div>
+<div class="src">Source: FULL AI OFM COURSE 2026, YouTube</div>
+</body></html>
