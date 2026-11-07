@@ -1,0 +1,228 @@
+<title>Data Dump Screen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: full-screen phone terminal prop; a start menu, then edge-to-edge scrolling log. Single dark look on purpose. */
+:root {
+  --bg: #000000;
+  --ink: #e6e3f2;
+  --dim: #6c6880;
+  --violet: #b9a2ff;
+  --cyan: #7fd6ff;
+  --amber: #ffd166;
+  --red: #ff3d5a;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--mono);
+  overflow: hidden; -webkit-user-select: none; user-select: none;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- start menu ---------- */
+#menu { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 22px; max-width: 30rem; margin: 0 auto; }
+#menu h1 { font-size: 1.15rem; margin: 0; color: var(--violet); letter-spacing: .04em; }
+#menu p { margin: 0; color: var(--dim); font-size: .82rem; line-height: 1.55; }
+.modes { display: grid; gap: 12px; }
+.mode {
+  font: inherit; text-align: left; cursor: pointer; color: var(--ink);
+  background: #0d0b14; border: 1px solid #2a2540; border-radius: 10px; padding: 16px;
+  display: grid; gap: 6px;
+}
+.mode:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.mode b { font-size: .95rem; }
+.mode span { color: var(--dim); font-size: .78rem; line-height: 1.5; }
+.mode .k { color: var(--cyan); }
+.hint { font-size: .74rem !important; }
+
+/* ---------- running screen ---------- */
+#screen { position: fixed; inset: 0; background: var(--bg);
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(6px, env(safe-area-inset-left, 0px)); padding-right: max(6px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+#log { display: flex; flex-direction: column; font-size: clamp(8px, 2.45vw, 11px); line-height: 1.32; white-space: pre; }
+.ln { overflow: hidden; text-overflow: clip; }
+.ts { color: var(--dim); }
+.tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; padding: 3px 0; }
+.tile { aspect-ratio: 1; max-width: 100%; border-radius: 2px; filter: blur(.6px) saturate(1.2); }
+.tile.big { grid-column: span 2; }
+#screen.paused::after { content: "❚❚"; position: absolute; top: calc(env(safe-area-inset-top, 0px) + 10px); right: 14px; color: var(--dim); font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { .tile { filter: none; } }
+</style>
+
+<div id="menu">
+  <h1>&gt; data_dump.sh</h1>
+  <p>Full-screen fake terminal for filming. Pick a mode, then hold the phone up to the camera. Nothing is read or sent: every file name and address on screen is generated.</p>
+  <div class="modes">
+    <button class="mode" id="go-copy" type="button">
+      <b>Copying photos</b>
+      <span>Log of files being copied, with blurred photo tiles flying past. <span class="k">#copy</span></span>
+    </button>
+    <button class="mode" id="go-scan" type="button">
+      <b>Scanning the phone</b>
+      <span>Dense log that speeds up and shifts from violet to amber to red in about 25 seconds. <span class="k">#scan</span></span>
+    </button>
+  </div>
+  <p class="hint">While running: tap to pause, double tap to come back here. Turn on Do Not Disturb and max brightness before filming.</p>
+</div>
+
+<div id="screen" hidden><div id="log"></div></div>
+
+<script>
+(() => {
+  const menu = document.getElementById('menu');
+  const screen = document.getElementById('screen');
+  const log = document.getElementById('log');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const R = (n) => Math.floor(Math.random() * n);
+  const pick = (a) => a[R(a.length)];
+  const pad = (n, w = 2) => String(n).padStart(w, '0');
+  // Documentation-only IP ranges (RFC 5737): look real, route nowhere.
+  const ip = () => pick(['203.0.113.', '198.51.100.', '192.0.2.']) + (10 + R(240));
+  const mb = () => (0.4 + Math.random() * 4.6).toFixed(1) + ' MB';
+  let clock = Date.now() - 3600e3 * 2;
+  const ts = () => { clock += 3 + R(40); const d = new Date(clock);
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(d.getMilliseconds(), 3)}`; };
+  let img = 4100 + R(800);
+  const imgName = () => `IMG_${img++}.${pick(['HEIC', 'HEIC', 'HEIC', 'JPG', 'PNG', 'MOV'])}`;
+
+  const albums = ['Recents', 'Favorites', 'Hidden', 'Screenshots', 'Selfies', 'Camera Roll', 'Family', 'Trip 2025', 'WhatsApp', 'Instagram'];
+  const dbs = ['sms.db', 'Contacts.sqlite', 'Photos.sqlite', 'NoteStore.sqlite', 'ChatStorage.sqlite', 'CallHistory.storedata',
+    'Safari/History.db', 'Mail/Envelope Index', 'Health/healthdb.sqlite', 'Wallet/passes.db', 'Location/consolidated.db'];
+  const procs = ['scan', 'read', 'copy', 'hash', 'sync', 'push', 'index', 'match', 'unlock', 'decode'];
+
+  function line(parts) {
+    const el = document.createElement('div'); el.className = 'ln';
+    for (const [text, color] of parts) {
+      const s = document.createElement('span'); s.textContent = text;
+      if (color) s.style.color = color; el.appendChild(s);
+    }
+    return el;
+  }
+
+  // ---------- palettes ----------
+  const P = {
+    violet: ['#b9a2ff', '#cbb8ff', '#9d86f2', '#e6e3f2'],
+    white: ['#f2f1f7', '#d9d6e6', '#ffd166', '#7fd6ff'],
+    amber: ['#ffd166', '#ffb347', '#ff8c5a', '#f2f1f7'],
+    red: ['#ff3d5a', '#ff5c74', '#ff2a4a', '#ff8fa0'],
+  };
+
+  // ---------- copy mode ----------
+  const tileHues = [[330, 85], [300, 70], [260, 75], [215, 80], [200, 60], [0, 0]];
+  function tileStyle() {
+    const [h, s] = pick(tileHues);
+    const a = `hsl(${h + R(30) - 15} ${s}% ${55 + R(30)}%)`;
+    const b = `hsl(${(h + 40 + R(60)) % 360} ${Math.max(20, s - 10)}% ${35 + R(40)}%)`;
+    const c = `hsl(${(h + 200) % 360} 60% ${60 + R(30)}%)`;
+    return `radial-gradient(circle at ${R(100)}% ${R(100)}%, ${c}, transparent 55%), radial-gradient(circle at ${R(100)}% ${R(100)}%, ${a}, ${b})`;
+  }
+  function tileRow(rows) {
+    const g = document.createElement('div'); g.className = 'tiles';
+    const n = rows * 6;
+    for (let i = 0; i < n; i++) {
+      const t = document.createElement('div'); t.className = 'tile';
+      if (rows === 2 && i === 0 && Math.random() < .3) t.classList.add('big');
+      t.style.background = tileStyle(); g.appendChild(t);
+    }
+    return g;
+  }
+  function copyLine() {
+    const k = R(10), c = P.violet;
+    const t = [ts() + ' ', '#6c6880'];
+    if (k < 5) return line([t, [pick(['read  ', 'copy  ', 'send  ']), '#ff7aa8'], [imgName().padEnd(14), '#b9a2ff'], [' → ' + ip() + '  ', '#7fd6ff'], [mb(), '#e6e3f2']]);
+    if (k < 7) return line([t, ['album ', '#ff7aa8'], [pick(albums).padEnd(13), '#ffd166'], [' items:' + (40 + R(4000)) + '  scanned:' + R(900), '#b9a2ff']]);
+    if (k < 8) return line([t, ['faceid ', '#ff7aa8'], ['album=Hidden  locked=yes  bypass=ok', '#ff5c74']]);
+    if (k < 9) return line([t, ['meta  ', '#ff7aa8'], [imgName() + '  gps ' + (40 + Math.random()).toFixed(4) + ',-' + (73 + Math.random()).toFixed(4), '#7fd6ff']]);
+    return line([t, ['queue ', '#ff7aa8'], [`${R(9000)} files left  ${(5 + Math.random() * 40).toFixed(1)} MB/s`, c[3]]]);
+  }
+
+  // ---------- scan mode ----------
+  function scanLine(phase) {
+    const pal = phase < .35 ? P.violet : phase < .55 ? P.white : phase < .75 ? P.amber : P.red;
+    const t = [ts() + ' ', phase > .75 ? '#a83a4c' : '#6c6880'];
+    const k = R(12);
+    if (k < 4) return line([t, [pick(procs).padEnd(7), pal[1]], ['/var/mobile/Media/DCIM/1' + pad(R(30)) + 'APPLE/' + imgName(), pal[0]], ['  ' + mb(), pal[3]]]);
+    if (k < 7) return line([t, [pick(procs).padEnd(7), pal[1]], ['/var/mobile/Library/' + pick(dbs), pal[0]], ['  ' + (R(3) ? 'OK' : 'COPIED'), pal[2]]]);
+    if (k < 8) return line([t, ['net    ', pal[1]], [`tx ${ip()}:${pick([443, 8443, 5222])}  ${mb()}`, pal[2]]]);
+    if (k < 9) return line([t, ['keys   ', pal[1]], [`keychain item ${R(900)}/${900 + R(300)}  ${pick(['wifi', 'mail', 'icloud', 'bank', 'apple id'])}`, pal[2]]]);
+    if (k < 10) return line([t, ['sync   ', pal[1]], [`${pick(albums)}  ${R(3000)} files  ${(10 + Math.random() * 90).toFixed(0)}%`, pal[0]]]);
+    if (k < 11) return line([t, ['msg    ', pal[1]], [`thread ${R(9999)}  ${R(800)} messages  attachments ${R(60)}`, pal[0]]]);
+    return line([t, ['hash   ', pal[1]], [Array.from({ length: 4 }, () => R(0xffff).toString(16).padStart(4, '0')).join('') + '…  match', pal[3]]]);
+  }
+
+  // ---------- engine ----------
+  let mode = null, running = false, paused = false, startT = 0, acc = 0, last = 0, raf = 0, wake = null;
+  const MAX = 260;
+
+  function trim() { while (log.childElementCount > MAX) log.firstElementChild.remove(); }
+
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min(100, now - last); last = now;
+    if (!paused) {
+      const el = (now - startT) / 1000;
+      let rate;
+      if (mode === 'copy') rate = 34;
+      else { const phase = Math.min(1, el / 25); rate = 26 + phase * 95; }
+      if (reduced) rate = Math.min(rate, 12);
+      acc += rate * dt / 1000;
+      const frag = document.createDocumentFragment();
+      while (acc >= 1) {
+        acc -= 1;
+        if (mode === 'copy') {
+          if (Math.random() < .06) frag.appendChild(tileRow(1 + R(3)));
+          else frag.appendChild(copyLine());
+        } else {
+          frag.appendChild(scanLine(Math.min(1, el / 25)));
+        }
+      }
+      log.appendChild(frag); trim();
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  async function start(m) {
+    mode = m; menu.hidden = true; screen.hidden = false; log.textContent = '';
+    try { history.replaceState(null, '', '#' + m); } catch (e) {}
+    // Prefill so the screen is full on frame one.
+    const pre = document.createDocumentFragment();
+    for (let i = 0; i < 90; i++) pre.appendChild(m === 'copy' ? (i % 14 === 6 ? tileRow(2) : copyLine()) : scanLine(0));
+    log.appendChild(pre);
+    running = true; paused = false; screen.classList.remove('paused');
+    startT = last = performance.now(); raf = requestAnimationFrame(frame);
+    try { await document.documentElement.requestFullscreen?.(); } catch (e) {}
+    try { wake = await navigator.wakeLock?.request('screen'); } catch (e) {}
+  }
+  function stop() {
+    running = false; cancelAnimationFrame(raf); screen.hidden = true; menu.hidden = false;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    try { document.fullscreenElement && document.exitFullscreen(); } catch (e) {}
+    try { wake && wake.release(); wake = null; } catch (e) {}
+  }
+
+  document.getElementById('go-copy').addEventListener('click', () => start('copy'));
+  document.getElementById('go-scan').addEventListener('click', () => start('scan'));
+
+  let lastTap = 0, tapTimer = 0;
+  screen.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTap < 320) { clearTimeout(tapTimer); lastTap = 0; stop(); return; }
+    lastTap = now;
+    tapTimer = setTimeout(() => { paused = !paused; screen.classList.toggle('paused', paused); }, 330);
+  });
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && running) { try { wake = await navigator.wakeLock?.request('screen'); } catch (e) {} }
+  });
+
+  const h = location.hash.slice(1);
+  if (h === 'copy' || h === 'scan') start(h);
+})();
+</script>
