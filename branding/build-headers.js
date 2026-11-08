@@ -115,17 +115,15 @@ V.term_welcome = `<style>${TERM_CSS}
 
 // A3m. Welcome variant re-laid for the mobile safe zone (centered, clear of X app buttons and avatar)
 V.term_welcome_m = `<style>${TERM_CSS}
-.term{left:400px;top:170px;width:620px}
-.body{padding:16px 22px;font-size:18px;line-height:1.6}
-.bar{height:34px}
-.wb{border:1.5px solid #d97757;border-radius:10px;padding:11px 16px;display:flex;gap:16px;align-items:center;margin-bottom:10px}
-.wb .t{font-size:21px;line-height:1;color:var(--paper)} .wb .t span{color:#d97757} .wb .s{font-size:15px;color:var(--mut);margin-top:4px}
+.term{right:150px;top:158px;width:740px}
+.wb{border:1.5px solid #d97757;border-radius:10px;padding:14px 18px;display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.wb .t{font-size:24px;line-height:1;color:var(--paper)} .wb .t span{color:#d97757} .wb .s{font-size:15px;color:var(--mut);margin-top:4px}
 </style>
 <div class="glow"></div><div class="glow2"></div>
 <div style="position:absolute;inset:0;opacity:.07">${logTexture(30, 13, '#c0c5a5')}</div>
 <div class="term mono"><div class="bar"><i></i><i></i><i></i><span>claude — ~/stories</span></div>
 <div class="body">
-  <div class="wb">${mascot(4.2)}<div class="t"><span>✻</span> Welcome back</div></div>
+  <div class="wb">${mascot(5)}<div class="t"><span>✻</span> Welcome back</div></div>
   <div><span class="p">&gt;</span> <span class="c">claude "show me what's really going on"</span></div>
   <div class="w">● 3 things you should see</div>
   <div class="ok">✓ new story every day</div>
