@@ -113,6 +113,26 @@ V.term_welcome = `<style>${TERM_CSS}
 </div></div>
 `;
 
+// A3m. Welcome variant re-laid for the mobile safe zone (centered, clear of X app buttons and avatar)
+V.term_welcome_m = `<style>${TERM_CSS}
+.term{left:400px;top:170px;width:620px}
+.body{padding:16px 22px;font-size:18px;line-height:1.6}
+.bar{height:34px}
+.wb{border:1.5px solid #d97757;border-radius:10px;padding:11px 16px;display:flex;gap:16px;align-items:center;margin-bottom:10px}
+.wb .t{font-size:21px;line-height:1;color:var(--paper)} .wb .t span{color:#d97757} .wb .s{font-size:15px;color:var(--mut);margin-top:4px}
+</style>
+<div class="glow"></div><div class="glow2"></div>
+<div style="position:absolute;inset:0;opacity:.07">${logTexture(30, 13, '#c0c5a5')}</div>
+<div class="term mono"><div class="bar"><i></i><i></i><i></i><span>claude — ~/stories</span></div>
+<div class="body">
+  <div class="wb">${mascot(4.2)}<div class="t"><span>✻</span> Welcome back</div></div>
+  <div><span class="p">&gt;</span> <span class="c">claude "show me what's really going on"</span></div>
+  <div class="w">● 3 things you should see</div>
+  <div class="ok">✓ new story every day</div>
+  <div><span class="p">&gt;</span> <span class="cur"></span></div>
+</div></div>
+`;
+
 // A4. Mascot on the left-center with a speech line into the terminal + scrolling log on the right edge
 V.term_duo = `<style>${TERM_CSS}
 .term{right:90px;top:96px;width:640px}
@@ -191,5 +211,17 @@ V.wall = `
     await pv.waitForTimeout(150);
     await pv.screenshot({ path: path.join(__dirname, `preview-${k}.png`) });
   }
+  // Phone preview: X app shows ~1250px wide center crop, buttons on top, avatar bottom-left
+  const ph = await b.newPage({ viewport: { width: 924, height: 760 }, deviceScaleFactor: 1 });
+  const hm = fs.readFileSync(path.join(__dirname, 'header-term_welcome_m.png')).toString('base64');
+  await ph.setContent(`<body style="margin:0;background:#000;font-family:Inter,sans-serif;overflow:hidden">
+    <div style="position:absolute;left:0;top:0;width:924px;height:370px;overflow:hidden"><img src="data:image/png;base64,${hm}" style="position:absolute;left:-92px;top:0;width:1110px;height:370px"></div>
+    <div style="position:absolute;left:0;top:0;width:924px;height:100px;color:#fff;font-weight:700;font-size:40px;padding:40px 70px">10:45</div>
+    ${[82, 726, 838].map((x) => `<div style="position:absolute;left:${x - 45}px;top:133px;width:90px;height:90px;border-radius:50%;background:#000a"></div>`).join('')}
+    <img src="data:image/png;base64,${av}" style="position:absolute;left:20px;top:335px;width:190px;height:190px;border-radius:50%;border:6px solid #000">
+    <div style="position:absolute;left:22px;top:565px;color:#e7e9ea;font-weight:800;font-size:44px">Samuel</div>
+    <div style="position:absolute;left:22px;top:625px;color:#71767b;font-size:32px">@samfluxlabs</div></body>`);
+  await ph.waitForTimeout(150);
+  await ph.screenshot({ path: path.join(__dirname, 'preview-phone-term_welcome_m.png') });
   await b.close();
 })();
