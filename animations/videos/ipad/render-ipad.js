@@ -20,7 +20,7 @@ const name = args[0] || 'mdm';
   }, data);
   const frame = (t) => p.evaluate((t) => { CTX.save(); SCENE.draw(CTX, t, ST); CTX.restore(); return document.getElementById('c').toDataURL('image/jpeg', 0.92).split(',')[1]; }, t);
   if (stills) { for (const t of stills) fs.writeFileSync(path.join(OUT, 'stills', `${name}_${t}.jpg`), Buffer.from(await frame(Math.min(t, dur - 0.01)), 'base64')); await b.close(); return console.log('stills ok'); }
-  const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', path.join(OUT, `${name}.mp4`)], { stdio: ['pipe', 'inherit', 'inherit'] });
+  const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-', '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2', '-c:v', 'libx264', '-preset', 'medium', '-crf', '21', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', path.join(OUT, `${name}.mp4`)], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let i = 0; i < Math.round(dur * FPS); i++) { const buf = Buffer.from(await frame(i / FPS), 'base64'); if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r)); }
   ff.stdin.end(); await new Promise((r) => ff.on('close', r)); await b.close(); console.log('done', name);
 })();
