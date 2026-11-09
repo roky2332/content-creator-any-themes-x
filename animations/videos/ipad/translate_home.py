@@ -18,6 +18,11 @@ labels = {(0, 1): 'Find My', (0, 2): 'Shortcuts', (0, 3): 'Clock', (0, 4): 'Cont
 hw = {(0, 1): 46, (0, 2): 46, (0, 3): 31, (0, 4): 48, (0, 5): 40, (1, 0): 34, (1, 1): 40, (1, 2): 48, (1, 3): 42, (1, 5): 28, (2, 1): 38, (4, 2): 64, (4, 4): 42, (4, 5): 46}
 for (r, c), _ in labels.items(): fill(cols[c] - hw[(r, c)], rows[r] - 10, cols[c] + hw[(r, c)], rows[r] + 11)
 fill(4, 6, 175, 32); fill(1192, 8, 1238, 30)
+# AUTO.RIA label: fill horizontally from clean wallpaper left/right of it
+x0, x1, y0, y1 = (727 - 44) * S, (727 + 44) * S, 712 * S, 736 * S
+for y in range(y0, y1):
+    l, rr_ = a[y, x0 - 3], a[y, x1 + 3]
+    for x in range(x0, x1): k = (x - x0) / (x1 - x0); a[y, x] = l * (1 - k) + rr_ * k
 out = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)); d = ImageDraw.Draw(out)
 def text(t, cx, cy, font, fill=(255, 255, 255), anchor='mm', shadow=True):
     if shadow:
@@ -30,5 +35,11 @@ text('26%', 1236, 19, F('SemiBold', 16), anchor='rm', shadow=False)
 # calendar icon: replace red weekday
 d = ImageDraw.Draw(out); d.rectangle([505 * S, 855 * S, 545 * S, 872 * S], fill=(255, 255, 255))
 d.text((524 * S, 864 * S), 'MON', font=F('SemiBold', 13), fill=(232, 72, 66), anchor='mm')
+# replace AUTO.RIA icon with the X icon from the dock
+src = out.crop(((1067 - 41) * S, (886 - 41) * S, (1067 + 41) * S, (886 + 41) * S))
+m = Image.new('L', src.size, 0); ImageDraw.Draw(m).rounded_rectangle([2, 2, src.size[0] - 3, src.size[1] - 3], radius=19 * S, fill=255)
+N = 88 * S; src = src.resize((N, N), Image.LANCZOS); m = m.resize((N, N), Image.LANCZOS).filter(ImageFilter.GaussianBlur(1))
+out.paste(src, (int(727.5 * S) - N // 2, int(668.5 * S) - N // 2), m)
+text('X', 727, 723, F('Medium', 14))
 out.resize((2160, 1620), Image.LANCZOS).save('assets/home_en.png')
 print('ok')
