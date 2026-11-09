@@ -11,7 +11,7 @@
   function stream(ctx, items, t, bottom, top, drawItem) { let lo = 0, hi = items.length; while (lo < hi) { const m = (lo + hi) >> 1; if (items[m].t <= t) lo = m + 1; else hi = m; } let y = bottom; for (let i = lo - 1; i >= 0 && y > top - 60; i--) { y -= items[i].h; drawItem(items[i], y); } }
   const LEAD = 6; // seconds of pre-filled log so the screen is full from frame 0
 
-  window.SCENE = { dur: 26, setup() {
+  window.SCENE = { W, H, dur: 26, setup() {
     const r = mulberry(4242), R = (n) => Math.floor(r() * n), pick = (a) => a[R(a.length)];
     const L = 'ABCDEFGHJKLMNPRSTVW';
     const nm = () => `${L[R(L.length)]}***_${L[R(L.length)]}${'*'.repeat(4 + R(4))}`;
