@@ -19,3 +19,5 @@
 - examples/dark-history/video-references.md: референсы видео от автора (3–5 мин, архив, герой сам говорит в кадре) и рабочие поисковые запросы; ссылка из story-method.md
 
 - Уточнение автора: в видео к посту главный герой сам рассказывает свою историю (все ниши); story-method.md и video-references.md
+
+- Ниша Interviews: эталон стиля examples/interviews/01-lexi-luna-rating.md (пост ~1к просмотров), правила в post-format.md «СТИЛЬ ПОСТОВ ДЛЯ НИШИ INTERVIEWS»; для интервью не действует лимит «видео 1–3 строки»
