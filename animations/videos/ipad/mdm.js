@@ -21,38 +21,20 @@
     const hosts = ['mail', 'bank', 'icloud', 'notes', 'photos', 'auth', 'cdn', 'push'];
     const items = emit(26 + LEAD, (t) => t < LEAD ? 22 : 6 + (t - LEAD) * 2.2 + (t - LEAD) * (t - LEAD) * 0.07, (i, t) => {
       const x = r(), s = ts() + '  ';
-      if (x < .40 && pdf < 214) { pdf++; const dob = `19${50 + R(50)}-**-**`; return { k: 'pdf', p: [[s, '#5f6b7a'], ['file  ', '#ff6b81'], [`On My iPad/Intake/intake_${nm()}_${dob}.pdf`, '#e9eef5'], [`  ${80 + R(400)} KB`, '#8fa3b8']], h: 44 }; }
-      if (x < .55) return { p: [[s, '#5f6b7a'], ['vpn   ', '#ffb347'], [`${pick(hosts)}.***.com → tunnel 203.0.113.**  `, '#ffd9a0'], [`↑${(R(900) / 10).toFixed(1)}KB ↓${(R(4000) / 10).toFixed(1)}KB`, '#8fa3b8']], h: 44 };
-      if (x < .68) return { p: [[s, '#5f6b7a'], ['mdm   ', '#7fd6ff'], ['checkin → 203.0.113.**:443  ', '#cfe8ff'], [pick(cmds), '#ffffff'], ['  ack', '#5ee08a']], h: 44 };
-      if (x < .74) return { p: [[s, '#5f6b7a'], ['cert  ', '#c59bff'], [`"${ORG} Root CA"  trusted=yes  user_approved=no`, '#e6d9ff']], h: 44, hl: '#c59bff' };
-      if (x < .80) return { p: [[s, '#5f6b7a'], ['note  ', '#ff6b81'], [`Notes/${pick(['Shift handover', 'Ward 3 meds', 'Pharmacy codes', 'Door codes', 'On-call list'])}  `, '#e9eef5'], ['kept after reset', '#ff3d5a']], h: 44, hl: '#ff3d5a' };
-      if (x < .86) return { p: [[s, '#5f6b7a'], ['cmd   ', '#ff3d5a'], [pick(['DeviceLock', 'EraseDevice', 'EnableLostMode']), '#ff3d5a'], ['  available', '#ffb3be']], h: 44, hl: '#ff3d5a' };
-      return { p: [[s, '#5f6b7a'], ['prof  ', '#7fd6ff'], [pick(['com.ardenvale.mdm', 'com.ardenvale.vpn.alwayson', 'com.ardenvale.wifi.ward', 'com.ardenvale.restrictions']), '#cfe8ff'], ['  supervised=yes  removable=no', '#8fa3b8']], h: 44 };
+      if (x < .40 && pdf < 214) { pdf++; const dob = `19${50 + R(50)}-**-**`; return { k: 'pdf', p: [[s, '#5f6b7a'], ['file  ', '#ff6b81'], [`On My iPad/Intake/intake_${nm()}_${dob}.pdf`, '#e9eef5'], [`  ${80 + R(400)} KB`, '#8fa3b8']], h: 50 }; }
+      if (x < .55) return { p: [[s, '#5f6b7a'], ['vpn   ', '#ffb347'], [`${pick(hosts)}.***.com → tunnel 203.0.113.**  `, '#ffd9a0'], [`↑${(R(900) / 10).toFixed(1)}KB ↓${(R(4000) / 10).toFixed(1)}KB`, '#8fa3b8']], h: 50 };
+      if (x < .68) return { p: [[s, '#5f6b7a'], ['mdm   ', '#7fd6ff'], ['checkin → 203.0.113.**:443  ', '#cfe8ff'], [pick(cmds), '#ffffff'], ['  ack', '#5ee08a']], h: 50 };
+      if (x < .74) return { p: [[s, '#5f6b7a'], ['cert  ', '#c59bff'], [`"${ORG} Root CA"  trusted=yes  user_approved=no`, '#e6d9ff']], h: 50, hl: '#c59bff' };
+      if (x < .80) return { p: [[s, '#5f6b7a'], ['note  ', '#ff6b81'], [`Notes/${pick(['Shift handover', 'Ward 3 meds', 'Pharmacy codes', 'Door codes', 'On-call list'])}  `, '#e9eef5'], ['kept after reset', '#ff3d5a']], h: 50, hl: '#ff3d5a' };
+      if (x < .86) return { p: [[s, '#5f6b7a'], ['cmd   ', '#ff3d5a'], [pick(['DeviceLock', 'EraseDevice', 'EnableLostMode']), '#ff3d5a'], ['  available', '#ffb3be']], h: 50, hl: '#ff3d5a' };
+      return { p: [[s, '#5f6b7a'], ['prof  ', '#7fd6ff'], [pick(['com.ardenvale.mdm', 'com.ardenvale.vpn.alwayson', 'com.ardenvale.wifi.ward', 'com.ardenvale.restrictions']), '#cfe8ff'], ['  supervised=yes  removable=no', '#8fa3b8']], h: 50 };
     });
     return { items };
   }, draw(ctx, t, s) {
     ctx.fillStyle = '#04070b'; ctx.fillRect(0, 0, W, H); ctx.textBaseline = 'top';
-    const heat = Math.min(1, t / 21);
-    // header
-    ctx.font = `700 40px ${MONO}`; ctx.fillStyle = `rgb(255,${Math.round(110 - 50 * heat)},${Math.round(130 - 60 * heat)})`;
-    ctx.fillText(`${Math.floor(t * 2) % 2 ? '●' : '○'} THIS iPAD IS SUPERVISED AND MANAGED`, 56, 56);
-    ctx.font = `30px ${MONO}`; ctx.fillStyle = '#c9d2dc'; ctx.fillText(`org: ${ORG}   serial: DMP*****Q1GC   enrolled: 2023-02-14`, 56, 120);
-    const last = Math.max(0, 252 - Math.floor(t * 9.6)); // check-in countdown to "now"
-    ctx.fillStyle = '#8fa3b8'; ctx.fillText(`server: 203.0.113.**:443   last check-in: ${last > 0 ? `${Math.floor(last / 60)}m ${pad(last % 60)}s ago` : 'just now'}`, 56, 166);
-    // status cards
-    const cards = [['MDM PROFILE', 'INSTALLED', '#7fd6ff'], ['VPN · ALWAYS ON', 'CONNECTED', '#ffb347'], ['ROOT CERT', 'TRUSTED', '#c59bff'], ['REMOTE WIPE', 'AVAILABLE', '#ff3d5a']];
-    const cw = (W - 112 - 3 * 24) / 4;
-    cards.forEach(([a, b, c], i) => { const x = 56 + i * (cw + 24), y = 236; ctx.fillStyle = '#0b121b'; rr(ctx, x, y, cw, 150, 18); ctx.fill(); ctx.strokeStyle = c; ctx.lineWidth = 3; rr(ctx, x, y, cw, 150, 18); ctx.stroke();
-      ctx.fillStyle = '#8fa3b8'; ctx.font = `600 24px ${MONO}`; ctx.fillText(a, x + 22, y + 26); ctx.fillStyle = c; ctx.font = `800 40px ${SANS}`; ctx.fillText(b, x + 22, y + 74);
-      if (i === 1) { ctx.beginPath(); ctx.arc(x + cw - 34, y + 36, 9 + 3 * Math.sin(t * 6), 0, 7); ctx.fill(); } });
-    // counters
-    const files = Math.min(214, s.items.filter((it) => it.k === 'pdf' && it.t <= t + LEAD).length);
-    ctx.font = `30px ${MONO}`; ctx.fillStyle = '#e9eef5'; ctx.fillText(`files left by previous owner  ${files} / 214`, 56, 420);
-    ctx.fillStyle = '#121a24'; ctx.fillRect(56, 470, W - 112, 14); ctx.fillStyle = '#ff6b81'; ctx.fillRect(56, 470, (W - 112) * files / 214, 14);
-    ctx.fillStyle = '#ff3d5a'; ctx.fillRect(0, 512, W, 4);
     // log
-    ctx.save(); ctx.beginPath(); ctx.rect(0, 520, W, H - 520); ctx.clip(); ctx.font = `27px ${MONO}`;
-    stream(ctx, s.items, t + LEAD, H - 24, 520, (it, y) => { if (it.hl) { ctx.fillStyle = it.hl + '22'; ctx.fillRect(0, y, W, 44); ctx.fillStyle = it.hl; ctx.fillRect(0, y, 6, 44); } drawParts(ctx, it.p, 30, y + 8); });
+    ctx.save(); ctx.font = `31px ${MONO}`;
+    stream(ctx, s.items, t + LEAD, H - 24, 0, (it, y) => { if (it.hl) { ctx.fillStyle = it.hl + '22'; ctx.fillRect(0, y, W, 50); ctx.fillStyle = it.hl; ctx.fillRect(0, y, 6, 50); } drawParts(ctx, it.p, 30, y + 9); });
     ctx.restore();
     // finale: Remote Management setup screen
     if (t > 22.4) { const a = Math.min(1, (t - 22.4) / .5); ctx.globalAlpha = a; ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
