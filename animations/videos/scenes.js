@@ -347,6 +347,67 @@
       ctx.fillStyle = c; ctx.font = `800 40px ${SANS}`; ctx.fillText(Math.min(v, 9999).toLocaleString('en-US'), x + 18, 174); ctx.fillStyle = '#8b8e84'; ctx.font = `20px ${MONO}`; ctx.fillText(l, x + 18, 226); });
   } };
 
+  // ---------- 9. BTSPY: fake-AirPods companion app leaking nearby Bluetooth devices + location ----------
+  S.btspy = { dur: 25, setup(rng) {
+    const U = mk(rng);
+    const devs = [["Emma's iPhone", '#ff7aa8', 9], ["Mike's Tesla", '#7fd6ff', 3], ['Living Room TV', '#b9a2ff', 3], ['iPhone (4)', '#ff3d5a', 4], ["Emma's Apple Watch", '#ff7aa8', 3],
+      ['AirPods Pro', '#e6e3f2', 4], ['JBL Flip 5', '#b9a2ff', 1], ["Dad's iPad", '#7fd6ff', 1], ['Galaxy S23', '#b9a2ff', 2], ['[TV] Samsung 7', '#b9a2ff', 1], ['MacBook Pro', '#7fd6ff', 2], ['Unknown', '#ffd166', 2]];
+    const bag = devs.flatMap((d) => Array(d[2]).fill(d));
+    const hexb = () => pad(U.R(256).toString(16).toUpperCase());
+    const mac = () => `${hexb()}:**:**:${hexb()}`;
+    let day = 0, sec = 0; const stamp = () => { sec += 1500 + U.R(14000); while (sec > 86400) { sec -= 86400; day++; } const d = new Date(Date.UTC(2026, 6, 3 + day, 0, 0, sec)); return `${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`; };
+    // my route on the mini map
+    const route = []; let x = 300, y = 260;
+    for (let i = 0; i < 260; i++) { x += (U.f() - .47) * 48; y += (U.f() - .5) * 34; x = Math.max(60, Math.min(1020, x)); y = Math.max(60, Math.min(440, y)); route.push([x, y]); }
+    let rec = 0;
+    const items = emit(31, (t) => t < 6 ? 30 : 7 + (t - 6) * 1.9 + (t - 6) * (t - 6) * 0.06, (i, t) => {
+      const r = U.f(), ts = stamp() + ' ';
+      const [px, py] = route[Math.max(0, Math.min(route.length - 1, Math.floor((t - 6) / 25 * route.length)))];
+      const gps = `${(40.68 + py / 9000).toFixed(5)},${(-73.99 + px / 9000).toFixed(5)}`;
+      if (r < .07) { const n = 300 + U.R(900); return { p: [[ts, '#6c6880'], ['POST ', '#ff5a78'], ['203.0.113.**:443/v2/collect  ', '#7fd6ff'], [`${n} rec ${(n * 0.044).toFixed(1)}KB `, '#e6e3f2'], ['200 OK', '#5ee08a']], h: 34 }; }
+      if (r < .11) return { p: [[ts, '#6c6880'], ['auth ', '#ff5a78'], ['apple_id=em****@icloud.com  ', '#ffd166'], ['plaintext', '#ff3d5a']], h: 34, hl: '#ff3d5a' };
+      if (r < .13) return { p: [[ts, '#6c6880'], ['loc  ', '#ff5a78'], [gps + '  ', '#5ee08a'], [`±${3 + U.R(8)}m  `, '#8fa3b8'], ['bg=true earbuds=disconnected', '#ff3d5a']], h: 34 };
+      const d = U.pick(bag); rec++;
+      const hl = d[0] === 'iPhone (4)' ? '#ff3d5a' : d[0].startsWith('Emma') ? '#ff7aa8' : null;
+      return { p: [[ts, '#6c6880'], ['ble  ', '#ff5a78'], [d[0].padEnd(19).slice(0, 19), d[1]], [` ${mac()} `, '#8fa3b8'], [`${-38 - U.R(55)}dB `, '#e6e3f2'], [gps, '#5ee08a']], h: 34, hl };
+    });
+    const pins = devs.slice(0, 8).map((d, i) => ({ n: d[0], c: d[1], a: i * .8, r: 40 + (i % 4) * 22 }));
+    return { items, route, pins };
+  }, draw(ctx, t, s) {
+    bg(ctx, '#03060a');
+    const heat = Math.min(1, t / 22), red = `rgb(${255},${Math.round(120 - 60 * heat)},${Math.round(150 - 60 * heat)})`;
+    // header
+    ctx.textBaseline = 'top'; ctx.font = `700 30px ${MONO}`; ctx.fillStyle = red;
+    ctx.fillText(`${Math.floor(t * 2) % 2 ? '●' : '○'} AirSync Pro · background`, 30, 34);
+    const shown = Math.min(11382, Math.floor(180 + t * t * 17.5 + t * 22));
+    ctx.font = `25px ${MONO}`; ctx.fillStyle = '#c9d2dc';
+    ctx.fillText(`records ${shown.toLocaleString('en-US')} / 11,382   uploads ${Math.floor(t * 3.1)}`, 30, 84);
+    ctx.fillStyle = '#8fa3b8'; ctx.fillText('→ 203.0.113.**:443   every 15 min   encrypted: no', 30, 122);
+    ctx.fillStyle = '#121a24'; ctx.fillRect(30, 166, W - 60, 10); ctx.fillStyle = red; ctx.fillRect(30, 166, (W - 60) * shown / 11382, 10);
+    // mini map
+    const MY = 196, MH = 500; ctx.save(); ctx.beginPath(); ctx.rect(0, MY, W, MH); ctx.clip();
+    ctx.fillStyle = '#070d14'; ctx.fillRect(0, MY, W, MH);
+    ctx.strokeStyle = '#13202d'; ctx.lineWidth = 2;
+    for (let i = -2; i < 30; i++) { const o = (i * 74 - t * 6) % 2200; ctx.beginPath(); ctx.moveTo(o, MY); ctx.lineTo(o - 120, MY + MH); ctx.stroke(); }
+    for (let i = 0; i < 9; i++) { ctx.beginPath(); ctx.moveTo(0, MY + 30 + i * 60); ctx.lineTo(W, MY + 50 + i * 60); ctx.stroke(); }
+    const k = Math.max(2, Math.floor(t / 25 * s.route.length));
+    ctx.strokeStyle = 'rgba(94,224,138,.75)'; ctx.lineWidth = 4; ctx.setLineDash([10, 8]); ctx.lineDashOffset = -t * 30; ctx.beginPath();
+    s.route.slice(0, k).forEach(([x, y], i) => i ? ctx.lineTo(x, MY + y) : ctx.moveTo(x, MY + y)); ctx.stroke(); ctx.setLineDash([]);
+    const [cx, cy0] = s.route[k - 1], cy = MY + cy0;
+    for (const p of s.pins) { const a = p.a + t * .6, px = cx + Math.cos(a) * p.r * 1.6, py = cy + Math.sin(a) * p.r;
+      ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(px, py, 7, 0, 7); ctx.fill();
+      if (p.n.startsWith('Emma') || p.n === 'iPhone (4)') { ctx.font = `600 20px ${SANS}`; ctx.fillStyle = 'rgba(3,6,10,.8)'; const w = ctx.measureText(p.n).width + 14; ctx.fillRect(px + 10, py - 14, w, 28); ctx.fillStyle = p.c; ctx.textBaseline = 'middle'; ctx.fillText(p.n, px + 17, py); ctx.textBaseline = 'top'; } }
+    for (let r = 0; r < 2; r++) { const ph = ((t + r * .6) % 1.2) / 1.2; ctx.strokeStyle = `rgba(94,224,138,${.7 * (1 - ph)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, cy, 14 + ph * 70, 0, 7); ctx.stroke(); }
+    ctx.fillStyle = '#5ee08a'; ctx.beginPath(); ctx.arc(cx, cy, 12, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 7); ctx.fill();
+    ctx.font = `600 22px ${MONO}`; ctx.fillStyle = 'rgba(3,6,10,.85)'; ctx.fillRect(18, MY + MH - 50, 470, 38);
+    ctx.fillStyle = '#5ee08a'; ctx.fillText(`YOU  ${(40.68 + cy0 / 9000).toFixed(5)}, ${(-73.99 + cx / 9000).toFixed(5)}`, 30, MY + MH - 44);
+    ctx.restore(); ctx.fillStyle = red; ctx.fillRect(0, MY + MH, W, 3);
+    // log stream
+    ctx.save(); ctx.beginPath(); ctx.rect(0, MY + MH + 6, W, H); ctx.clip(); ctx.font = `21px ${MONO}`; ctx.textBaseline = 'top';
+    stream(ctx, s.items, t + 6, H - 16, (it, y) => { if (it.hl) { ctx.fillStyle = it.hl + '26'; ctx.fillRect(0, y, W, 34); ctx.fillStyle = it.hl; ctx.fillRect(0, y, 5, 34); } drawParts(ctx, it.p, 16, y + 6); });
+    ctx.restore();
+  } };
+
   function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
   window.SCENES = S; window.SCENE_W = W; window.SCENE_H = H; window.mulberry = mulberry;
