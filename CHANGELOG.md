@@ -33,3 +33,4 @@
 ## 2026-11-12
 - Новая ниша 6 Hollywood Backstories: guidelines/hollywood-backstories.md (о чём, границы с нишами 2/3/4, структура и оформление по 5 референсам), examples/hollywood-backstories/reference-posts.md, CLAUDE.md. Открытый вопрос автору: точки в конце предложений в этой нише оставляем, как в референсах?
 - Hollywood Backstories: автор решил — без точек в конце строк
+- Dark History: автор выбрал формат видео — архивные официальные записи, где говорит сам преступник (УДО, суд, допрос, тюремное интервью); эталоны 1,2,7,9,10,11 в examples/dark-history/video-references.md, правило в dark-history-playbook.md
