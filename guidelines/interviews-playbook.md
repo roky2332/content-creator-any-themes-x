@@ -140,7 +140,7 @@
 
 ## 9. Архив: связки старого стиля
 
-Используются в `money-playbook.md` и `dark-history-playbook.md` (там ссылка на «раздел 7»), в новых интервью-постах не нужны:
+Используются в `money-playbook.md` (там ссылка на «раздел 7»), в новых интервью-постах не нужны:
 - вместо «And here's the part nobody expects»: «But that's not the twist», «Then it gets better», «Here's where it flips», «Nobody saw the next part coming»
 - вместо «In the video below, she…»: «Watch her explain…», «In the clip, she walks through…», «She lays it out in the video below»
 - вместо «It was never X. It's Y»: «So it's not about X. It's about Y», «X was never the point», «Turns out the problem was never X»

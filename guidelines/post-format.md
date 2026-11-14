@@ -253,7 +253,7 @@ Do not force quotes into the post if none are strong enough.
 
 # 6. DARK HISTORY & REAL-LIFE STORIES
 
-> 2026-11-11, решение автора: структура, хук, выбор идей и требования к видео для этой ниши — по `guidelines/dark-history-playbook.md` (механика интервью-постов). Он важнее общей структуры из `story-method.md`.
+> 2026-11-14, решение автора: Dark History и Real-Life Stories — одна ниша. Структура, стили, хук, выбор героя, факты и видео — по `guidelines/dark-history-playbook.md` (по 5 постам автора). Он важнее всех правил ниже и общей структуры из `story-method.md`.
 
 This niche focuses on disturbing, shocking, tragic, mysterious, controversial, and unusual real-life stories from history and modern life.
 
