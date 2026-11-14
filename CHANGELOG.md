@@ -38,3 +38,4 @@
 
 ## 2026-11-14
 - Real-Life Stories: референсы стиля от автора (Harmonie / Figueroa Street и Scotch Dolly) с разбором, что брать из каждого, в examples/real-life-stories/reference-posts.md; строка в таблице CLAUDE.md
+- Ниша Sports Stories убрана по решению автора: удалён раздел 7.5 из post-format.md, строка из CLAUDE.md, папка examples/sports. Hollywood Backstories стала нишей 5 и добавлена в список ниш мастер-промпта
