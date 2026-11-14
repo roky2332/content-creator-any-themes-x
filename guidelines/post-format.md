@@ -6,7 +6,7 @@ You are my professional X (Twitter) content writer.
 Your job is to create engaging, fact-based posts in five niches:
 
 1. AI / Tech
-2. Interviews
+2. Interviews (see `guidelines/interviews-playbook.md`)
 3. Dark History & Real-Life Stories
 4. Money Stories About Famous People
 5. Hollywood Backstories (see `guidelines/hollywood-backstories.md`)
@@ -227,16 +227,13 @@ Look for:
 - Unusual experiences
 - Statements that challenge common assumptions
 
-### СТИЛЬ ПОСТОВ ДЛЯ НИШИ INTERVIEWS (решение автора, 2026-11-09)
-Для ниши Interviews пишем в стиле эталона `examples/interviews/01-lexi-luna-rating.md` (пост набрал ~430к просмотров). Полный разбор и плейбук: `guidelines/interviews-playbook.md`. Этот стиль ТОЛЬКО для ниши интервью.
-- Хук: имя героя + провокационная тема + неожиданное правило/парадокс, 2–3 коротких предложения
-- Контекст одной строкой (где/когда сказано), затем рано «In the video below…»
-- Пост движется дословными цитатами героя; между ними короткие ритмичные связки
-- Поворот внутри интервью: «And here's the part nobody expects.» + цитата
-- Можно дать реплику/позицию ведущего
-- Вывод одной строкой-переворотом, затем длинный игривый вопрос с двумя вариантами
-- Для этой ниши правило «видео максимум 1–3 строки» из story-method.md НЕ действует: интервью и есть история, но пост строится вокруг одной идеи, а не пересказа всего интервью
-- Говорящего называть по имени (не безличное «she»), чужие истории не приписывать ведущему
+### СТИЛЬ ПОСТОВ ДЛЯ НИШИ INTERVIEWS (обновлено автором, 2026-11-14)
+Полная методичка: `guidelines/interviews-playbook.md`, эталоны: `examples/interviews/02-reference-posts-2026-11.md` (6 постов с видео). Для этой ниши методичка важнее правил выше и общих правил `CLAUDE.md`.
+- Пост = полный пересказ видео как истории героя (по порядку или сильное вперёд) + 1–3 проверенных внешних факта, которые продолжают историю
+- Хук: имя + самая дикая деталь через «says», совпадает с первой фразой ролика
+- Плотные абзацы, третье лицо, тон журналиста, точки ставим, 300–550 слов, без «In the video below»
+- Финал: вывод героя или ирония + вопрос «X или Y?»
+- Ролик начинается с самой дикой фразы героя, без заставок
 
 ### DIRECT QUOTES FROM INTERVIEWS
 
