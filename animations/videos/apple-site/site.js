@@ -27,7 +27,7 @@ window.SCENE = (() => {
   const ASSETS = {
     hero: 'assets/1618221195710-dd6b41faaea6.jpg', scandi: 'assets/1513694203232-719a280e022f.jpg', warm: 'assets/1600210492486-724fe5c67fb0.jpg', loft: 'assets/1538688525198-9b88f6f53126.jpg',
     sofa: 'assets/1555041469-a586c61ea9bc.jpg', chair: 'assets/1567538096630-e0c55bd6374c.jpg', dchair: 'assets/1592078615290-033ee584e267.jpg', lamp: 'assets/1507473885765-e6ed057f782c.jpg',
-    bedroom: 'assets/1586105251261-72a756497a11.jpg', dining: 'assets/1617806118233-18e1de247200.jpg', kitchen: 'assets/1522708323590-d24dbb6b0267.jpg', house1: 'assets/1600566753190-17f0baa2a6c3.jpg', house2: 'assets/1600585154526-990dced4db0d.jpg',
+    bedroom: 'assets/1586105251261-72a756497a11.jpg', dining: 'assets/1617806118233-18e1de247200.jpg', kitchen: 'assets/1522708323590-d24dbb6b0267.jpg', mOak: 'assets/mat-oak_veneer_01.jpg', mLinen: 'assets/mat-rough_linen.jpg', mTrav: 'assets/mat-marble_01.jpg', mLeather: 'assets/mat-fabric_leather_02.jpg', mTerr: 'assets/mat-terrazzo_tiles.jpg', mClay: 'assets/mat-clay_plaster.jpg', house1: 'assets/1600566753190-17f0baa2a6c3.jpg', house2: 'assets/1600585154526-990dced4db0d.jpg',
   };
   const SMALL = {};
   function small(key, n) { const k = key + n; if (SMALL[k]) return SMALL[k]; const im = IMG[key]; const c = document.createElement('canvas'); c.width = n; c.height = Math.max(1, Math.round(n * im.height / im.width)); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); return (SMALL[k] = c); }
@@ -143,11 +143,11 @@ window.SCENE = (() => {
   const SM = 3880;
   add({ id: 'smh', sec: 'Materials', type: 'text', x: 180, y: SM + 70, w: 900, h: 90, a: 1, tag: 'h2 · 64px', draw(ctx, e, p) { T(ctx, `700 64px ${F}`, '#1d1d1f'); ctx.fillText(typed('Materials you can touch.', p), e.x, e.y + 66); } });
   add({ id: 'smp', type: 'text', x: 180, y: SM + 160, w: 900, h: 40, a: 4, tag: 'p', draw(ctx, e, p) { T(ctx, `400 24px ${F}`, '#6e6e73'); ctx.fillText(typed('Every sample is mailed to your door before anything is ordered.', p), e.x, e.y + 28); } });
-  ['Oak', 'Linen', 'Travertine', 'Brass', 'Terrazzo', 'Clay'].forEach((n, i) => {
+  ['Oak', 'Linen', 'Travertine', 'Leather', 'Terrazzo', 'Clay'].forEach((n, i) => {
     const x = 180 + i * 262, y = SM + 250;
-    add({ id: 'sw' + i, type: 'img', x, y, w: 240, h: 300, a: [2, 0, 5, 2, 0, 5][i], g: 0.22, tag: `swatch · ${n.toLowerCase()}`, draw(ctx, e, p) { ctx.save(); rr(ctx, e.x, e.y, e.w, e.h, 24); ctx.clip(); ctx.fillStyle = '#e8e8ed'; ctx.fillRect(e.x, e.y, e.w, e.h); const cut = e.y + e.h * oc(p); ctx.beginPath(); ctx.rect(e.x, e.y, e.w, cut - e.y); ctx.clip(); swatch(ctx, e.x, e.y, e.w, e.h, i); ctx.restore(); } });
+    add({ id: 'sw' + i, type: 'img', x, y, w: 240, h: 300, a: [2, 0, 5, 2, 0, 5][i], g: 0.22, tag: `swatch · ${n.toLowerCase()}`, draw(ctx, e, p) { ctx.save(); rr(ctx, e.x, e.y, e.w, e.h, 24); ctx.clip(); ctx.fillStyle = '#e8e8ed'; ctx.fillRect(e.x, e.y, e.w, e.h); const cut = e.y + e.h * oc(p); ctx.beginPath(); ctx.rect(e.x, e.y, e.w, cut - e.y); ctx.clip(); realSwatch(ctx, e.x, e.y, e.w, e.h, i); ctx.restore(); } });
   });
-  ['Oak', 'Linen', 'Travertine', 'Brass', 'Terrazzo', 'Clay'].forEach((n, i) => {
+  ['Oak', 'Linen', 'Travertine', 'Leather', 'Terrazzo', 'Clay'].forEach((n, i) => {
     add({ id: 'swl' + i, type: 'text', x: 180 + i * 262, y: SM + 566, w: 240, h: 56, a: [1, 4, 1, 4, 1, 4][i], g: 0.2, tag: 'label', draw(ctx, e, p) { T(ctx, `600 22px ${F}`, '#1d1d1f'); ctx.fillText(typed(n, p * 1.5), e.x + 4, e.y + 24); ctx.globalAlpha = cl(p * 2 - 1); T(ctx, `500 16px ${F}`, '#86868b'); ctx.fillText(`Sample 0${i + 1}`, e.x + 4, e.y + 48); } });
   });
   // ROOMS
@@ -156,6 +156,13 @@ window.SCENE = (() => {
   add({ id: 'r0', type: 'photo', img: 'bedroom', x: 180, y: SR + 190, w: 760, h: 620, fx: 0.45, a: 2, tag: 'img · bedroom.jpg', pill: 'Bedroom' });
   add({ id: 'r1', type: 'photo', img: 'dining', x: 970, y: SR + 190, w: 770, h: 300, a: 0, tag: 'img · dining.jpg', pill: 'Dining' });
   add({ id: 'r2', type: 'photo', img: 'kitchen', x: 970, y: SR + 510, w: 770, h: 300, fy: 0.6, a: 5, tag: 'img · kitchen.jpg', pill: 'Kitchen' });
+  function realSwatch(ctx, x, y, w, h, i) {
+    const im = IMG[['mOak', 'mLinen', 'mTrav', 'mLeather', 'mTerr', 'mClay'][i]];
+    const z = [1.6, 3.2, 1.3, 1.5, 1.8, 2.2][i];
+    const sw = Math.min(im.width / z, im.height * w / h), sh = sw * h / w; ctx.drawImage(im, (im.width - sw) / 2, (im.height - sh) / 2, sw, sh, x, y, w, h);
+    const g = ctx.createLinearGradient(x, y, x + w, y + h); g.addColorStop(0, 'rgba(255,255,255,0.18)'); g.addColorStop(0.5, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(0,0,0,0.16)');
+    ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
+  }
   // ARCHITECTURE
   const SA = 5700;
   add({ id: 'sah', sec: 'Architecture', type: 'text', x: 180, y: SA + 70, w: 1000, h: 90, a: 1, tag: 'h2 · 64px', draw(ctx, e, p) { T(ctx, `700 64px ${F}`, '#1d1d1f'); ctx.fillText(typed('We draw the building too.', p), e.x, e.y + 66); } });
