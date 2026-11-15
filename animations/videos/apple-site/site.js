@@ -1,8 +1,8 @@
 // Apple-style site being built live by a swarm of AI agents. Theme: apartment interior design & architecture.
 // 1920x1080, 30fps. Render: node render.js site   |   stills: node render.js --stills 1,5,10 site
 window.SCENE = (() => {
-  const W = 1920, H = 1080, DUR = 23.5;
-  const WX = 60, WY = 36, WW = 1800, WH = 1008, CH = 52; // browser window + chrome height
+  const W = 1920, H = 1080, DUR = 22, SPEED = 2, TEND = 38.1;
+  const WX = 0, WY = 0, WW = W, WH = H, CH = 96; // full-screen Chrome: tab strip 46 + toolbar 50
   const VX = WX, VY = WY + CH, VW = WW, VH = WH - CH;   // page viewport on screen
   const F = '"Inter Display", Inter, "Helvetica Neue", Arial, sans-serif';
   const MONO = '"JetBrains Mono", "DejaVu Sans Mono", monospace';
@@ -18,9 +18,9 @@ window.SCENE = (() => {
   const lerp = (a, b, k) => a + (b - a) * k;
 
   // ---------- scroll ----------
-  const SC = [[0, 0], [7.4, 0], [8.5, 930], [12.6, 930], [13.6, 1850], [17.4, 1850], [18.4, 2790], [99, 2790]];
-  const scrollAt = (t) => { for (let i = 0; i < SC.length - 1; i++) { const [a, ya] = SC[i], [b, yb] = SC[i + 1]; if (t <= b) return lerp(ya, yb, io(prog(t, a, b))); } return 2790; };
-  const sectionAt = (t) => (t < 8 ? 'Hero' : t < 13.1 ? 'Floor plan' : t < 17.9 ? 'Projects' : 'Contact');
+  const SC = [[0, 0], [7.4, 0], [8.5, 930], [12.6, 930], [13.6, 1850], [17.4, 1850], [18.3, 2790], [22.4, 2790], [23.2, 3720], [27.6, 3720], [28.4, 4650], [33.6, 4650], [34.4, 5580], [99, 5580]];
+  const scrollAt = (t) => { for (let i = 0; i < SC.length - 1; i++) { const [a, ya] = SC[i], [b, yb] = SC[i + 1]; if (t <= b) return lerp(ya, yb, io(prog(t, a, b))); } return 5580; };
+  const sectionAt = (t) => (t < 8 ? 'Hero' : t < 13.1 ? 'Floor plan' : t < 17.9 ? 'Projects' : t < 22.8 ? 'Materials' : t < 27.9 ? 'Process' : t < 34 ? 'Before / After' : 'Contact');
 
   // ---------- helpers ----------
   function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
@@ -169,14 +169,60 @@ window.SCENE = (() => {
     add({ id: 'c' + i, type: 'img', x, y, w: 500, h: 560, t0: 13.6 + i * 0.35, t1: 14.5 + i * 0.5, a: [2, 0, 5][i], tag: `card.img  ${n.toLowerCase().replace(' ', '-')}.webp`, pal, dur: 1.3, draw(ctx, e, p) { imageEl(ctx, e, p); } });
     add({ id: 'ct' + i, type: 'text', x, y: y + 580, w: 500, h: 64, t0: 14.4 + i * 0.4, t1: 15.0 + i * 0.45, a: [1, 4, 1][i], tag: 'caption', draw(ctx, e, p) { ctx.textAlign = 'left'; ctx.fillStyle = '#1d1d1f'; ctx.font = `600 28px ${F}`; ctx.fillText(typed(n, p * 1.4), e.x + 4, e.y + 30); ctx.globalAlpha = cl(p * 2 - 1); ctx.fillStyle = '#86868b'; ctx.font = `500 19px ${F}`; ctx.fillText(s, e.x + 4, e.y + 58); } });
   });
+  // SECTION — materials
+  const SM = 2790;
+  function swatch(ctx, x, y, w, h, kind) {
+    ctx.save(); rr(ctx, x, y, w, h, 24); ctx.clip();
+    const g = (c1, c2) => { const gr = ctx.createLinearGradient(x, y, x + w, y + h); gr.addColorStop(0, c1); gr.addColorStop(1, c2); return gr; };
+    if (kind === 0) { ctx.fillStyle = g('#c79a68', '#a7774b'); ctx.fillRect(x, y, w, h); ctx.strokeStyle = 'rgba(80,45,20,0.25)'; ctx.lineWidth = 2; for (let i = 0; i < 14; i++) { ctx.beginPath(); for (let k = 0; k <= 20; k++) { const yy = y + k * h / 20, xx = x + i * w / 13 + Math.sin(k * 0.7 + i) * 6; k ? ctx.lineTo(xx, yy) : ctx.moveTo(xx, yy); } ctx.stroke(); } }
+    if (kind === 1) { ctx.fillStyle = '#e9e2d4'; ctx.fillRect(x, y, w, h); ctx.strokeStyle = 'rgba(120,100,70,0.16)'; ctx.lineWidth = 1; for (let i = 0; i < w; i += 4) { ctx.beginPath(); ctx.moveTo(x + i, y); ctx.lineTo(x + i, y + h); ctx.stroke(); } for (let i = 0; i < h; i += 4) { ctx.beginPath(); ctx.moveTo(x, y + i); ctx.lineTo(x + w, y + i); ctx.stroke(); } }
+    if (kind === 2) { ctx.fillStyle = g('#e7dccb', '#d8c8b0'); ctx.fillRect(x, y, w, h); ctx.fillStyle = 'rgba(150,125,95,0.35)'; for (let i = 0; i < 40; i++) { ctx.beginPath(); ctx.ellipse(x + (i * 97 % w), y + (i * 53 % h), 6 + (i % 5) * 3, 2 + (i % 3), 0, 0, 7); ctx.fill(); } }
+    if (kind === 3) { const gr = ctx.createLinearGradient(x, y, x + w, y); gr.addColorStop(0, '#8a6a2f'); gr.addColorStop(0.35, '#e8cf8b'); gr.addColorStop(0.6, '#b8914a'); gr.addColorStop(1, '#f1dca4'); ctx.fillStyle = gr; ctx.fillRect(x, y, w, h); ctx.fillStyle = 'rgba(255,255,255,0.18)'; for (let i = 0; i < h; i += 3) ctx.fillRect(x, y + i, w, 1); }
+    if (kind === 4) { ctx.fillStyle = '#efebe4'; ctx.fillRect(x, y, w, h); const cs = ['#c96f4a', '#6f8f6a', '#2f3b4a', '#d9b56f', '#9a9590']; for (let i = 0; i < 120; i++) { ctx.fillStyle = cs[i % 5]; ctx.beginPath(); ctx.ellipse(x + (i * 131 % w), y + (i * 71 % h), 3 + (i % 4) * 2, 2 + (i % 3) * 2, i, 0, 7); ctx.fill(); } }
+    if (kind === 5) { ctx.fillStyle = g('#c4714f', '#9e5136'); ctx.fillRect(x, y, w, h); ctx.fillStyle = 'rgba(255,255,255,0.06)'; for (let i = 0; i < 300; i++) ctx.fillRect(x + (i * 37 % w), y + (i * 61 % h), 2, 2); }
+    ctx.restore();
+  }
+  add({ id: 'smh', type: 'text', x: 120, y: SM + 70, w: 900, h: 90, t0: 18.3, t1: 18.8, a: 1, tag: 'h2 · 64px', draw(ctx, e, p) { ctx.fillStyle = '#1d1d1f'; ctx.font = `700 64px ${F}`; ctx.textAlign = 'left'; ctx.fillText(typed('Materials you can touch.', p), e.x, e.y + 66); } });
+  add({ id: 'smp', type: 'text', x: 120, y: SM + 160, w: 900, h: 40, t0: 18.8, t1: 19.3, a: 4, tag: 'p', draw(ctx, e, p) { ctx.fillStyle = '#6e6e73'; ctx.font = `400 24px ${F}`; ctx.textAlign = 'left'; ctx.fillText(typed('Every sample is mailed to your door before anything is ordered.', p), e.x, e.y + 28); } });
+  ['Oak', 'Linen', 'Travertine', 'Brass', 'Terrazzo', 'Clay'].forEach((n, i) => {
+    const x = 120 + i * 262, y = SM + 250;
+    add({ id: 'sw' + i, type: 'img', x, y, w: 240, h: 300, t0: 18.7 + i * 0.25, t1: 19.3 + i * 0.35, dur: 1.0, a: [2, 0, 5, 2, 0, 5][i], tag: `swatch · ${n.toLowerCase()}`, draw(ctx, e, p) { ctx.save(); rr(ctx, e.x, e.y, e.w, e.h, 24); ctx.clip(); ctx.fillStyle = '#e8e8ed'; ctx.fillRect(e.x, e.y, e.w, e.h); const cut = e.y + e.h * oc(p); ctx.beginPath(); ctx.rect(e.x, e.y, e.w, cut - e.y); ctx.clip(); swatch(ctx, e.x, e.y, e.w, e.h, i); ctx.restore(); } });
+    add({ id: 'swl' + i, type: 'text', x, y: y + 316, w: 240, h: 56, t0: 19.6 + i * 0.3, t1: 20.0 + i * 0.3, a: [1, 4, 1, 4, 1, 4][i], tag: 'label', draw(ctx, e, p) { ctx.textAlign = 'left'; ctx.fillStyle = '#1d1d1f'; ctx.font = `600 22px ${F}`; ctx.fillText(typed(n, p * 1.5), e.x + 4, e.y + 24); ctx.globalAlpha = cl(p * 2 - 1); ctx.fillStyle = '#86868b'; ctx.font = `500 16px ${F}`; ctx.fillText(`Sample 0${i + 1}`, e.x + 4, e.y + 48); } });
+  });
+  // SECTION — process
+  const SP = 3720;
+  add({ id: 'sph', type: 'text', x: 300, y: SP + 70, w: 1200, h: 90, t0: 23.3, t1: 23.8, a: 1, tag: 'h2 · 72px', draw(ctx, e, p) { ctx.fillStyle = '#1d1d1f'; ctx.font = `700 72px ${F}`; ctx.textAlign = 'center'; ctx.fillText(typed('From floor plan to keys.', p), PW / 2, e.y + 72); } });
+  const steps = [['01', 'Measure', 'We scan every wall', 'to the millimeter.'], ['02', 'Concept', 'Moodboards, layouts', 'and light studies.'], ['03', 'Build', 'One team. One timeline.', 'No surprises.'], ['04', 'Move in', 'Keys, plants, and the', 'lamp already on.']];
+  add({ id: 'spl', type: 'box', x: 160, y: SP + 236, w: 1480, h: 6, t0: 25.3, t1: 25.7, dur: 1.4, a: 3, tag: 'progress', draw(ctx, e, p) { ctx.fillStyle = '#e8e8ed'; rr(ctx, e.x, e.y, e.w, e.h, 3); ctx.fill(); const g = ctx.createLinearGradient(e.x, 0, e.x + e.w, 0); g.addColorStop(0, '#f5d0a9'); g.addColorStop(0.5, '#e9a8c2'); g.addColorStop(1, '#a9c8f5'); ctx.fillStyle = g; rr(ctx, e.x, e.y, e.w * oc(p), e.h, 3); ctx.fill(); } });
+  steps.forEach(([num, ttl, l1, l2], i) => {
+    const x = 120 + i * 400, y = SP + 270;
+    add({ id: 'st' + i, type: 'box', x, y, w: 380, h: 420, t0: 23.7 + i * 0.3, t1: 24.1 + i * 0.35, dur: 1.0, a: [0, 2, 5, 3][i], tag: `card.step-${num}`, draw(ctx, e, p) { ctx.globalAlpha = cl(p * 2); ctx.fillStyle = '#f5f5f7'; rr(ctx, e.x, e.y, e.w, e.h, 28); ctx.fill(); const g = ctx.createLinearGradient(e.x + 40, 0, e.x + 200, 0); g.addColorStop(0, '#b8a27f'); g.addColorStop(1, '#86868b'); ctx.fillStyle = g; ctx.font = `700 96px ${F}`; ctx.textAlign = 'left'; ctx.fillText(num, e.x + 36, e.y + 130); ctx.globalAlpha = 1; ctx.fillStyle = '#1d1d1f'; ctx.font = `700 34px ${F}`; ctx.fillText(typed(ttl, p * 1.6 - 0.2), e.x + 40, e.y + 290); ctx.fillStyle = '#6e6e73'; ctx.font = `400 21px ${F}`; ctx.fillText(typed(l1, p * 1.8 - 0.6), e.x + 40, e.y + 335); ctx.fillText(typed(l2, p * 1.8 - 0.8), e.x + 40, e.y + 365); } });
+  });
+  // SECTION — before / after
+  const SB = 4650;
+  const PAL_BEFORE = { wall: ['#bdbab4', '#a9a59e'], floor: ['#8f8a82', '#7a756d'], side: '#b0aca5', sofa: '#8d8880', sofa2: '#7c776f', rug: '#a19c94', accent: '#77736b', wood: '#5c5852', sky: ['#c9cdd1', '#d6d6d4'] };
+  add({ id: 'sbh', type: 'text', x: 300, y: SB + 60, w: 1200, h: 90, t0: 28.5, t1: 29.0, a: 1, tag: 'h2 · 72px', draw(ctx, e, p) { ctx.fillStyle = '#1d1d1f'; ctx.font = `700 72px ${F}`; ctx.textAlign = 'center'; ctx.fillText(typed('Same walls. New life.', p), PW / 2, e.y + 72); } });
+  add({ id: 'ba', type: 'img', x: 220, y: SB + 180, w: 1360, h: 620, t0: 28.8, t1: 29.3, dur: 4.2, a: 2, tag: 'compare · before-after  2720×1240', draw(ctx, e, p) {
+    const rv = oc(cl(p / 0.22)); ctx.save(); rr(ctx, e.x, e.y, e.w, e.h, 32); ctx.clip(); ctx.fillStyle = '#e8e8ed'; ctx.fillRect(e.x, e.y, e.w, e.h);
+    ctx.beginPath(); ctx.rect(e.x, e.y, e.w, e.h * rv); ctx.clip();
+    room(ctx, e.x, e.y, e.w, e.h, PAL.living);
+    const q = cl((p - 0.22) / 0.78); const pos = q <= 0 ? 1 : 0.5 + 0.5 * Math.cos(q * Math.PI * 1.5) * (1 - q * 0.6);
+    const sx = e.x + e.w * cl(pos, 0.04, 1);
+    ctx.save(); ctx.beginPath(); ctx.rect(e.x, e.y, sx - e.x, e.h); ctx.clip(); ctx.filter = 'grayscale(0.85) brightness(0.92)'; room(ctx, e.x, e.y, e.w, e.h, PAL_BEFORE); ctx.filter = 'none'; ctx.restore();
+    ctx.fillStyle = 'rgba(0,0,0,0.5)'; rr(ctx, e.x + 28, e.y + 28, 104, 38, 19); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `600 17px ${F}`; ctx.textAlign = 'center'; ctx.fillText('Before', e.x + 80, e.y + 53);
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'; rr(ctx, e.x + e.w - 124, e.y + 28, 96, 38, 19); ctx.fill(); ctx.fillStyle = '#1d1d1f'; ctx.fillText('After', e.x + e.w - 76, e.y + 53);
+    if (q > 0) { ctx.fillStyle = '#fff'; ctx.fillRect(sx - 1.5, e.y, 3, e.h); ctx.beginPath(); ctx.arc(sx, e.y + e.h / 2, 26, 0, 7); ctx.fill(); ctx.fillStyle = '#1d1d1f'; ctx.font = `600 22px ${F}`; ctx.fillText('‹ ›', sx, e.y + e.h / 2 + 8); }
+    ctx.restore(); } });
   // SECTION 4 — dark CTA
-  const S4 = 2790;
-  add({ id: 'dark', type: 'box', x: 0, y: S4, w: PW, h: VH, t0: 17.9, t1: 18.4, a: 0, tag: 'section.cta · dark', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#000'; ctx.fillRect(e.x, e.y, e.w, e.h); } });
-  add({ id: 'ctah', type: 'text', x: 300, y: S4 + 220, w: 1200, h: 230, t0: 18.4, t1: 18.9, a: 1, tag: 'h2 · 96px', draw(ctx, e, p) { ctx.textAlign = 'center'; ctx.fillStyle = '#f5f5f7'; ctx.font = `700 96px ${F}`; ctx.fillText(typed('Your apartment.', p * 2), PW / 2, e.y + 90); const g = ctx.createLinearGradient(PW / 2 - 300, 0, PW / 2 + 300, 0); g.addColorStop(0, '#f5d0a9'); g.addColorStop(0.5, '#e9a8c2'); g.addColorStop(1, '#a9c8f5'); ctx.fillStyle = g; ctx.fillText(typed('Reimagined.', p * 2 - 1), PW / 2, e.y + 200); } });
-  add({ id: 'ctap', type: 'text', x: 500, y: S4 + 470, w: 800, h: 40, t0: 19.1, t1: 19.5, a: 4, tag: 'p', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#a1a1a6'; ctx.font = `400 24px ${F}`; ctx.textAlign = 'center'; ctx.fillText('Send us a floor plan. Get a concept in 7 days.', PW / 2, e.y + 28); } });
-  add({ id: 'input', type: 'box', x: 560, y: S4 + 550, w: 440, h: 60, t0: 19.4, t1: 19.9, a: 0, tag: 'input[email]', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#1c1c1e'; rr(ctx, e.x, e.y, e.w, e.h, 30); ctx.fill(); ctx.strokeStyle = '#3a3a3c'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.fillStyle = '#6e6e73'; ctx.font = `400 19px ${F}`; ctx.textAlign = 'left'; ctx.fillText('you@email.com', e.x + 28, e.y + 38); } });
-  add({ id: 'send', type: 'box', x: 1020, y: S4 + 550, w: 220, h: 60, t0: 19.6, t1: 20.1, a: 5, tag: 'button.primary', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = BLUE; rr(ctx, e.x, e.y, e.w, e.h, 30); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `500 19px ${F}`; ctx.textAlign = 'center'; ctx.fillText('Get a concept', e.x + e.w / 2, e.y + 38); } });
-  add({ id: 'foot', type: 'text', x: 120, y: S4 + 820, w: PW - 240, h: 60, t0: 20.0, t1: 20.5, a: 3, tag: 'footer', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#2c2c2e'; ctx.fillRect(e.x, e.y, e.w, 1); ctx.fillStyle = '#6e6e73'; ctx.font = `400 15px ${F}`; ctx.textAlign = 'left'; ctx.fillText('© 2026 Lumen Studio. Interiors & Architecture.', e.x, e.y + 36); ctx.textAlign = 'right'; ctx.fillText('Instagram    Pinterest    Careers    Contact', e.x + e.w, e.y + 36); } });
+  const S4 = 5580, D4 = 16.2;
+  add({ id: 'dark', type: 'box', x: 0, y: S4, w: PW, h: VH, t0: 17.9+D4, t1: 18.4+D4, a: 0, tag: 'section.cta · dark', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#000'; ctx.fillRect(e.x, e.y, e.w, e.h); } });
+  add({ id: 'ctah', type: 'text', x: 300, y: S4 + 220, w: 1200, h: 230, t0: 18.4+D4, t1: 18.9+D4, a: 1, tag: 'h2 · 96px', draw(ctx, e, p) { ctx.textAlign = 'center'; ctx.fillStyle = '#f5f5f7'; ctx.font = `700 96px ${F}`; ctx.fillText(typed('Your apartment.', p * 2), PW / 2, e.y + 90); const g = ctx.createLinearGradient(PW / 2 - 300, 0, PW / 2 + 300, 0); g.addColorStop(0, '#f5d0a9'); g.addColorStop(0.5, '#e9a8c2'); g.addColorStop(1, '#a9c8f5'); ctx.fillStyle = g; ctx.fillText(typed('Reimagined.', p * 2 - 1), PW / 2, e.y + 200); } });
+  add({ id: 'ctap', type: 'text', x: 500, y: S4 + 470, w: 800, h: 40, t0: 19.1+D4, t1: 19.5+D4, a: 4, tag: 'p', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#a1a1a6'; ctx.font = `400 24px ${F}`; ctx.textAlign = 'center'; ctx.fillText('Send us a floor plan. Get a concept in 7 days.', PW / 2, e.y + 28); } });
+  add({ id: 'input', type: 'box', x: 560, y: S4 + 550, w: 440, h: 60, t0: 19.4+D4, t1: 19.9+D4, a: 0, tag: 'input[email]', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#1c1c1e'; rr(ctx, e.x, e.y, e.w, e.h, 30); ctx.fill(); ctx.strokeStyle = '#3a3a3c'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.fillStyle = '#6e6e73'; ctx.font = `400 19px ${F}`; ctx.textAlign = 'left'; ctx.fillText('you@email.com', e.x + 28, e.y + 38); } });
+  add({ id: 'send', type: 'box', x: 1020, y: S4 + 550, w: 220, h: 60, t0: 19.6+D4, t1: 20.1+D4, a: 5, tag: 'button.primary', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = BLUE; rr(ctx, e.x, e.y, e.w, e.h, 30); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = `500 19px ${F}`; ctx.textAlign = 'center'; ctx.fillText('Get a concept', e.x + e.w / 2, e.y + 38); } });
+  add({ id: 'foot', type: 'text', x: 120, y: S4 + 820, w: PW - 240, h: 60, t0: 20.0+D4, t1: 20.5+D4, a: 3, tag: 'footer', draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#2c2c2e'; ctx.fillRect(e.x, e.y, e.w, 1); ctx.fillStyle = '#6e6e73'; ctx.font = `400 15px ${F}`; ctx.textAlign = 'left'; ctx.fillText('© 2026 Lumen Studio. Interiors & Architecture.', e.x, e.y + 36); ctx.textAlign = 'right'; ctx.fillText('Instagram    Pinterest    Careers    Contact', e.x + e.w, e.y + 36); } });
+
+  E.forEach((e) => { if (!['nav', 'navbtn', 'dark', 'foot'].includes(e.id)) e.x += (PW - 1800) / 2; });
 
   // ---------- agent paths ----------
   function buildPaths() {
@@ -191,7 +237,7 @@ window.SCENE = (() => {
     const tk = P.tasks;
     const at = (e, tt) => { const span = e.type === 'plan' ? 0.42 : 0.3; const ph = tt * (1.6 + P.seed * 0.2) + P.seed; return [e.x + e.w * (0.5 + span * Math.sin(ph)), e.y + e.h * (0.5 + 0.35 * Math.sin(ph * 1.7 + 1))]; };
     const end = [VW / 2 + (P.seed - 3) * 18, S + VH - 40]; // converge to status pill at the end
-    if (t > 21.0) { const last = tk[tk.length - 1]; const from = at(last, 21.0); const k = io(prog(t, 21.0, 21.9)); return [lerp(from[0], end[0], k), lerp(from[1], end[1], k)]; }
+    if (t > TEND - 0.9) { const last = tk[tk.length - 1]; const from = at(last, TEND - 0.9); const k = io(prog(t, TEND - 0.9, TEND)); return [lerp(from[0], end[0], k), lerp(from[1], end[1], k)]; }
     if (!tk.length) return [P.spawn[0], P.spawn[1] + S];
     for (let j = 0; j < tk.length; j++) {
       const e = tk[j], arrive = e.t0 - 0.05, leave = e.t1 + (e.dur || 0.6) * 0.7;
@@ -234,10 +280,10 @@ window.SCENE = (() => {
   }
   function guides(ctx, t, S) {
     // 12-col layout grid, flashes at start of each section build
-    const pulses = [[0.2, 3.5], [8.2, 10.0], [13.2, 15.0], [18.0, 19.5]];
+    const pulses = [[0.2, 3.5], [8.2, 10.0], [13.2, 15.0], [18.2, 20.0], [23.2, 25.0], [28.4, 30.0], [34.2, 35.7]];
     let a = 0; pulses.forEach(([s, e]) => { a = Math.max(a, Math.min(prog(t, s, s + 0.4), 1 - prog(t, e - 0.8, e))); });
     if (a <= 0) return;
-    ctx.save(); ctx.globalAlpha = a * (t > 17.9 ? 0.5 : 1);
+    ctx.save(); ctx.globalAlpha = a * (t > 34.1 ? 0.5 : 1);
     const cols = 12, m = 120, g = 24, cw = (VW - 2 * m - g * (cols - 1)) / cols;
     for (let i = 0; i < cols; i++) { ctx.fillStyle = 'rgba(255,55,95,0.045)'; ctx.fillRect(m + i * (cw + g), 0, cw, VH); }
     ctx.strokeStyle = 'rgba(255,55,95,0.22)'; ctx.lineWidth = 1; ctx.setLineDash([4, 6]);
@@ -245,8 +291,8 @@ window.SCENE = (() => {
     ctx.restore();
   }
   function statusPill(ctx, t) {
-    const done = t > 21.9; const k = prog(t, 0.2, 0.8);
-    const txt = done ? 'Site ready  ·  lumen.studio  ·  6 agents  ·  0 errors' : `6 agents building  ·  ${sectionAt(t)}  ·  ${Math.min(100, Math.round(t / 21.9 * 100))}%`;
+    const done = t > TEND; const k = prog(t, 0.2, 0.8);
+    const txt = done ? 'Site ready  ·  lumen.studio  ·  6 agents  ·  0 errors' : `6 agents building  ·  ${sectionAt(t)}  ·  ${Math.min(100, Math.round(t / TEND * 100))}%`;
     ctx.save(); ctx.globalAlpha = k; ctx.font = `500 16px ${F}`;
     const tw = ctx.measureText(txt).width + (done ? 62 : 132), x = W / 2 - tw / 2, y = VY + VH - 70;
     ctx.fillStyle = 'rgba(29,29,31,0.82)'; rr(ctx, x, y, tw, 46, 23); ctx.fill();
@@ -255,25 +301,57 @@ window.SCENE = (() => {
     ctx.restore();
   }
   function chrome(ctx, t) {
-    // desktop
-    const bg = ctx.createLinearGradient(0, 0, W, H); bg.addColorStop(0, '#e9e4dc'); bg.addColorStop(1, '#d7dde4'); ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.22)'; ctx.shadowBlur = 50; ctx.shadowOffsetY = 18; ctx.fillStyle = '#fff'; rr(ctx, WX, WY, WW, WH, 14); ctx.fill(); ctx.restore();
-    ctx.save(); rr(ctx, WX, WY, WW, CH, [14, 14, 0, 0]); ctx.clip(); ctx.fillStyle = '#ececee'; ctx.fillRect(WX, WY, WW, CH); ctx.restore();
-    ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(WX, WY + CH - 1, WW, 1);
-    ['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => { ctx.fillStyle = c; ctx.beginPath(); ctx.arc(WX + 24 + i * 22, WY + CH / 2, 7, 0, 7); ctx.fill(); });
-    const ux = W / 2 - 260; ctx.fillStyle = '#fff'; rr(ctx, ux, WY + 11, 520, 30, 9); ctx.fill();
-    ctx.fillStyle = '#6e6e73'; ctx.font = `500 15px ${F}`; ctx.textAlign = 'center'; ctx.fillText('🔒 lumen.studio', W / 2, WY + 31);
-    // loading bar
-    const lb = t < 21.9 ? (t / 21.9) : 1; if (t < 22.3) { ctx.fillStyle = BLUE; ctx.globalAlpha = 1 - prog(t, 21.9, 22.3); ctx.fillRect(ux + 6, WY + 39, 508 * lb, 2); ctx.globalAlpha = 1; }
+    // Chrome (dark), one tab, no bookmarks bar, no extensions
+    ctx.fillStyle = '#202124'; ctx.fillRect(0, 0, W, 46);
+    ctx.strokeStyle = '#e8eaed'; ctx.lineWidth = 1.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    // tab search chevron
+    ctx.fillStyle = '#35363a'; rr(ctx, 10, 10, 28, 28, 8); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(18, 21); ctx.lineTo(24, 27); ctx.lineTo(30, 21); ctx.stroke();
+    // active tab
+    const tx = 48, tw = 260;
+    ctx.fillStyle = '#35363a'; ctx.beginPath(); ctx.moveTo(tx - 8, 46); ctx.quadraticCurveTo(tx, 46, tx, 38); ctx.lineTo(tx, 18); ctx.quadraticCurveTo(tx, 8, tx + 10, 8); ctx.lineTo(tx + tw - 10, 8); ctx.quadraticCurveTo(tx + tw, 8, tx + tw, 18); ctx.lineTo(tx + tw, 38); ctx.quadraticCurveTo(tx + tw, 46, tx + tw + 8, 46); ctx.closePath(); ctx.fill();
+    // favicon: spinner while building, logo when done
+    const fx = tx + 22, fy = 27;
+    if (t < TEND) { ctx.strokeStyle = '#8ab4f8'; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.arc(fx, fy, 7, t * 7, t * 7 + 4.2); ctx.stroke(); }
+    else { ctx.fillStyle = '#e8eaed'; ctx.beginPath(); ctx.arc(fx, fy, 8, 0, 7); ctx.fill(); ctx.fillStyle = '#35363a'; ctx.fillRect(fx - 3.5, fy - 5, 2.2, 9); ctx.fillRect(fx - 3.5, fy + 2, 7, 2.2); }
+    ctx.save(); ctx.beginPath(); ctx.rect(tx + 38, 8, tw - 76, 38); ctx.clip();
+    ctx.fillStyle = '#e8eaed'; ctx.font = `400 13px "Segoe UI", ${F}`; ctx.textAlign = 'left'; ctx.fillText('Lumen · Interiors & Architecture', tx + 40, 32);
+    const fade = ctx.createLinearGradient(tx + tw - 70, 0, tx + tw - 38, 0); fade.addColorStop(0, 'rgba(53,54,58,0)'); fade.addColorStop(1, '#35363a'); ctx.fillStyle = fade; ctx.fillRect(tx + tw - 70, 8, 32, 38); ctx.restore();
+    ctx.strokeStyle = '#c4c7c5'; ctx.lineWidth = 1.5; const cx = tx + tw - 22; ctx.beginPath(); ctx.moveTo(cx - 4.5, 22.5); ctx.lineTo(cx + 4.5, 31.5); ctx.moveTo(cx + 4.5, 22.5); ctx.lineTo(cx - 4.5, 31.5); ctx.stroke();
+    // new tab +
+    ctx.strokeStyle = '#e8eaed'; ctx.beginPath(); ctx.moveTo(tx + tw + 22, 27); ctx.lineTo(tx + tw + 36, 27); ctx.moveTo(tx + tw + 29, 20); ctx.lineTo(tx + tw + 29, 34); ctx.stroke();
+    // window controls
+    ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(W - 160, 23); ctx.lineTo(W - 148, 23); ctx.stroke();
+    ctx.strokeRect(W - 100, 17, 11, 11);
+    ctx.beginPath(); ctx.moveTo(W - 40, 17); ctx.lineTo(W - 29, 28); ctx.moveTo(W - 29, 17); ctx.lineTo(W - 40, 28); ctx.stroke();
+    // toolbar
+    ctx.fillStyle = '#35363a'; ctx.fillRect(0, 46, W, 50);
+    ctx.lineWidth = 1.8; const iy = 71;
+    ctx.strokeStyle = '#e8eaed'; ctx.beginPath(); ctx.moveTo(32, iy); ctx.lineTo(16, iy); ctx.moveTo(22, iy - 6); ctx.lineTo(16, iy); ctx.lineTo(22, iy + 6); ctx.stroke();
+    ctx.strokeStyle = '#7f8184'; ctx.beginPath(); ctx.moveTo(52, iy); ctx.lineTo(68, iy); ctx.moveTo(62, iy - 6); ctx.lineTo(68, iy); ctx.lineTo(62, iy + 6); ctx.stroke();
+    ctx.strokeStyle = '#e8eaed'; ctx.beginPath(); ctx.arc(96, iy, 7, -0.9, 4.4); ctx.stroke(); ctx.beginPath(); ctx.moveTo(100, iy - 10); ctx.lineTo(102.5, iy - 5.5); ctx.lineTo(97.5, iy - 3.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(122, iy - 1); ctx.lineTo(130, iy - 8); ctx.lineTo(138, iy - 1); ctx.moveTo(124.5, iy - 3); ctx.lineTo(124.5, iy + 7); ctx.lineTo(135.5, iy + 7); ctx.lineTo(135.5, iy - 3); ctx.stroke();
+    // omnibox
+    const ox = 158, ow = W - 158 - 96; ctx.fillStyle = '#202124'; rr(ctx, ox, 54, ow, 34, 17); ctx.fill();
+    ctx.strokeStyle = '#c4c7c5'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(ox + 16, 66); ctx.lineTo(ox + 30, 66); ctx.moveTo(ox + 16, 76); ctx.lineTo(ox + 30, 76); ctx.stroke();
+    ctx.fillStyle = '#202124'; ctx.beginPath(); ctx.arc(ox + 21, 66, 2.8, 0, 7); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.arc(ox + 26, 76, 2.8, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#e8eaed'; ctx.font = `400 15px "Segoe UI", ${F}`; ctx.textAlign = 'left'; ctx.fillText('lumen.studio', ox + 44, 76);
+    // star
+    const sx = ox + ow - 26, sy = 71; ctx.strokeStyle = '#c4c7c5'; ctx.lineWidth = 1.4; ctx.beginPath();
+    for (let i = 0; i < 10; i++) { const r = i % 2 ? 3.6 : 8, an = -Math.PI / 2 + i * Math.PI / 5; ctx[i ? 'lineTo' : 'moveTo'](sx + Math.cos(an) * r, sy + Math.sin(an) * r); } ctx.closePath(); ctx.stroke();
+    // profile + menu
+    ctx.fillStyle = '#5f6368'; ctx.beginPath(); ctx.arc(W - 64, 71, 12, 0, 7); ctx.fill(); ctx.fillStyle = '#e8eaed'; ctx.beginPath(); ctx.arc(W - 64, 67, 4.5, 0, 7); ctx.fill(); ctx.beginPath(); ctx.arc(W - 64, 80, 7.5, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#e8eaed'; [-6, 0, 6].forEach((d) => { ctx.beginPath(); ctx.arc(W - 26, 71 + d, 1.8, 0, 7); ctx.fill(); });
   }
 
   return {
     W, H, dur: DUR,
     setup() { return { paths: buildPaths() }; },
     draw(ctx, t, st) {
+      t *= SPEED;
       chrome(ctx, t);
       const S = scrollAt(t);
-      ctx.save(); rr(ctx, VX, VY, VW, VH, [0, 0, 14, 14]); ctx.clip();
+      ctx.save(); ctx.beginPath(); ctx.rect(VX, VY, VW, VH); ctx.clip();
       ctx.fillStyle = '#fbfbfd'; ctx.fillRect(VX, VY, VW, VH);
       ctx.translate(VX, VY);
       guides(ctx, t, S);
@@ -282,10 +360,10 @@ window.SCENE = (() => {
       // content (dark section first so it sits under its children)
       E.forEach((e) => { if (!vis(e) || t < e.t1) return; const p = prog(t, e.t1, e.t1 + (e.dur || 0.6)); ctx.save(); e.draw(ctx, e, p, t); ctx.restore(); });
       // wireframes
-      const allOff = prog(t, 20.8, 21.6);
+      const allOff = prog(t, TEND - 1.1, TEND - 0.3);
       E.forEach((e) => { if (!vis(e) || t < e.t0) return; const tail = e.t1 + (e.dur || 0.6); let a = prog(t, e.t0, e.t0 + 0.15) * (1 - prog(t, tail + 0.2, tail + 0.7)); if (e.type === 'plan') a = prog(t, e.t0, e.t0 + 0.15) * (1 - prog(t, e.t1 + 2.6, e.t1 + 3.1)); a *= 1 - allOff; wire(ctx, e, a, t); });
       // cursors
-      const ca = prog(t, 0.3, 0.9) * (1 - prog(t, 21.7, 22.0));
+      const ca = prog(t, 0.3, 0.9) * (1 - prog(t, TEND - 0.2, TEND + 0.1));
       st.paths.forEach((P, i) => { const [x, y] = agentPos(P, t, S); cursor(ctx, x, y, AG[i], ca); });
       ctx.restore();
       ctx.restore();
