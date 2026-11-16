@@ -44,48 +44,40 @@ window.SCENE = (() => {
   const FILTERS = [['Last 24 hours', BLUE, 155], ['Trending  5M  1H  6H  24H', BLUE, 262], ['Top', '#26272b', 66], ['Gainers', '#26272b', 92], ['New Pairs', '#26272b', 106], ['Profile', '#26272b', 96], ['Boosted', '#26272b', 104], ['Ads', '#26272b', 76], ['Launchpad', '#26272b', 120], ['Rank by: Trending 6H', '#26272b', 194], ['Filters', '#26272b', 70], ['Customize', '#26272b', 104]];
   const HEAD = [['TOKEN', 218, 'left'], ['MCAP', 777, 'right'], ['PRICE', 905, 'right'], ['AGE', 1015, 'right'], ['TXNS', 1133, 'right'], ['VOLUME', 1243, 'right'], ['TRADERS', 1353, 'right'], ['5M', 1464, 'right'], ['1H', 1574, 'right'], ['6H', 1676, 'right'], ['24H', 1778, 'right'], ['LIQUIDITY', 1896, 'right']];
 
-  // ---------- elements (page coords = viewport coords, no scroll) ----------
+  // ---------- elements: every piece is cropped from the original screenshot ----------
   const E = []; const add = (o) => (E.push(o), o);
-  // pre-built (negative times = already there at frame 0)
-  add({ x: 0, y: 0, w: 200, h: 984, t0: -3, t1: -2.5, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#111114'; ctx.fillRect(e.x, e.y, e.w, e.h); ctx.fillStyle = '#26272b'; ctx.fillRect(e.w - 1, 0, 1, e.h); } });
-  add({ x: 12, y: 8, w: 180, h: 34, t0: -2.6, t1: -2.2, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#e5e7eb'; ctx.beginPath(); ctx.arc(e.x + 16, e.y + 17, 13, 0, 7); ctx.fill(); T(ctx, `800 21px ${F}`, '#f5f5f7'); ctx.fillText('DEX', e.x + 36, e.y + 25); T(ctx, `400 21px ${F}`, '#f5f5f7'); ctx.fillText('SCREENER', e.x + 80, e.y + 25); } });
-  add({ x: 12, y: 52, w: 184, h: 34, t0: -2.2, t1: -1.8, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#26272b'; rr(ctx, e.x, e.y, e.w, e.h, 8); ctx.fill(); T(ctx, `600 15px ${F}`, '#d1d5db'); ctx.fillText('Search', e.x + 40, e.y + 22); ctx.strokeStyle = '#d1d5db'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(e.x + 20, e.y + 16, 6, 0, 7); ctx.stroke(); } });
-  add({ x: 12, y: 104, w: 170, h: 36, t0: -1.8, t1: -1.2, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#26272b'; rr(ctx, e.x, e.y, e.w, e.h, 8); ctx.fill(); T(ctx, `700 14px ${F}`, '#f5f5f7'); ctx.fillText('Get the App!', e.x + 18, e.y + 23); } });
-  add({ x: 210, y: 0, w: 1700, h: 60, t0: -2.4, t1: -1.6, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#16171b'; ctx.fillRect(e.x, e.y + 8, e.w, 46); } });
-  let cx = 228; CATS.forEach(([n, v], i) => { const w = n.length * 9 + v.length * 9 + 40; const x0 = cx; cx += w + 10;
-    add({ x: x0, y: 14, w, h: 34, t0: -1.6 + i * 0.18, t1: -1.3 + i * 0.18, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = COLS[i % 10]; ctx.beginPath(); ctx.arc(e.x + 10, e.y + 17, 6, 0, 7); ctx.fill(); T(ctx, `700 15px ${F}`, '#f5f5f7'); ctx.fillText(n, e.x + 22, e.y + 22); if (v) { const nw = ctx.measureText(n).width; T(ctx, `700 15px ${F}`, '#e5e7eb'); ctx.fillText(v, e.x + 28 + nw, e.y + 22); ctx.fillStyle = '#22c55e'; ctx.fillText('^', e.x + 34 + nw + ctx.measureText(v).width, e.y + 24); } } }); });
-  // sidebar menu + chains + footer
-  MENU.forEach((n, i) => add({ x: 12, y: 152 + i * 36, w: 176, h: 30, t0: 0.1 + i * 0.12, t1: 0.35 + i * 0.12, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#9ca3af'; rr(ctx, e.x + 6, e.y + 7, 16, 16, 4); ctx.fill(); T(ctx, `600 16px ${F}`, '#e5e7eb'); ctx.fillText(n, e.x + 36, e.y + 21); } }));
-  add({ x: 16, y: 406, w: 160, h: 2, t0: 0.9, t1: 1.0, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#26272b'; ctx.fillRect(e.x, e.y, e.w, 1); } });
-  CHAINS.forEach(([n, c], i) => add({ x: 12, y: 420 + i * 34, w: 176, h: 30, t0: 0.9 + i * 0.1, t1: 1.12 + i * 0.1, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = c; ctx.beginPath(); ctx.arc(e.x + 16, e.y + 15, 10, 0, 7); ctx.fill(); T(ctx, `600 16px ${F}`, '#e5e7eb'); ctx.fillText(n, e.x + 36, e.y + 21); } }));
-  add({ x: 8, y: 728, w: 190, h: 90, t0: 1.9, t1: 2.2, draw(ctx, e, p) { ctx.globalAlpha = p; T(ctx, `800 13px ${F}`, '#f5f5f7'); ctx.fillText('★  WATCHLIST', e.x + 6, e.y + 16); T(ctx, `500 14px ${F}`, '#9ca3af'); ctx.fillText('Main Watchlist  ˅', e.x + 6, e.y + 48); T(ctx, `400 12px ${F}`, '#6b7280'); ctx.fillText('Nothing in this list yet...', e.x + 6, e.y + 80); } });
-  add({ x: 8, y: 846, w: 190, h: 70, t0: 2.1, t1: 2.4, draw(ctx, e, p) { ctx.globalAlpha = p; T(ctx, `600 15px ${F}`, '#e5e7eb'); ctx.fillText('●  anon', e.x + 6, e.y + 20); ctx.fillText('Sign-in', e.x + 130, e.y + 20); ctx.fillStyle = '#9ca3af'; [18, 70, 122, 172].forEach((x) => { ctx.beginPath(); ctx.arc(e.x + x, e.y + 56, 9, 0, 7); ctx.fill(); }); } });
+  const crop = (x, y, w, h, t0, t1, extra = {}) => add(Object.assign({ x, y, w, h, t0, t1, draw(ctx, e, p) {
+    const k = oc(p); ctx.globalAlpha = k; const sc = 0.97 + 0.03 * k; const cx = e.x + e.w / 2, cy = e.y + e.h / 2;
+    ctx.translate(cx, cy); ctx.scale(sc, sc); ctx.translate(-cx, -cy);
+    ctx.drawImage(IMG.shot, e.x, e.y, e.w, e.h, e.x, e.y, e.w, e.h);
+  } }, extra));
+  // backgrounds (already there)
+  add({ x: 0, y: 0, w: 205, h: 915, t0: -3, t1: -2.6, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = 'rgb(17,17,22)'; ctx.fillRect(e.x, e.y, e.w, VH); } });
+  // sidebar top (pre-built at frame 0)
+  crop(0, 0, 205, 48, -2.6, -2.3); crop(8, 48, 192, 42, -2.3, -2.0); crop(8, 98, 182, 48, -2.0, -1.6);
+  // category bar: pills (first ones pre-built, rest being built at frame 0)
+  [[222, 300], [306, 437], [445, 584], [591, 826], [835, 944], [951, 1101], [1110, 1272], [1279, 1436], [1444, 1634], [1642, 1784], [1791, 1902]].forEach(([x0, x1], i) => crop(x0, 10, x1 - x0, 42, -1.8 + i * 0.2, -1.5 + i * 0.2));
+  // sidebar menu + chains + watchlist + footer
+  [166, 202, 238, 274, 310, 346, 382].forEach((c, i) => crop(4, c - 17, 196, 34, 0.1 + i * 0.12, 0.35 + i * 0.12));
+  crop(10, 404, 180, 6, 0.9, 1.0);
+  [434, 468, 502, 536, 570, 604, 638, 672, 706].forEach((c, i) => crop(4, c - 16, 196, 32, 0.95 + i * 0.1, 1.15 + i * 0.1));
+  crop(0, 724, 205, 100, 1.95, 2.25); crop(0, 842, 205, 73, 2.15, 2.45);
   // volume boxes
-  add({ x: 218, y: 68, w: 836, h: 48, t0: 0.4, t1: 0.9, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.strokeStyle = '#26272b'; rr(ctx, e.x, e.y, e.w, e.h, 6); ctx.stroke(); T(ctx, `500 14px ${F}`, '#9ca3af', 'right'); ctx.fillText('24H VOLUME:', e.x + 414, e.y + 30); T(ctx, `800 16px ${F}`, '#f5f5f7'); ctx.fillText(p < 1 ? '$' + (9.15 * p).toFixed(2) + 'B' : '$9.15B', e.x + 422, e.y + 30); } });
-  add({ x: 1062, y: 68, w: 836, h: 48, t0: 0.6, t1: 1.1, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.strokeStyle = '#26272b'; rr(ctx, e.x, e.y, e.w, e.h, 6); ctx.stroke(); T(ctx, `500 14px ${F}`, '#9ca3af', 'right'); ctx.fillText('24H TXNS:', e.x + 414, e.y + 30); T(ctx, `800 16px ${F}`, '#f5f5f7'); ctx.fillText(Math.round(38869337 * p).toLocaleString('en-US'), e.x + 422, e.y + 30); } });
+  crop(216, 66, 840, 52, 0.4, 0.9); crop(1060, 66, 840, 52, 0.6, 1.1);
   // filter bar
-  let fx = 296; add({ x: 218, y: 125, w: 64, h: 32, t0: 1.0, t1: 1.2, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.strokeStyle = '#3a3b40'; rr(ctx, e.x, e.y, e.w, e.h, 6); ctx.stroke(); } });
-  FILTERS.forEach(([n, c, w], i) => { const x0 = i === 9 ? 1504 : i === 10 ? 1704 : i === 11 ? 1782 : fx; if (i < 9) fx += w + 8;
-    add({ x: x0, y: 125, w, h: 32, t0: 1.1 + i * 0.12, t1: 1.35 + i * 0.12, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = c; rr(ctx, e.x, e.y, e.w, e.h, 6); ctx.fill(); if (c === '#26272b') { ctx.strokeStyle = '#3a3b40'; ctx.stroke(); } T(ctx, `700 14px ${F}`, '#f5f5f7'); ctx.fillText(n, e.x + 14, e.y + 21); } }); });
+  [[216, 284], [295, 454], [466, 734], [739, 808], [813, 908], [912, 1022], [1026, 1129], [1129, 1241], [1241, 1324], [1324, 1458], [1503, 1703], [1703, 1782], [1782, 1899]].forEach(([x0, x1], i) => crop(x0, 122, x1 - x0, 38, 1.05 + i * 0.11, 1.3 + i * 0.11));
   // table header
-  add({ x: 210, y: 166, w: 1700, h: 44, t0: 2.4, t1: 2.8, draw(ctx, e, p) { ctx.globalAlpha = p; ctx.fillStyle = '#16171b'; ctx.fillRect(e.x, e.y, e.w, e.h); HEAD.forEach(([n, x, al], i) => { ctx.globalAlpha = p * cl(p * 12 - i); T(ctx, `700 12px ${F}`, '#d1d5db', al); ctx.fillText(n, x, e.y + 26); }); } });
-  // rows
-  const RY = 230, RS = 41.6;
-  ROWS.forEach((r, i) => {
-    const y = RY + i * RS - 20, t0 = 3.0 + i * 0.44;
-    add({ row: true, x: 210, y, w: 1700, h: 40, t0, t1: t0 + 0.35, dur: 0.9, draw(ctx, e, p, t) {
-      ctx.fillStyle = i % 2 ? '#0e0f12' : '#111216'; ctx.globalAlpha = cl(p * 3); ctx.fillRect(e.x, e.y, e.w, e.h - 1); ctx.fillStyle = '#1d1e23'; ctx.fillRect(e.x, e.y + e.h - 1, e.w, 1);
-      const cy = e.y + 26, st = (k) => cl(p * 14 - k);
-      ctx.globalAlpha = st(0); T(ctx, `500 12px ${F}`, '#6b7280'); ctx.fillText(`#${i + 1}`, 220, cy);
-      ctx.globalAlpha = st(1); ctx.fillStyle = '#14f195'; rr(ctx, 246, e.y + 12, 14, 14, 3); ctx.fill(); ctx.fillStyle = '#9ca3af'; rr(ctx, 268, e.y + 12, 14, 14, 3); ctx.fill();
-      ctx.globalAlpha = st(2); ctx.fillStyle = r[14]; ctx.beginPath(); ctx.arc(304, e.y + 20, 14, 0, 7); ctx.fill(); T(ctx, `800 13px ${F}`, '#111', 'center'); ctx.fillText(r[0][0].toUpperCase(), 304, e.y + 25);
-      ctx.globalAlpha = st(3); T(ctx, `800 15px ${F}`, i === 0 ? '#f59e0b' : '#f5f5f7'); ctx.fillText(r[0], 326, cy); let w0 = ctx.measureText(r[0]).width;
-      T(ctx, `400 12px ${F}`, '#6b7280'); ctx.fillText('/' + r[1], 330 + w0, cy); const w1 = ctx.measureText('/' + r[1]).width; T(ctx, `500 15px ${F}`, '#e5e7eb'); ctx.fillText(r[2], 338 + w0 + w1, cy);
-      const vals = [[r[3], 777, '#60a5fa'], [r[4], 930, '#f5f5f7'], [r[5], 1015, '#f5f5f7'], [r[6], 1133, '#f5f5f7'], [r[7], 1243, '#f5f5f7'], [r[8], 1353, '#f5f5f7'], [r[9], 1464], [r[10], 1574], [r[11], 1676], [r[12], 1778], [r[13], 1896, '#f5f5f7']];
-      vals.forEach(([v, x, c], k) => { ctx.globalAlpha = st(4 + k); const col = c || (v === '0%' ? '#6b7280' : v.startsWith('-') ? '#ef4444' : '#22c55e'); T(ctx, `500 15px ${F}`, col, 'right'); ctx.fillText(v, x, cy); });
+  crop(208, 165, 1702, 44, 2.4, 2.8);
+  // rows: 17 rows, each built cell by cell
+  const CELLS = [208, 320, 700, 790, 940, 1022, 1140, 1250, 1360, 1470, 1582, 1686, 1788, 1910];
+  for (let i = 0; i < 17; i++) {
+    const y = Math.round(209 + i * 41.6), h = Math.round(209 + (i + 1) * 41.6) - y, t0 = 3.0 + i * 0.5;
+    add({ row: true, x: 208, y, w: 1702, h, t0, t1: t0 + 0.3, dur: 0.95, draw(ctx, e, p) {
+      ctx.globalAlpha = cl(p * 4); ctx.fillStyle = 'rgb(29,29,34)'; ctx.fillRect(e.x, e.y, e.w, e.h);
+      for (let k = 0; k < CELLS.length - 1; k++) { const a = cl(p * 16 - k); if (!a) continue; ctx.globalAlpha = a; const x0 = CELLS[k], w = CELLS[k + 1] - x0; ctx.drawImage(IMG.shot, x0, e.y, w, e.h, x0, e.y + (1 - a) * 6, w, e.h); }
       ctx.globalAlpha = 1;
     } });
-  });
+  }
   E.forEach((e, k) => { e.dur = e.dur ?? 0.3; e.agents = [k % NA, (k + 17) % NA, (k + 31) % NA, (k + 43) % NA, (k + 7) % NA]; });
 
   // ---------- swarm ----------
@@ -169,11 +161,11 @@ window.SCENE = (() => {
     ctx.fillStyle = '#e8eaed'; [-6, 0, 6].forEach((d) => { ctx.beginPath(); ctx.arc(W - 26, 71 + d, 1.8, 0, 7); ctx.fill(); });
   }
   return {
-    W, H, dur: DUR,
+    W, H, dur: DUR, assets: { shot: 'assets/shot.png' },
     setup() { return {}; },
     draw(ctx, t) {
       chrome(ctx, t);
-      ctx.save(); ctx.beginPath(); ctx.rect(VX, VY, VW, VH); ctx.clip(); ctx.fillStyle = '#0b0c0f'; ctx.fillRect(VX, VY, VW, VH); ctx.translate(VX, VY);
+      ctx.save(); ctx.beginPath(); ctx.rect(VX, VY, VW, VH); ctx.clip(); ctx.fillStyle = 'rgb(13,13,13)'; ctx.fillRect(VX, VY, VW, VH); ctx.translate(VX, VY);
       E.forEach((e) => { if (t < e.t1) return; const p = prog(t, e.t1, e.t1 + e.dur); ctx.save(); e.draw(ctx, e, p, t); ctx.restore(); });
       E.forEach((e) => { if (t >= e.t0) wire(ctx, e, t); });
       const ca = 1 - prog(t, TEND - 0.1, TEND + 0.2);
