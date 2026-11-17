@@ -39,13 +39,16 @@
     const oak = texFrom(IMG.floor, [3, 4.5]);
     floorMat = M({ map: oak, roughness: 0.5, color: 0xffffff });
     const plaster = texFrom(IMG.wall, [2, 1.5]);
-    const wallM = M({ map: plaster, color: 0xf3efe9, roughness: 0.95 }); wallMats.push(wallM);
+    const wallM = M({ map: plaster, color: 0xdfdfdb, roughness: 0.95 }); wallMats.push(wallM);
     const capM = M({ color: 0x24262b, roughness: 0.6 });
     const lightWood = M({ map: texFrom(IMG.lightoak, [1, 1]), color: 0xffffff, roughness: 0.6 });
-    const dgrey = M({ color: 0x3a3c40, roughness: 0.5 });
+    const dgrey = M({ color: 0x46484c, roughness: 0.5 });
     const black = M({ color: 0x18191b, roughness: 0.4, metalness: 0.3 });
     const linen = M({ map: texFrom(IMG.linen, [2, 2]), color: 0xe6dccb, roughness: 0.95 });
     const white = M({ color: 0xf4f2ee, roughness: 0.9 });
+    const linenTex = texFrom(IMG.linen, [3, 3]);
+    const fabric = M({ map: linenTex, color: 0xcfcdc8, roughness: 0.95 });
+    const rugM = M({ map: texFrom(IMG.linen, [6, 12]), color: 0x48494b, roughness: 1 });
 
     // floor slab
     box(4, 0.1, 6, floorMat, 2, -0.05, 3);
@@ -78,66 +81,98 @@
     box(1.35, 0.04, 0.25, white, 1.9, 0.9, 0.05, win);
     objs.window = win;
 
-    // wardrobe (left corner, along back wall)
+    // radiator under window (black horizontal tubes)
+    const rad = new T.Group(); S.add(rad);
+    for (let i = 0; i < 6; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.022, 0.022, 1.0, 14), black); c.rotation.z = Math.PI / 2; c.position.set(0, 0.24 + i * 0.065, 0); c.castShadow = true; rad.add(c); }
+    box(0.05, 0.42, 0.06, black, -0.52, 0.4, 0, rad); box(0.05, 0.42, 0.06, black, 0.52, 0.4, 0, rad);
+    box(0.03, 0.2, 0.03, M({ color: 0xd8d8d8, metalness: 0.5 }), 0.52, 0.1, 0.01, rad);
+    rad.position.set(1.9, 0, 0.09); objs.radiator = rad;
+
+    // wardrobe: left corner, on the left wall, doors face the right wall (+x)
     const wd = new T.Group(); S.add(wd);
-    box(1.1, 2.3, 0.6, lightWood, 0, 1.15, 0, wd);
-    for (const x of [-0.275, 0.275]) { box(0.003, 2.2, 0.01, black, x === -0.275 ? 0 : 0, 0, 0, wd).visible = false; }
-    box(0.006, 2.24, 0.005, M({ color: 0xb59c7d }), 0, 1.15, 0.302, wd);
-    box(0.015, 0.35, 0.02, black, -0.06, 1.2, 0.31, wd); box(0.015, 0.35, 0.02, black, 0.06, 1.2, 0.31, wd);
-    wd.position.set(0.55, 0, 0.3); objs.wardrobe = wd;
+    box(0.6, 2.3, 1.1, lightWood, 0, 1.15, 0, wd);
+    box(0.005, 2.24, 0.006, M({ color: 0xb59c7d }), 0.302, 1.15, 0, wd);
+    box(0.02, 0.35, 0.015, black, 0.31, 1.2, -0.06, wd); box(0.02, 0.35, 0.015, black, 0.31, 1.2, 0.06, wd);
+    box(0.62, 0.06, 1.12, black, 0, 0.03, 0, wd);
+    wd.position.set(0.3, 0, 0.56); objs.wardrobe = wd;
 
     // dresser
     const dr = new T.Group(); S.add(dr);
     box(0.5, 0.85, 1.2, lightWood, 0, 0.425, 0, dr);
     for (const y of [0.28, 0.55]) box(0.005, 0.006, 1.16, M({ color: 0xb59c7d }), 0.252, y, 0, dr);
-    for (const y of [0.15, 0.42, 0.7]) box(0.02, 0.02, 0.2, black, 0.26, y, 0, dr);
-    const lampG = new T.Group(); dr.add(lampG);
-    box(0.04, 0.3, 0.04, black, 0, 1.0, -0.3, lampG);
-    const shade = new T.Mesh(new T.CylinderGeometry(0.1, 0.14, 0.18, 24), new T.MeshStandardMaterial({ color: 0xf6e8d2, emissive: 0xffcc88, emissiveIntensity: 0.6 })); shade.position.set(0, 1.2, -0.3); lampG.add(shade);
-    box(0.18, 0.04, 0.24, M({ color: 0x6f8a6a }), 0, 0.87, 0.25, dr);
-    const lamp = new T.PointLight(0xffc98a, 1.2, 3, 2); lamp.position.set(0.15, 1.2, -0.3); dr.add(lamp);
-    dr.position.set(0.25, 0, 1.6); objs.dresser = dr;
+    for (const y of [0.15, 0.42, 0.7]) box(0.02, 0.02, 0.24, black, 0.26, y, 0, dr);
+    box(0.04, 0.3, 0.04, black, 0, 1.0, -0.3, dr);
+    const shade = new T.Mesh(new T.CylinderGeometry(0.1, 0.14, 0.18, 24), new T.MeshStandardMaterial({ color: 0xf2f0ec, emissive: 0xffd9a0, emissiveIntensity: 0.5 })); shade.position.set(0, 1.2, -0.3); dr.add(shade);
+    const vase = new T.Mesh(new T.CylinderGeometry(0.05, 0.06, 0.26, 18), M({ color: 0xf0efeb })); vase.position.set(0, 0.98, 0.3); vase.castShadow = true; dr.add(vase);
+    box(0.2, 0.03, 0.26, M({ color: 0x2b2c2f }), 0, 0.865, 0.02, dr);
+    const lamp = new T.PointLight(0xffd2a0, 1.0, 3, 2); lamp.position.set(0.15, 1.2, -0.3); dr.add(lamp);
+    dr.position.set(0.25, 0, 2.05); objs.dresser = dr;
 
-    // bed (headboard on left wall)
+    // bed: front-left corner, headboard on the front wall, faces the window
     const bd = new T.Group(); S.add(bd);
-    box(2.05, 0.3, 1.65, lightWood, 0, 0.15, 0, bd);
-    box(0.08, 0.95, 1.65, lightWood, -1.0, 0.475, 0, bd);
-    box(1.95, 0.2, 1.55, white, 0.02, 0.4, 0, bd);
-    box(1.35, 0.08, 1.6, linen, 0.33, 0.53, 0, bd);
-    box(0.38, 0.14, 0.62, white, -0.72, 0.56, -0.38, bd); box(0.38, 0.14, 0.62, white, -0.72, 0.56, 0.38, bd);
-    box(0.4, 0.02, 1.62, M({ color: 0x8b6f57 }), 0.75, 0.58, 0, bd);
-    bd.position.set(1.04, 0, 3.4); objs.bed = bd;
+    box(1.65, 0.32, 2.05, fabric, 0, 0.16, 0, bd);
+    box(1.75, 1.0, 0.12, fabric, 0, 0.5, 1.02, bd);
+    box(1.55, 0.2, 1.95, white, 0, 0.42, -0.02, bd);
+    box(1.6, 0.07, 1.4, linen, 0, 0.55, -0.3, bd);
+    box(1.62, 0.03, 0.45, M({ color: 0x4a4746, roughness: 1 }), 0, 0.6, -0.72, bd);
+    box(0.62, 0.15, 0.36, white, -0.38, 0.6, 0.72, bd); box(0.62, 0.15, 0.36, M({ color: 0xd9d8d4 }), 0.38, 0.6, 0.72, bd);
+    box(0.4, 0.26, 0.1, M({ map: linenTex, color: 0x6b6d70 }), 0.12, 0.72, 0.6, bd).rotation.x = -0.35;
+    bd.position.set(0.85, 0, 4.92); objs.bed = bd;
 
-    // rug
-    const rug = box(1.6, 0.012, 2.2, M({ color: 0xcfc4b3, roughness: 1 }), 2.1, 0.006, 3.4); rug.castShadow = false; objs.rug = rug;
+    // rug: from the door almost to the desk chair
+    const rug = box(1.75, 0.014, 4.35, rugM, 2.6, 0.007, 3.62); rug.castShadow = false; objs.rug = rug;
 
     // desk (back-right corner)
     const dk = new T.Group(); S.add(dk);
     box(1.45, 0.04, 0.72, dgrey, 0, 0.74, 0, dk);
     for (const [x, z] of [[-0.68, -0.32], [0.68, -0.32], [-0.68, 0.32], [0.68, 0.32]]) box(0.04, 0.72, 0.04, black, x, 0.36, z, dk);
-    // laptop
     const lp = new T.Group(); dk.add(lp);
-    box(0.34, 0.015, 0.24, M({ color: 0x8e9196, metalness: 0.6, roughness: 0.35 }), 0, 0.768, 0.02, lp);
+    box(0.34, 0.015, 0.24, M({ color: 0xb9bbbf, metalness: 0.6, roughness: 0.35 }), 0, 0.768, 0.02, lp);
     const scr = new T.Group(); lp.add(scr); scr.position.set(0, 0.775, -0.1); scr.rotation.x = -0.32;
-    box(0.34, 0.23, 0.01, M({ color: 0x8e9196, metalness: 0.6, roughness: 0.35 }), 0, 0.115, 0, scr);
-    box(0.31, 0.2, 0.002, new T.MeshStandardMaterial({ color: 0x223, emissive: 0x6c7cff, emissiveIntensity: 0.55 }), 0, 0.115, 0.006, scr);
-    // chair
+    box(0.34, 0.23, 0.01, M({ color: 0xb9bbbf, metalness: 0.6, roughness: 0.35 }), 0, 0.115, 0, scr);
+    box(0.31, 0.2, 0.002, new T.MeshStandardMaterial({ color: 0x223, emissive: 0x7d8cff, emissiveIntensity: 0.5 }), 0, 0.115, 0.006, scr);
     const ch = new T.Group(); dk.add(ch);
-    box(0.48, 0.07, 0.46, dgrey, 0, 0.47, 0, ch); box(0.46, 0.55, 0.06, dgrey, 0, 0.82, 0.22, ch);
+    box(0.48, 0.07, 0.46, black, 0, 0.47, 0, ch); box(0.46, 0.55, 0.06, black, 0, 0.82, 0.22, ch);
     box(0.05, 0.42, 0.05, black, 0, 0.22, 0, ch); box(0.5, 0.03, 0.05, black, 0, 0.03, 0, ch); box(0.05, 0.03, 0.5, black, 0, 0.03, 0, ch);
     ch.position.set(-0.1, 0, 0.62); ch.rotation.y = 0.25;
     dk.position.set(3.27, 0, 0.36); objs.desk = dk;
 
     // shelves above desk
     const sh = new T.Group(); S.add(sh);
-    const bookC = [0xc96f4a, 0x2f4858, 0xe0b36a, 0x6f8a6a, 0x8d5a7b, 0xd8d2c4, 0x3c3f45];
+    const bookC = [0xe8e6e1, 0x2f3033, 0xc9b79c, 0x8d8f91, 0x4d4f52, 0xd8d2c4, 0x6b5a48];
     for (const [y, n] of [[1.45, 0], [1.85, 1]]) {
       box(1.3, 0.03, 0.26, dgrey, 0, y, 0, sh);
       let x = -0.58; for (let i = 0; i < 6 + n; i++) { const w = 0.04 + ((i * 37 + n * 11) % 5) * 0.012, h = 0.2 + ((i * 13 + n) % 4) * 0.025; if ((i + n) % 4 === 3) { x += 0.12; continue; } box(w, h, 0.18, M({ color: bookC[(i + n * 3) % bookC.length], roughness: 0.8 }), x + w / 2, y + 0.015 + h / 2, 0, sh); x += w + 0.008; }
       const pot = new T.Mesh(new T.CylinderGeometry(0.06, 0.05, 0.11, 16), M({ color: 0xe8e2d8 })); pot.position.set(0.48 - n * 0.2, y + 0.07, 0); pot.castShadow = true; sh.add(pot);
-      const leaf = new T.Mesh(new T.SphereGeometry(0.1, 12, 10), M({ color: 0x5f7f55 })); leaf.position.set(0.48 - n * 0.2, y + 0.19, 0); leaf.castShadow = true; sh.add(leaf);
+      const leaf = new T.Mesh(new T.SphereGeometry(0.1, 12, 10), M({ color: 0x5f7356 })); leaf.position.set(0.48 - n * 0.2, y + 0.19, 0); leaf.castShadow = true; sh.add(leaf);
     }
     sh.position.set(3.3, 0, 0.13); objs.shelves = sh;
+
+    // clothes rack on the empty 6 m wall: t-shirts, hoodies, a light jacket
+    const rk = new T.Group(); S.add(rk);
+    const pipe = M({ color: 0x1b1c1e, roughness: 0.35, metalness: 0.5 });
+    for (const z of [-0.55, 0.55]) {
+      box(0.03, 1.62, 0.03, pipe, -0.2, 0.85, z, rk); box(0.03, 1.62, 0.03, pipe, 0.2, 0.85, z, rk);
+      box(0.43, 0.03, 0.03, pipe, 0, 0.07, z, rk);
+      for (const x of [-0.2, 0.2]) { const wh = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.03, 14), pipe); wh.rotation.z = Math.PI / 2; wh.position.set(x, 0.035, z); rk.add(wh); }
+    }
+    box(0.03, 0.03, 1.13, pipe, 0, 1.66, 0, rk);
+    box(0.42, 0.015, 1.1, pipe, 0, 0.16, 0, rk);
+    const items = [
+      ['tee', 0xf2f1ee], ['tee', 0x2c2d30], ['tee', 0xbfc1c0], ['hood', 0x8e9192], ['tee', 0xd7c7ad],
+      ['hood', 0x3a3f46], ['hood', 0xe7e3dc], ['jacket', 0xb79a74], ['tee', 0x6f7461], ['jacket', 0x5d5f5c],
+    ];
+    const fab = (c) => M({ map: linenTex, color: c, roughness: 0.95 });
+    items.forEach(([t, c], i) => {
+      const z = -0.45 + i * 0.1, g = new T.Group(); rk.add(g); g.position.set(0, 0, z);
+      const m = fab(c);
+      box(0.36, 0.012, 0.012, M({ color: 0x9b7b56 }), 0, 1.6, 0, g); // hanger
+      if (t === 'tee') { box(0.4, 0.6, 0.05, m, 0, 1.28, 0, g); box(0.14, 0.18, 0.05, m, -0.24, 1.48, 0, g).rotation.z = 0.5; box(0.14, 0.18, 0.05, m, 0.24, 1.48, 0, g).rotation.z = -0.5; }
+      if (t === 'hood') { box(0.44, 0.68, 0.07, m, 0, 1.24, 0, g); box(0.09, 0.62, 0.06, m, -0.25, 1.24, 0, g).rotation.z = 0.08; box(0.09, 0.62, 0.06, m, 0.25, 1.24, 0, g).rotation.z = -0.08; box(0.2, 0.12, 0.08, m, 0, 1.56, 0.02, g); }
+      if (t === 'jacket') { box(0.46, 0.86, 0.075, m, 0, 1.14, 0, g); box(0.1, 0.74, 0.07, m, -0.27, 1.2, 0, g).rotation.z = 0.06; box(0.1, 0.74, 0.07, m, 0.27, 1.2, 0, g).rotation.z = -0.06; box(0.22, 0.05, 0.085, m, 0, 1.56, 0, g); }
+    });
+    box(0.3, 0.12, 0.3, M({ color: 0x2b2c2f }), 0, 0.235, 0.3, rk); box(0.28, 0.1, 0.32, M({ color: 0xd8d4cc }), 0, 0.23, -0.25, rk);
+    rk.position.set(3.68, 0, 3.0); objs.rack = rk;
 
     S.updateMatrixWorld(true);
     for (const k in objs) { objs[k].traverse((m) => { if (m.material) m.userData.base = m.material; }); }
@@ -171,7 +206,7 @@
     R.render(S, C);
     // label anchors
     const out = {};
-    for (const k of ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'window']) { const bb = bboxOf(objs[k]); const c = bb.getCenter(new T.Vector3()); c.y = bb.max.y + 0.12; out[k] = proj(c); }
+    for (const k of ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'window', 'rack', 'radiator']) { const bb = bboxOf(objs[k]); const c = bb.getCenter(new T.Vector3()); c.y = bb.max.y + 0.12; out[k] = proj(c); }
     if (b) { const fc = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => proj(new T.Vector3(x, 0.01, z))); out._foot = fc; out._dims = [(b.max.x - b.min.x - 0.06).toFixed(2), (b.max.z - b.min.z - 0.06).toFixed(2), (b.max.y - 0.03).toFixed(2)]; out._top = proj(new T.Vector3((b.min.x + b.max.x) / 2, b.max.y, (b.min.z + b.max.z) / 2)); }
     return out;
   }
