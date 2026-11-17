@@ -75,7 +75,6 @@ function TL(t) {
   if ((t > 3.8 && t < 5.0) || (t > 9.3 && t < 11.4)) { s.foot = true; s.footTxt = t < 6 ? 'Dresser · 1.10 m along wall' : 'Clothes rack · drag to wall'; }
   s.moved = [t >= 5.0 && 'dresser', t >= 11.4 && 'rack', t >= 15.4 && 'walls', t >= 18.4 && 'rug', t >= 24.1 && 'blinds'].filter(Boolean);
   if (t >= 25.3) { s.sub = 'Floor plan'; s.bot = 'Structure'; }
-  if (t >= 25.8) { s.toast = 'Layout applied · 5 changes'; s.toastA = k01(t, 25.8, 26.3); }
   s.lblA = t < 0.4 ? k01(t, 0, 0.4) : 1;
   // cursor
   const spec = (sp) => (sp === 'rk' ? W(rx, 1.3, rz) : sp === 'dr' ? W(0.5, 0.9, dz) : sp);
