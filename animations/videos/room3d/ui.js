@@ -81,10 +81,10 @@
       h += `<div id="left" class="glass" style="opacity:${s.leftA};transform:translateX(${(1 - s.leftA) * -40}px)">`;
       h += `<div class="lt"><b>${k === 'walls' ? 'Walls' : NAMES[k]}</b><div class="x in">✕</div></div><div class="muted" style="font-size:15px;margin-top:4px">${I.mat}</div>`;
       if (k !== 'walls') h += `<div class="dims">${['W', 'D', 'H'].map((n, i) => `<div class="in"><span class="muted">${n}</span><b>${d[i]} m</b></div>`).join('')}</div>`;
-      h += `<div class="sec">${slider('Rotation', `${Math.round(s.rot || 0)}°`, (s.rot || 0) / 360)}</div>`;
-      h += `<div class="sec" style="padding-top:2px"><div class="tg"><span>Snap to wall</span><div class="sw2 on"><i></i></div></div><div class="tg"><span>Show clearance</span><div class="sw2 ${s.clear ? 'on' : ''}"><i></i></div></div><div class="tg"><span>Lock position</span><div class="sw2"><i></i></div></div></div>`;
+      if (k !== 'walls') h += `<div class="sec">${slider('Rotation', `${Math.round(s.rot || 0)}°`, (s.rot || 0) / 360)}</div>`;
+      if (k !== 'walls') h += `<div class="sec" style="padding-top:2px"><div class="tg"><span>Snap to wall</span><div class="sw2 on"><i></i></div></div><div class="tg"><span>Show clearance</span><div class="sw2 ${s.clear ? 'on' : ''}"><i></i></div></div><div class="tg"><span>Lock position</span><div class="sw2"><i></i></div></div></div>`;
       h += `<div class="sec" style="padding-top:12px"><div class="sl"><span>Finish</span><b class="muted" style="font-weight:500">${I.sw.length} options</b></div><div class="sws">${I.sw.map((c, i) => `<div class="swc ${i === (s.swOn || 0) ? 'on' : ''}" style="background:${c}"></div>`).join('')}</div></div>`;
-      h += `<div class="acts">${['Move', 'Rotate', 'Duplicate', 'Remove'].map((b) => `<div class="act in ${s.act === b ? 'on' : ''}">${b}</div>`).join('')}</div></div>`;
+      h += `<div class="acts">${(k === 'walls' ? ['Paint', 'Texture', 'Compare', 'Reset'] : ['Move', 'Rotate', 'Duplicate', 'Remove']).map((b) => `<div class="act in ${s.act === b ? 'on' : ''}">${b}</div>`).join('')}</div></div>`;
     }
     // right rooms panel
     const zone = s.left ? INFO[s.left].zone : (s.zone || '');
@@ -94,7 +94,7 @@
     h += `<div class="cards">${['Sleep', 'Work', 'Storage', 'Free'].map((z) => `<div class="card in ${zone === z ? 'on' : ''}">${ic(z, 62)}<span class="nm">${z === 'Free' ? 'Free floor' : z}</span><span class="dot"></span></div>`).join('')}</div>`;
     h += `<div class="vl"><span>View all objects</span><span>+</span></div></div>`;
     // bottom bar
-    h += `<div id="bot"><div class="top glass">${['Room', 'Structure', 'Furniture'].map((t) => `<div class="bt ${(s.bot || 'Furniture') === t ? 'on' : ''}">${ic(t, 40)}${t}</div>`).join('')}</div><div class="sub glass"><span>⌂ Top view</span><span>▦ Floor plan</span><span>⚲ Walk-through</span><span>↺ Undo</span></div></div>`;
+    h += `<div id="bot"><div class="top glass">${['Room', 'Structure', 'Furniture'].map((t) => `<div class="bt ${(s.bot || 'Furniture') === t ? 'on' : ''}">${ic(t, 40)}${t}</div>`).join('')}</div><div class="sub glass">${['⌂ Top view', '▦ Floor plan', '⚲ Walk-through', '↺ Undo'].map((t) => `<span style="${s.sub && t.includes(s.sub) ? 'color:#fff;font-weight:600' : ''}">${t}</span>`).join('')}</div></div>`;
     if (s.toast && s.toastA > 0) h += `<div id="toast" class="glass" style="opacity:${s.toastA}"><span style="color:#6fe3a8">●</span>${s.toast}</div>`;
     if (s.rip > 0 && s.rip < 1 && s.cur) { const r = 10 + s.rip * 34; h += `<div id="rip" style="left:${s.cur[0] - r}px;top:${s.cur[1] - r}px;width:${2 * r}px;height:${2 * r}px;opacity:${1 - s.rip}"></div>`; }
     if (s.cur) h += `<svg id="cur" style="left:${s.cur[0]}px;top:${s.cur[1]}px" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.4L20.5 11z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>`;

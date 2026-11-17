@@ -210,5 +210,5 @@
     if (b) { const fc = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => proj(new T.Vector3(x, 0.01, z))); out._foot = fc; out._dims = [(b.max.x - b.min.x - 0.06).toFixed(2), (b.max.z - b.min.z - 0.06).toFixed(2), (b.max.y - 0.03).toFixed(2)]; out._top = proj(new T.Vector3((b.min.x + b.max.x) / 2, b.max.y, (b.min.z + b.max.z) / 2)); }
     return out;
   }
-  window.ROOM = { build, render, objs: () => objs };
+  window.ROOM = { build, render, objs: () => objs, proj: (w) => proj(new T.Vector3(...w)) };
 })();
