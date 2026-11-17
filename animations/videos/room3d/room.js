@@ -3,7 +3,7 @@
 (function () {
   const W = 1920, H = 1080;
   const T = THREE;
-  let R, S, C, objs = {}, labels = {}, sel, floorMat, wallMats = [];
+  let rugM, R, S, C, objs = {}, labels = {}, sel, floorMat, wallMats = [];
 
   function texFrom(img, rep, tint) {
     const t = new T.Texture(img); t.needsUpdate = true; t.wrapS = t.wrapT = T.RepeatWrapping;
@@ -48,7 +48,7 @@
     const white = M({ color: 0xf4f2ee, roughness: 0.9 });
     const linenTex = texFrom(IMG.linen, [3, 3]);
     const fabric = M({ map: linenTex, color: 0xcfcdc8, roughness: 0.95 });
-    const rugM = M({ map: texFrom(IMG.linen, [6, 12]), color: 0x48494b, roughness: 1 });
+    rugM = M({ map: texFrom(IMG.linen, [6, 12]), color: 0x48494b, roughness: 1 });
 
     // floor slab
     box(4, 0.1, 6, floorMat, 2, -0.05, 3);
@@ -79,6 +79,13 @@
     box(1.24, 0.05, 0.08, black, 1.9, 0.91, -0.07, win); box(1.24, 0.05, 0.08, black, 1.9, 2.29, -0.07, win);
     box(0.05, 1.4, 0.08, black, 1.3, 1.6, -0.07, win); box(0.05, 1.4, 0.08, black, 2.5, 1.6, -0.07, win); box(0.04, 1.4, 0.06, black, 1.9, 1.6, -0.07, win);
     box(1.35, 0.04, 0.25, white, 1.9, 0.9, 0.05, win);
+    // venetian blinds (hidden until added)
+    const bl = new T.Group(); win.add(bl);
+    const slatM = M({ color: 0xf1f0ec, roughness: 0.6 });
+    box(1.26, 0.05, 0.07, M({ color: 0xe6e5e1 }), 1.9, 2.3, 0.0, bl);
+    const slats = []; for (let y = 2.25; y > 0.94; y -= 0.045) { const sl = box(1.2, 0.006, 0.05, slatM, 1.9, y, 0.0, bl); sl.rotation.x = 0.35; slats.push(sl); }
+    const rail = box(1.22, 0.025, 0.055, M({ color: 0xe6e5e1 }), 1.9, 2.25, 0.0, bl);
+    bl.visible = false; S.userData.blinds = { bl, slats, rail, glass };
     objs.window = win;
 
     // radiator under window (black horizontal tubes)
@@ -117,7 +124,7 @@
     box(1.62, 0.03, 0.45, M({ color: 0x4a4746, roughness: 1 }), 0, 0.6, -0.72, bd);
     box(0.62, 0.15, 0.36, white, -0.38, 0.6, 0.72, bd); box(0.62, 0.15, 0.36, M({ color: 0xd9d8d4 }), 0.38, 0.6, 0.72, bd);
     box(0.4, 0.26, 0.1, M({ map: linenTex, color: 0x6b6d70 }), 0.12, 0.72, 0.6, bd).rotation.x = -0.35;
-    bd.position.set(0.85, 0, 4.92); objs.bed = bd;
+    bd.scale.set(1.1, 1.05, 1.05); bd.position.set(0.93, 0, 4.86); objs.bed = bd;
 
     // rug: from the door almost to the desk chair
     const rug = box(1.75, 0.014, 4.35, rugM, 2.6, 0.007, 3.62); rug.castShadow = false; objs.rug = rug;
@@ -200,6 +207,8 @@
     for (const k in st.place || {}) { const p = st.place[k], o = objs[k]; if (p.x != null) o.position.x = p.x; if (p.z != null) o.position.z = p.z; if (p.ry != null) o.rotation.y = p.ry; if (p.y != null) o.position.y = p.y; }
     if (st.wall) wallMats.forEach((m) => m.color.set(st.wall));
     if (st.floor) floorMat.color.set(st.floor);
+    if (st.rugCol) rugM.color.set(st.rugCol);
+    { const B = S.userData.blinds, c = st.blinds || 0; B.bl.visible = st.blindsOn || c > 0; const yb = 2.27 - c * 1.33; B.slats.forEach((sl) => (sl.visible = sl.position.y >= yb)); B.rail.position.y = yb; B.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); }
     C.position.set(...st.cam.pos); C.fov = st.cam.fov || 30; C.updateProjectionMatrix(); C.lookAt(new T.Vector3(...st.cam.tgt));
     S.updateMatrixWorld(true);
     const b = drawSel(st.sel, st.selA == null ? 1 : st.selA);
