@@ -25,19 +25,19 @@ function toHsl(h) { let [r, g, b] = rgb(h).map((v) => v / 255); const mx = Math.
 function fromHsl(hh, ss, l) { const f = (n) => { const k = (n + hh * 12) % 12, a = ss * Math.min(l, 1 - l); return 255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))); }; return hex([f(0), f(8), f(4)]); }
 const RUG0 = '#48494b', RUG1 = '#8a5a44', [RH, RS, RL] = toHsl(RUG1), RS2 = 0.58;
 const WALL0 = '#dfdfdb', WALL1 = '#ae9f8c';
-const CAM_DR = camOn([0.6, 0.8, 2.6], 6.4), CAM_RK = camOn([3.5, 0.9, 2.9], 6.6), CAM_RUG = camOn([2.3, 0.2, 3.9], 8.6), CAM_WIN = camOn([1.75, 1.3, 0.6], 5.6);
+const CAM_DR = camOn([0.6, 0.8, 2.6], 6.4), CAM_RK = camOn([3.5, 0.9, 2.9], 6.6), CAM_RUG = camOn([2.3, 0.2, 3.9], 8.6), CAM_WIN = camOn([1.5, 1.3, 0.6], 5.6);
 const CAM_TOP = { pos: [2.0, 19.5, 5.2], tgt: [2.0, 0, 3.2], fov: 30 };
 const MOVE = [150, 645], KY = 358, KX = (f) => 63 + 364 * f, WSW = [129, 299], SW2 = [129, 588], FLOOR = [879, 1032];
 const W = (x, y, z) => ({ w: [x, y, z] });
-const DR0 = [0.25, 2.05], DR1 = [0.25, 3.15], RK0 = [3.68, 3.0], RK1 = [0.25, 1.75];
+const DR0 = [0.235, 1.85], DR1 = [0.235, 3.0], RK0 = [3.7, 3.0], RK1 = [0.27, 1.57];
 // [time, cursor]; 'dr' / 'rk' follow the moving furniture
 const CUR = [
   [0, [1180, 860]], [1.2, W(0.5, 0.9, 2.05)], [2.6, W(0.5, 0.9, 2.05)], [3.1, MOVE], [3.3, MOVE], [3.7, 'dr'], [5.0, 'dr'], [5.9, 'dr'],
-  [6.6, W(3.68, 1.3, 3.0)], [7.9, W(3.68, 1.3, 3.0)], [8.4, MOVE], [8.6, MOVE], [9.2, 'rk'], [11.5, 'rk'],
+  [6.6, W(3.7, 1.2, 3.0)], [7.9, W(3.7, 1.2, 3.0)], [8.4, MOVE], [8.6, MOVE], [9.2, 'rk'], [11.5, 'rk'],
   [12.0, [KX(0.25), KY]], [12.2, [KX(0.25), KY]], [13.0, [KX(0.75), KY]], [13.2, [KX(0.75), KY]],
   [13.8, W(0.95, 2.55, 0.02)], [14.0, W(0.95, 2.55, 0.02)], [14.5, WSW], [15.2, WSW],
   [16.2, W(2.75, 0.02, 4.9)], [16.6, W(2.75, 0.02, 4.9)], [17.6, SW2], [17.9, SW2], [18.5, [KX(RS), KY]], [18.7, [KX(RS), KY]], [19.7, [KX(RS2), KY]], [20.0, [KX(RS2), KY]],
-  [20.8, W(2.1, 1.75, -0.05)], [21.0, W(2.1, 1.75, -0.05)], [22.1, MOVE], [22.4, MOVE], [22.8, [KX(0), KY]], [23.0, [KX(0), KY]], [24.1, [KX(0.5), KY]], [24.4, [KX(0.5), KY]],
+  [20.8, W(1.7, 1.75, -0.05)], [21.0, W(1.7, 1.75, -0.05)], [22.1, MOVE], [22.4, MOVE], [22.8, [KX(0), KY]], [23.0, [KX(0), KY]], [24.1, [KX(0.5), KY]], [24.4, [KX(0.5), KY]],
   [25.2, FLOOR], [28, FLOOR],
 ];
 const CLICKS = [1.6, 3.3, 6.75, 8.6, 13.95, 14.6, 16.6, 17.9, 21.0, 22.4, 25.3];
@@ -58,7 +58,7 @@ function TL(t) {
   const kd = k01(t, 3.8, 5.0), kr = k01(t, 9.3, 11.4), kro = k01(t, 12.2, 13.0);
   const dz = L(DR0[1], DR1[1], kd);
   const rx = L(RK0[0], RK1[0], kr), rz = L(RK0[1], RK1[1], kr) + Math.sin(kr * Math.PI) * 0.35;
-  s.place = { dresser: { x: 0.25, z: dz, ry: 0 }, rack: { x: rx, z: rz, ry: kro * Math.PI, y: kr > 0 && kr < 1 ? 0.04 : 0 }, rug: { x: 2.6, z: 3.62 } };
+  s.place = { dresser: { x: 0.235, z: dz, ry: Math.PI / 2 }, rack: { x: rx, z: rz, ry: Math.PI / 2 + kro * Math.PI, y: kr > 0 && kr < 1 ? 0.04 : 0 }, rug: { x: 2.75, z: 3.4 } };
   s.wall = hexL(WALL0, WALL1, k01(t, 14.6, 15.4));
   const kc = k01(t, 17.9, 18.4), ks = k01(t, 18.7, 19.7), sat = L(RS, RS2, ks);
   s.rugCol = ks > 0 ? fromHsl(RH, sat, RL) : hexL(RUG0, RUG1, kc);

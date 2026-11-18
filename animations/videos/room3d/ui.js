@@ -2,12 +2,12 @@
 (function () {
   const NAMES = { rug: 'Rug', desk: 'Desk', shelves: 'Shelves', wardrobe: 'Wardrobe', dresser: 'Dresser', bed: 'Bed', window: 'Window', rack: 'Clothes rack', radiator: 'Radiator' };
   const INFO = {
-    desk: { mat: 'Graphite laminate', sw: ['#46484c', '#1c1d20', '#cfcdc8', '#e7d3b6'], zone: 'Work' },
-    shelves: { mat: 'Graphite', sw: ['#46484c', '#e7d3b6', '#1c1d20'], zone: 'Work' },
-    wardrobe: { mat: 'Light oak', sw: ['#e7d3b6', '#cfcdc8', '#46484c'], zone: 'Storage' },
-    dresser: { mat: 'Light oak', sw: ['#e7d3b6', '#cfcdc8', '#46484c', '#1c1d20'], zone: 'Storage' },
-    bed: { mat: 'Grey linen · light oak', sw: ['#cfcdc8', '#8e9192', '#46484c', '#e7d3b6'], zone: 'Sleep' },
-    rack: { mat: 'Black steel · on wheels', sw: ['#1b1c1e', '#e7d3b6', '#f2f1ee'], zone: 'Storage' },
+    desk: { mat: 'Graphite top · walnut slats', sw: ['#46484c', '#1c1d20', '#cfcdc8', '#e7d3b6'], zone: 'Work' },
+    shelves: { mat: 'Oak wall shelf · books', sw: ['#46484c', '#e7d3b6', '#1c1d20'], zone: 'Work' },
+    wardrobe: { mat: 'Wenge wood', sw: ['#e7d3b6', '#cfcdc8', '#46484c'], zone: 'Storage' },
+    dresser: { mat: 'White matte · dark oak top', sw: ['#e7d3b6', '#cfcdc8', '#46484c', '#1c1d20'], zone: 'Storage' },
+    bed: { mat: 'Grey nubuck · eucalyptus', sw: ['#cfcdc8', '#8e9192', '#46484c', '#e7d3b6'], zone: 'Sleep' },
+    rack: { mat: 'Black steel · wood base', sw: ['#1b1c1e', '#e7d3b6', '#f2f1ee'], zone: 'Storage' },
     walls: { mat: 'Wall paint · matte', sw: ['#dfdfdb', '#ae9f8c', '#9ea596', '#5a5c60'], zone: 'Free' },
     rug: { mat: 'Wool · low pile', sw: ['#48494b', '#8a5a44', '#5d6650', '#3f4a5c'], zone: 'Free', tg: ['Anti-slip base', 'Show edges', 'Lock position'], acts: ['Color', 'Resize', 'Duplicate', 'Remove'] },
     window: { mat: 'Black aluminium · 1.20 × 1.40 m', sw: ['#f1f0ec', '#cfcdc8', '#46484c'], zone: 'Free', tg: ['Blinds', 'Night mode', 'Child lock'], acts: ['Add blinds', 'Curtains', 'Tint glass', 'Reset'] },

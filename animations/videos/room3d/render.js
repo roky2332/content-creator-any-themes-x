@@ -10,8 +10,10 @@ const only = process.argv.find((a) => a.startsWith('--t='));
   const br = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const p = await br.newPage({ viewport: { width: 1920, height: 1080 } });
   p.on('console', (m) => console.log('page:', m.text())); p.on('pageerror', (e) => console.log('ERR', e.message));
-  await p.setContent(`<html><body style="margin:0;background:#0e0f12;overflow:hidden"><canvas id="gl" width="1920" height="1080" style="position:absolute;left:0;top:0"></canvas></body></html>`);
-  for (const f of ['node_modules/three/build/three.min.js', 'room.js', 'ui.js', 'timeline.js']) await p.addScriptTag({ content: fs.readFileSync(path.join(D, f), 'utf8') });
+  const srv = spawn('python3', ['-m', 'http.server', '8771', '--bind', '127.0.0.1'], { cwd: D, stdio: 'ignore' });
+  await new Promise((r) => setTimeout(r, 800));
+  await p.goto('http://127.0.0.1:8771/page.html');
+  await p.waitForFunction(() => window.modelsReady, null, { timeout: 600000 });
   await p.evaluate(async (src) => {
     const L = (s) => new Promise((r) => { const i = new Image(); i.onload = () => r(i); i.src = s; });
     const IMG = {}; for (const k in src) IMG[k] = await L(src[k]);
@@ -30,5 +32,5 @@ const only = process.argv.find((a) => a.startsWith('--t='));
     for (let i = 0; i < n; i++) { const buf = await shot(i / FPS, false); if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r)); if (i % 60 === 0) console.log('frame', i, '/', n); }
     ff.stdin.end(); await new Promise((r) => ff.on('close', r)); console.log('done');
   }
-  await br.close();
+  await br.close(); srv.kill();
 })();

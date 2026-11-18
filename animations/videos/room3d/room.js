@@ -57,10 +57,11 @@
     const th = 0.15, Hh = 3;
     const back = new T.Group(); S.add(back);
     // back wall with window hole x 1.3..2.5 , y 0.9..2.3
-    box(1.3 + th, Hh, th, wallM, (1.3 - th) / 2, Hh / 2, -th / 2, back);
-    box(1.5, Hh, th, wallM, 3.25, Hh / 2, -th / 2, back);
-    box(1.2, 0.9, th, wallM, 1.9, 0.45, -th / 2, back);
-    box(1.2, 0.7, th, wallM, 1.9, 2.65, -th / 2, back);
+    const WX = window.MODELS ? -0.4 : 0; // window shifted left when real furniture is used (desk is 1.8 m)
+    box(1.3 + WX + th, Hh, th, wallM, (1.3 + WX - th) / 2, Hh / 2, -th / 2, back);
+    box(1.5 - WX, Hh, th, wallM, 3.25 + WX / 2, Hh / 2, -th / 2, back);
+    box(1.2, 0.9, th, wallM, 1.9 + WX, 0.45, -th / 2, back);
+    box(1.2, 0.7, th, wallM, 1.9 + WX, 2.65, -th / 2, back);
     box(4 + th, 0.02, th + 0.002, capM, 2 - th / 2, Hh + 0.01, -th / 2);
     box(th, Hh, 6, wallM, -th / 2, Hh / 2, 3); box(th + 0.002, 0.02, 6, capM, -th / 2, Hh + 0.01, 3);
     const low = 0.35;
@@ -86,6 +87,7 @@
     const slats = []; for (let y = 2.25; y > 0.94; y -= 0.045) { const sl = box(1.2, 0.006, 0.05, slatM, 1.9, y, 0.0, bl); sl.rotation.x = 0.35; slats.push(sl); }
     const rail = box(1.22, 0.025, 0.055, M({ color: 0xe6e5e1 }), 1.9, 2.25, 0.0, bl);
     bl.visible = false; S.userData.blinds = { bl, slats, rail, glass };
+    win.position.x = WX;
     objs.window = win;
 
     // radiator under window (black horizontal tubes)
@@ -93,7 +95,7 @@
     for (let i = 0; i < 6; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.022, 0.022, 1.0, 14), black); c.rotation.z = Math.PI / 2; c.position.set(0, 0.24 + i * 0.065, 0); c.castShadow = true; rad.add(c); }
     box(0.05, 0.42, 0.06, black, -0.52, 0.4, 0, rad); box(0.05, 0.42, 0.06, black, 0.52, 0.4, 0, rad);
     box(0.03, 0.2, 0.03, M({ color: 0xd8d8d8, metalness: 0.5 }), 0.52, 0.1, 0.01, rad);
-    rad.position.set(1.9, 0, 0.09); objs.radiator = rad;
+    rad.position.set(1.9 + WX, 0, 0.09); objs.radiator = rad;
 
     // wardrobe: left corner, on the left wall, doors face the right wall (+x)
     const wd = new T.Group(); S.add(wd);
@@ -181,11 +183,37 @@
     box(0.3, 0.12, 0.3, M({ color: 0x2b2c2f }), 0, 0.235, 0.3, rk); box(0.28, 0.1, 0.32, M({ color: 0xd8d4cc }), 0, 0.23, -0.25, rk);
     rk.position.set(3.68, 0, 3.0); objs.rack = rk;
 
+    if (window.MODELS) useModels(window.MODELS, win);
     S.updateMatrixWorld(true);
     for (const k in objs) { objs[k].traverse((m) => { if (m.material) m.userData.base = m.material; }); }
     // selection helpers
     sel = new T.Group(); S.add(sel);
     return { W, H };
+  }
+
+  // ---- real furniture from the author's 3D models (assets/*.glb) ----
+  function useModels(MD, win) {
+    const put = (key, name, x, z, ry, y) => {
+      if (objs[key]) S.remove(objs[key]);
+      const g = new T.Group(); const m = MD[name].clone(true);
+      m.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+      g.add(m); g.position.set(x, y || 0, z); g.rotation.y = ry || 0; S.add(g); objs[key] = g; return g;
+    };
+    put('wardrobe', 'shkaf', 0.315, 0.47, Math.PI / 2);
+    const dr = put('dresser', 'comode', 0.235, 1.85, Math.PI / 2);
+    const tl = MD.table_lamp.clone(true); tl.position.set(0.45, 0.85, 0.02); tl.scale.setScalar(0.95); dr.add(tl);
+    const pl = new T.PointLight(0xffd2a0, 0.9, 3, 2); pl.position.set(0.45, 1.2, 0.05); dr.add(pl);
+    put('bed', 'bed', 1.105, 4.92, Math.PI);
+    const dk = put('desk', 'desk', 3.08, 0.34, 0);
+    const ch = MD.chair.clone(true); ch.position.set(-0.05, 0, 0.62); ch.rotation.y = Math.PI + 0.2; dk.add(ch);
+    put('shelves', 'bookshelf', 3.08, 0.16, 0, 1.45);
+    const bk = MD.books.clone(true); bk.scale.setScalar(0.55); bk.position.set(0.15, 0.62, 0.0); objs.shelves.add(bk);
+    const rk = put('rack', 'rack', 3.7, 3.0, Math.PI / 2);
+    const sh = MD.shirts.clone(true); sh.rotation.y = Math.PI / 2; sh.position.set(0, 1.39 - 0.925, 0); rk.add(sh);
+    put('bonsai', 'kabin', 3.62, 1.45, 0.3);
+    const pt = put('plant', 'mario', 0.86, 0.36, 0.5); pt.scale.setScalar(0.78);
+    const lp = put('lamp', 'ceiling_lamp', 2.6, 3.4, 0.4, 2.26); lp.scale.setScalar(0.6);
+    const bl = new T.Group(); bl.position.set(1.9, 2.36, 0.02); const bm = MD.blinds.clone(true); bm.position.y = -1.476; bm.scale.x = 1.12 / 1.515; bl.add(bm); win.add(bl); S.userData.blinds2 = bl; bl.visible = false;
   }
 
   function bboxOf(o) { return new T.Box3().setFromObject(o); }
@@ -208,7 +236,8 @@
     if (st.wall) wallMats.forEach((m) => m.color.set(st.wall));
     if (st.floor) floorMat.color.set(st.floor);
     if (st.rugCol) rugM.color.set(st.rugCol);
-    { const B = S.userData.blinds, c = st.blinds || 0; B.bl.visible = st.blindsOn || c > 0; const yb = 2.27 - c * 1.33; B.slats.forEach((sl) => (sl.visible = sl.position.y >= yb)); B.rail.position.y = yb; B.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); }
+    { const B2 = S.userData.blinds2; if (B2) { const c = st.blinds || 0; B2.visible = !!(st.blindsOn || c > 0); B2.scale.y = Math.max(0.02, c / 0.5); S.userData.blinds.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); } }
+    if (!S.userData.blinds2) { const B = S.userData.blinds, c = st.blinds || 0; B.bl.visible = st.blindsOn || c > 0; const yb = 2.27 - c * 1.33; B.slats.forEach((sl) => (sl.visible = sl.position.y >= yb)); B.rail.position.y = yb; B.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); }
     C.position.set(...st.cam.pos); C.fov = st.cam.fov || 30; C.updateProjectionMatrix(); C.lookAt(new T.Vector3(...st.cam.tgt));
     S.updateMatrixWorld(true);
     const b = drawSel(st.sel, st.selA == null ? 1 : st.selA);
