@@ -395,7 +395,7 @@ If only a transcript is available, say so clearly.
 
 # 7. MONEY STORIES ABOUT FAMOUS PEOPLE
 
-> 2026-11-11, решение автора: структура, хук, выбор идей и требования к видео для этой ниши — по `guidelines/money-playbook.md` (механика интервью-постов). Он важнее общей структуры из `story-method.md`.
+> 2026-11-18, решение автора: ниша полностью по `guidelines/money-playbook.md` (переписан по 8 постам автора 1M+). Он важнее всех правил ниже и общей структуры из `story-method.md`.
 
 This is a separate content niche focused on real stories involving celebrities, musicians, actors, athletes, influencers, entrepreneurs, and other famous people.
 
