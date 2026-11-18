@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 window.THREE = THREE;
-const names = ['bed','shkaf','comode','desk','chair','rack','shirts','kabin','mario','blinds','bookshelf','books','table_lamp','ceiling_lamp'];
+const names = ['bed','shkaf','comode','desk','chair','rack','shirts','kabin','mario','blinds','bookshelf','books','table_lamp'];
 const L = new GLTFLoader(); window.MODELS = {};
 await Promise.all(names.map(async (n) => { const g = await L.loadAsync('assets/' + n + '.glb'); window.MODELS[n] = g.scene; }));
 for (const f of ['room.js', 'ui.js', 'timeline.js']) await new Promise((r) => { const s = document.createElement('script'); s.src = f; s.onload = r; document.body.appendChild(s); });

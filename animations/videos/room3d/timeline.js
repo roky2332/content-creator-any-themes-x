@@ -4,13 +4,13 @@ function camOn(o, d) { // camera framing an object from the same angle
   const dir = [8.35, 9.2, 8.7], L = Math.hypot(...dir), k = d / L;
   return { pos: [o[0] + dir[0] * k, o[1] + dir[1] * k, o[2] + dir[2] * k], tgt: o, fov: 30 };
 }
-const OLD = { rack: { x: 3.68, z: 3.0, ry: 0 }, dresser: { x: 0.25, z: 2.05, ry: 0 }, rug: { x: 2.6, z: 3.62 } };
-const NEW = { rack: { x: 0.25, z: 1.75, ry: 0 }, dresser: { x: 0.25, z: 3.15, ry: 0 }, rug: { x: 2.3, z: 3.62 } };
+const OLD = { rack: { x: 3.7, z: 3.0, ry: Math.PI / 2 }, dresser: { x: 0.235, z: 1.85, ry: Math.PI / 2 }, rug: { x: 2.75, z: 3.4 } };
+const NEW = { rack: { x: 0.27, z: 1.57, ry: Math.PI / 2 }, dresser: { x: 0.235, z: 3.0, ry: Math.PI / 2 }, rug: { x: 2.75, z: 3.4 } };
 const STILLS = [
-  { cam: CAM0, place: OLD, cur: [1000, 720], lblA: 1 },
-  { cam: camOn([3.6, 0.9, 2.9], 6.6), place: OLD, sel: 'rack', left: 'rack', leftA: 1, act: 'Move', rot: 90, clear: true, cur: [1150, 520], lblA: 1 },
-  { cam: CAM0, place: { rack: { x: 1.9, z: 2.3, ry: 0 }, dresser: OLD.dresser, rug: OLD.rug }, sel: 'rack', left: 'rack', leftA: 1, act: 'Move', rot: 90, clear: true, foot: true, footTxt: 'Clothes rack · drag to wall', cur: [905, 560], lblA: 0.6, moved: ['rack'] },
-  { cam: CAM0, place: NEW, wall: '#cbc3b7', toast: 'Layout applied · 3 changes', toastA: 1, lblA: 1, moved: ['rack', 'dresser', 'walls'] },
+  { cam: { pos: [2.3, 2.6, 2.4], tgt: [3.05, 1.95, 0.1], fov: 40 }, place: OLD, lblA: 0 },
+  { cam: { pos: [2.2, 1.6, 3.4], tgt: [3.7, 0.5, 3.0], fov: 40 }, place: OLD, lblA: 0 },
+  { cam: { pos: [1.7, 1.9, 2.4], tgt: [0.25, 0.9, 1.85], fov: 40 }, place: OLD, lblA: 0 },
+  { cam: { pos: [2.7, 1.6, 1.6], tgt: [3.1, 0.8, 0.3], fov: 40 }, place: OLD, lblA: 0 },
 ];
 const DUR = 28;
 const ez = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);

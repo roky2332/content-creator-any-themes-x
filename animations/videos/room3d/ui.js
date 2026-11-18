@@ -5,7 +5,7 @@
     desk: { mat: 'Graphite top · walnut slats', sw: ['#46484c', '#1c1d20', '#cfcdc8', '#e7d3b6'], zone: 'Work' },
     shelves: { mat: 'Oak wall shelf · books', sw: ['#46484c', '#e7d3b6', '#1c1d20'], zone: 'Work' },
     wardrobe: { mat: 'Wenge wood', sw: ['#e7d3b6', '#cfcdc8', '#46484c'], zone: 'Storage' },
-    dresser: { mat: 'White matte · dark oak top', sw: ['#e7d3b6', '#cfcdc8', '#46484c', '#1c1d20'], zone: 'Storage' },
+    dresser: { mat: 'Graphite matte · dark oak top', sw: ['#4b4c50', '#2b2522', '#cfcdc8', '#e7d3b6'], zone: 'Storage' },
     bed: { mat: 'Grey nubuck · eucalyptus', sw: ['#cfcdc8', '#8e9192', '#46484c', '#e7d3b6'], zone: 'Sleep' },
     rack: { mat: 'Black steel · wood base', sw: ['#1b1c1e', '#e7d3b6', '#f2f1ee'], zone: 'Storage' },
     walls: { mat: 'Wall paint · matte', sw: ['#dfdfdb', '#ae9f8c', '#9ea596', '#5a5c60'], zone: 'Free' },

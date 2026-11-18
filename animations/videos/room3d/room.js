@@ -48,7 +48,13 @@
     const white = M({ color: 0xf4f2ee, roughness: 0.9 });
     const linenTex = texFrom(IMG.linen, [3, 3]);
     const fabric = M({ map: linenTex, color: 0xcfcdc8, roughness: 0.95 });
-    rugM = M({ map: texFrom(IMG.linen, [6, 12]), color: 0x48494b, roughness: 1 });
+    const rugTex = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 2048; const x = c.getContext('2d');
+      x.fillStyle = '#e6e6e6'; x.fillRect(0, 0, 1024, 2048);
+      for (let i = 0; i < 90000; i++) { const v = 200 + Math.random() * 55 | 0; x.fillStyle = `rgb(${v},${v},${v})`; const px = Math.random() * 1024, py = Math.random() * 2048; x.fillRect(px, py, 1 + Math.random() * 2, 3 + Math.random() * 4); }
+      x.strokeStyle = 'rgba(0,0,0,0.22)'; x.lineWidth = 10; x.strokeRect(46, 46, 932, 1956); x.lineWidth = 4; x.strokeRect(76, 76, 872, 1896);
+      x.fillStyle = 'rgba(0,0,0,0.1)'; for (let i = 0; i < 1024; i += 8) { x.fillRect(i, 0, 3, 14); x.fillRect(i, 2034, 3, 14); }
+      const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.anisotropy = 8; return t; })();
+    rugM = M({ map: rugTex, bumpMap: rugTex, bumpScale: 0.6, color: 0x48494b, roughness: 1 });
 
     // floor slab
     box(4, 0.1, 6, floorMat, 2, -0.05, 3);
@@ -90,12 +96,20 @@
     win.position.x = WX;
     objs.window = win;
 
-    // radiator under window (black horizontal tubes)
+    // radiator under window: horizontal tube radiator with headers, brackets, valve and pipes
     const rad = new T.Group(); S.add(rad);
-    for (let i = 0; i < 6; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.022, 0.022, 1.0, 14), black); c.rotation.z = Math.PI / 2; c.position.set(0, 0.24 + i * 0.065, 0); c.castShadow = true; rad.add(c); }
-    box(0.05, 0.42, 0.06, black, -0.52, 0.4, 0, rad); box(0.05, 0.42, 0.06, black, 0.52, 0.4, 0, rad);
-    box(0.03, 0.2, 0.03, M({ color: 0xd8d8d8, metalness: 0.5 }), 0.52, 0.1, 0.01, rad);
-    rad.position.set(1.9 + WX, 0, 0.09); objs.radiator = rad;
+    const radM = M({ color: 0x1a1b1d, roughness: 0.42, metalness: 0.45 });
+    const chrome = M({ color: 0xd9dbdf, roughness: 0.18, metalness: 1 });
+    for (let i = 0; i < 8; i++) { const c = new T.Mesh(new T.CylinderGeometry(0.017, 0.017, 0.96, 20), radM); c.rotation.z = Math.PI / 2; c.position.set(0, 0.2 + i * 0.054, 0); c.castShadow = true; rad.add(c); }
+    for (const sx of [-1, 1]) {
+      const hdr = new T.Mesh(new T.CapsuleGeometry(0.026, 0.4, 6, 16), radM); hdr.position.set(sx * 0.49, 0.39, 0); hdr.castShadow = true; rad.add(hdr);
+      box(0.02, 0.03, 0.06, radM, sx * 0.4, 0.62, -0.035, rad); box(0.02, 0.03, 0.06, radM, sx * 0.4, 0.2, -0.035, rad);
+      const pipe = new T.Mesh(new T.CylinderGeometry(0.009, 0.009, 0.15, 12), chrome); pipe.position.set(sx * 0.49, 0.075, 0.0); rad.add(pipe);
+      const ring = new T.Mesh(new T.CylinderGeometry(0.02, 0.02, 0.006, 16), chrome); ring.position.set(sx * 0.49, 0.003, 0.0); rad.add(ring);
+    }
+    const vb = new T.Mesh(new T.CylinderGeometry(0.014, 0.014, 0.07, 14), chrome); vb.rotation.z = Math.PI / 2; vb.position.set(0.56, 0.14, 0.0); rad.add(vb);
+    const head = new T.Mesh(new T.CylinderGeometry(0.026, 0.024, 0.06, 20), M({ color: 0xf2f2f0, roughness: 0.5 })); head.position.set(0.56, 0.19, 0.0); head.castShadow = true; rad.add(head);
+    rad.position.set(1.9 + WX, 0, 0.075); objs.radiator = rad;
 
     // wardrobe: left corner, on the left wall, doors face the right wall (+x)
     const wd = new T.Group(); S.add(wd);
@@ -207,12 +221,21 @@
     const dk = put('desk', 'desk', 3.08, 0.34, 0);
     const ch = MD.chair.clone(true); ch.position.set(-0.05, 0, 0.62); ch.rotation.y = Math.PI + 0.2; dk.add(ch);
     put('shelves', 'bookshelf', 3.08, 0.16, 0, 1.45);
-    const bk = MD.books.clone(true); bk.scale.setScalar(0.55); bk.position.set(0.15, 0.62, 0.0); objs.shelves.add(bk);
+    // books placed on the shelf planks (plank heights measured from the model: 0.15, 0.74, 1.07 m)
+    const BK = MD.books; BK.updateMatrixWorld(true); const bmap = {}; BK.traverse((o) => { if (o.isMesh) bmap[o.name] = o; });
+    const book = (ids) => { const g = new T.Group(); for (const id of ids) for (const pre of ['Oblozka', 'list']) { const src = bmap[pre + id]; if (!src) continue; const m = new T.Mesh(src.geometry, src.material); m.applyMatrix4(src.matrixWorld); m.castShadow = m.receiveShadow = true; g.add(m); } return g; };
+    const placeRow = (ids, x0, y, gap) => { let x = x0; for (const id of ids) { const g = book([id]); const bb = new T.Box3().setFromObject(g); const cz = (bb.min.z + bb.max.z) / 2; g.position.set(x - bb.min.x, y - bb.min.y, 0.01 - cz); objs.shelves.add(g); x += bb.max.x - bb.min.x + gap; } return x; };
+    placeRow(['053', '054', '055', '056', '057', '058', '059', '060', '061'], 0.02, 0.151, 0.002);
+    const stack = book(['', '001', '002', '003']); { const bb = new T.Box3().setFromObject(stack); stack.position.set(0.48 - bb.min.x, 0.741 - bb.min.y, 0.01 - (bb.min.z + bb.max.z) / 2); objs.shelves.add(stack); }
+    placeRow(['008', '009', '010', '023', '024'], -0.12, 0.741, 0.002);
+    placeRow(['016', '017', '018', '019', '020', '021', '022'], -0.86, 1.071, 0.002);
+    const sp = MD.mario.clone(true); sp.scale.setScalar(0.3 / 2.11); sp.position.set(-0.08, 1.071, 0.0); sp.rotation.y = 0.6; objs.shelves.add(sp);
+    sp.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     const rk = put('rack', 'rack', 3.7, 3.0, Math.PI / 2);
     const sh = MD.shirts.clone(true); sh.rotation.y = Math.PI / 2; sh.position.set(0, 1.39 - 0.925, 0); rk.add(sh);
-    put('bonsai', 'kabin', 3.62, 1.45, 0.3);
-    const pt = put('plant', 'mario', 0.86, 0.36, 0.5); pt.scale.setScalar(0.78);
-    const lp = put('lamp', 'ceiling_lamp', 2.6, 3.4, 0.4, 2.26); lp.scale.setScalar(0.6);
+    // small bonsai on the dresser (opposite end from the table lamp)
+    const bz = MD.kabin.clone(true); bz.scale.setScalar(0.34 / 1.031); bz.position.set(-0.48, 0.85, 0.0); bz.rotation.y = 0.4; dr.add(bz);
+    bz.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     const bl = new T.Group(); bl.position.set(1.9, 2.36, 0.02); const bm = MD.blinds.clone(true); bm.position.y = -1.476; bm.scale.x = 1.12 / 1.515; bl.add(bm); win.add(bl); S.userData.blinds2 = bl; bl.visible = false;
   }
 
