@@ -136,6 +136,66 @@
 
 ---
 
+## 6а. Где и как искать идеи и видео (решение автора, 2026-11-18)
+
+### Каналы-источники (заданы автором)
+| Канал | Ссылка | Что там брать |
+|---|---|---|
+| **Graham Bensinger** | https://www.youtube.com/@GrahamBensinger | Длинные личные интервью звёзд спорта и бизнеса о деньгах, потерях, семье. Нарезать 1–3 мин |
+| **60 Minutes** | https://www.youtube.com/@60minutes | Расследования и интервью: деньги, мошенничество, суды (как Malkovich, Ivey) |
+| **CBS Sunday Morning** | https://www.youtube.com/@CBSSundayMorning | Спокойные исповеди звёзд, переломы, «что было потом» |
+| **AP Archive** | https://www.youtube.com/@APArchive | Архивная хроника: пресс-конференции, суды, родственники (как Getty) |
+| **VladTV** | https://www.youtube.com/@vladtv | Рэперы, спортсмены, бизнесмены о деньгах, долгах, предательстве. Короткие клипы (в поиске канал подписан как `djvlad`) |
+
+Кроме них подходят ток-шоу и программы из эталонов: Barbara Walters (ABC), The Drew Barrymore Show, Inside Edition, судебные трансляции (Court TV), документалки.
+
+### Поисковые запросы (заданы автором)
+**Архивные интервью:**
+- `John Malkovich 60 Minutes interview Bernie Madoff`
+- `Johnny Depp old interview Disney contract`
+- `Demi Moore Barbara Walters full interview`
+- `Christopher Reeve Barbara Walters interview`
+- `Phil Ivey casino court interview`
+
+**Эмоциональные моменты:**
+- `celebrity breaks down in interview`
+- `millionaire emotional interview about losing money`
+- `celebrity talks about family betrayal interview`
+- `businessman confronts reporter outside his house`
+- `celebrity bankruptcy documentary interview`
+
+**Судебные записи:**
+- `celebrity testimony full court footage`
+- `billionaire lawsuit courtroom testimony`
+- `celebrity financial fraud trial footage`
+- `famous person under oath money scandal`
+
+Запросы с именами из эталонов показывают **шаблон**: «[имя] + [шоу/канал] + [тема денег]». Для новых идей подставлять других героев и темы, а не повторять уже вышедшие посты.
+
+### Как ищу (порядок работы)
+1. **Поиск видео:** `python3 -I tools/yt_search.py "запрос"` (WebSearch ссылки на YouTube почти не даёт). Для конкретного канала добавлять его имя в запрос: `"60 Minutes" bankruptcy`, `Graham Bensinger lost everything`, `VladTV owed money`, `AP Archive ransom`
+2. **Расширение запроса:** от общего запроса из списка к конкретному герою: нашёл «celebrity bankruptcy documentary» → имя героя → `[имя] interview money` на каналах из таблицы
+3. **Фильтр ролика:**
+   - герой (или близкий) говорит сам, в кадре эмоция: признание, слёзы, злость, засада, показания под присягой
+   - есть кусок 1–3 мин без склеек, первая фраза сразу в момент (длинные интервью Graham Bensinger, VladTV нарезаю)
+   - официальный канал или помечаю «перезалив»
+   - если поиск ответил «no data», повторить запрос через минуту (временный сбой YouTube)
+4. **Проверка по чек-листу раздела 6:** массовое имя, точная сумма, драма, вторая сторона, поворот, личный вопрос
+5. **Фактчек сумм и событий:** WebSearch (суд, Forbes, крупные СМИ, официальные заявления). Без проверенной суммы идею не предлагаю
+6. **Свежий повод:** WebSearch `[имя] news` за последние недели (возвращение, новый проект, суд, годовщина) → в блок «что сейчас»
+7. **Не повторять** героев и истории из `examples/money-stories/` и последних постов автора
+
+### Как выдаю идеи автору
+Сначала блок **🎬 Видео** (ссылка, длина, канал, официальный или перезалив), потом **📰 Статьи** для фактчекинга. По каждой идее:
+- герой и сумма в одну строку
+- драма и поворот
+- черновик хука (2–3 предложения)
+- кусок видео: первая фраза дословно, конец, длина (если есть транскрипт, иначе прошу его у автора)
+- какой вопрос в конце
+- что не проверено
+
+---
+
 ## 7. Язык и оформление
 
 - **Плотные абзацы по 1–4 предложения, точки в конце предложений** (как в эталонах)
