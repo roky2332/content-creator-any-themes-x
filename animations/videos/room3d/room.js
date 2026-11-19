@@ -27,12 +27,13 @@
     C = new T.PerspectiveCamera(30, W / H, 0.1, 100);
 
     // lights
-    S.add(new T.HemisphereLight(0xfff6ec, 0x5a5650, 2.2));
+    const hemi = new T.HemisphereLight(0xfff6ec, 0x5a5650, 2.2); S.add(hemi);
     const sun = new T.DirectionalLight(0xffe6c8, 3.2); sun.position.set(-3, 9, -6); sun.target.position.set(2, 0, 3);
     sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 6; sun.shadow.bias = -0.0004;
     Object.assign(sun.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 30 });
     S.add(sun, sun.target);
     const fill = new T.DirectionalLight(0xdfe8ff, 1.1); fill.position.set(8, 6, 10); S.add(fill);
+    S.userData.L = { hemi, sun, fill };
     
 
     // materials
@@ -198,6 +199,7 @@
     rk.position.set(3.68, 0, 3.0); objs.rack = rk;
 
     if (window.MODELS) useModels(window.MODELS, win);
+    if (window.APT) APT.build({ T, S, R, C, objs, M, box, capM });
     S.updateMatrixWorld(true);
     for (const k in objs) { objs[k].traverse((m) => { if (m.material) m.userData.base = m.material; }); }
     // selection helpers
@@ -262,12 +264,14 @@
     { const B2 = S.userData.blinds2; if (B2) { const c = st.blinds || 0; B2.visible = !!(st.blindsOn || c > 0); B2.scale.y = Math.max(0.02, c / 0.5); S.userData.blinds.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); } }
     if (!S.userData.blinds2) { const B = S.userData.blinds, c = st.blinds || 0; B.bl.visible = st.blindsOn || c > 0; const yb = 2.27 - c * 1.33; B.slats.forEach((sl) => (sl.visible = sl.position.y >= yb)); B.rail.position.y = yb; B.glass.emissiveIntensity = 0.55 * (1 - 0.45 * c); }
     C.position.set(...st.cam.pos); C.fov = st.cam.fov || 30; C.updateProjectionMatrix(); C.lookAt(new T.Vector3(...st.cam.tgt));
+    if (window.APT) APT.update(st);
     S.updateMatrixWorld(true);
     const b = drawSel(st.sel, st.selA == null ? 1 : st.selA);
     R.render(S, C);
     // label anchors
     const out = {};
-    for (const k of ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'window', 'rack', 'radiator']) { const bb = bboxOf(objs[k]); const c = bb.getCenter(new T.Vector3()); c.y = bb.max.y + 0.12; out[k] = proj(c); }
+    for (const k of (st.labelKeys || ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'window', 'rack', 'radiator'])) { if (!objs[k]) continue; const bb = bboxOf(objs[k]); const c = bb.getCenter(new T.Vector3()); c.y = bb.max.y + 0.12; out[k] = proj(c); }
+    if (window.APT && APT.anchors) Object.assign(out, APT.anchors((w) => proj(new T.Vector3(...w))));
     if (b) { const fc = [[b.min.x, b.min.z], [b.max.x, b.min.z], [b.max.x, b.max.z], [b.min.x, b.max.z]].map(([x, z]) => proj(new T.Vector3(x, 0.01, z))); out._foot = fc; out._dims = [(b.max.x - b.min.x - 0.06).toFixed(2), (b.max.z - b.min.z - 0.06).toFixed(2), (b.max.y - 0.03).toFixed(2)]; out._top = proj(new T.Vector3((b.min.x + b.max.x) / 2, b.max.y, (b.min.z + b.max.z) / 2)); }
     return out;
   }

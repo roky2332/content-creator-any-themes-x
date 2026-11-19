@@ -1,6 +1,6 @@
 // Transparent glass UI overlay (DOM over WebGL).
 (function () {
-  const NAMES = { rug: 'Rug', desk: 'Desk', shelves: 'Shelves', wardrobe: 'Wardrobe', dresser: 'Dresser', bed: 'Bed', window: 'Window', rack: 'Clothes rack', radiator: 'Radiator' };
+  const NAMES = { mirror: 'LED mirror', tiles: 'Wall tiles', shower: 'Shower', toilet: 'Toilet', rug: 'Rug', desk: 'Desk', shelves: 'Shelves', wardrobe: 'Wardrobe', dresser: 'Dresser', bed: 'Bed', window: 'Window', rack: 'Clothes rack', radiator: 'Radiator' };
   const INFO = {
     desk: { mat: 'Graphite top · walnut slats', sw: ['#46484c', '#1c1d20', '#cfcdc8', '#e7d3b6'], zone: 'Work' },
     shelves: { mat: 'Oak wall shelf · books', sw: ['#46484c', '#e7d3b6', '#1c1d20'], zone: 'Work' },
@@ -8,6 +8,8 @@
     dresser: { mat: 'Graphite matte · dark oak top', sw: ['#4b4c50', '#2b2522', '#cfcdc8', '#e7d3b6'], zone: 'Storage' },
     bed: { mat: 'Grey nubuck · eucalyptus', sw: ['#cfcdc8', '#8e9192', '#46484c', '#e7d3b6'], zone: 'Sleep' },
     rack: { mat: 'Black steel · wood base', sw: ['#1b1c1e', '#e7d3b6', '#f2f1ee'], zone: 'Storage' },
+    mirror: { mat: 'Rimini LED mirror · 80 × 100 cm', sw: ['#cfd8dc', '#1b1c1e', '#f2f1ee'], zone: 'Sink', tg: ['LED light', 'Anti-fog', 'Under-sink glow'], acts: ['Light', 'Brightness', 'Replace', 'Remove'] },
+    tiles: { mat: 'Porcelain · 75 × 150 cm', sw: [], zone: 'Free', acts: ['Tile', 'Layout', 'Apply', 'Reset'] },
     walls: { mat: 'Wall paint · matte', sw: ['#dfdfdb', '#ae9f8c', '#9ea596', '#5a5c60'], zone: 'Free' },
     rug: { mat: 'Wool · low pile', sw: ['#48494b', '#8a5a44', '#5d6650', '#3f4a5c'], zone: 'Free', tg: ['Anti-slip base', 'Show edges', 'Lock position'], acts: ['Color', 'Resize', 'Duplicate', 'Remove'] },
     window: { mat: 'Black aluminium · 1.20 × 1.40 m', sw: ['#f1f0ec', '#cfcdc8', '#46484c'], zone: 'Free', tg: ['Blinds', 'Night mode', 'Child lock'], acts: ['Add blinds', 'Curtains', 'Tint glass', 'Reset'] },
@@ -68,9 +70,10 @@
   const slider = (name, val, f) => `<div class="sl"><span>${name}</span><b>${val}</b></div><div class="trk"><i style="width:${f * 100}%"></i><div class="knob" style="left:${f * 100}%"></div></div>`;
   function draw(s, A) {
     let h = '';
-    h += `<div id="hdr" class="glass"><span class="t">My Room</span><span class="chip">3D · 4 × 6 × 3 m</span></div>`;
+    h += `<div id="hdr" class="glass"><span class="t">${s.title || 'My Room'}</span><span class="chip">${s.chip || '3D · 4 × 6 × 3 m'}</span></div>`;
     const la = s.lblA == null ? 1 : s.lblA;
-    if (la > 0) for (const k of ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'rack', 'window']) if (A[k]) h += `<div class="lbl ${s.sel === k ? 'on' : ''}" style="left:${A[k][0]}px;top:${A[k][1]}px;opacity:${s.sel && s.sel !== k ? la * 0.55 : la}">${NAMES[k]}</div>`;
+    if (s.labels) { for (const [k, txt, on] of s.labels) if (A[k]) h += `<div class="lbl ${on ? 'on' : ''}" style="left:${A[k][0]}px;top:${A[k][1]}px;opacity:${la}">${txt}</div>`; }
+    else if (la > 0) for (const k of ['desk', 'shelves', 'wardrobe', 'dresser', 'bed', 'rack', 'window']) if (A[k]) h += `<div class="lbl ${s.sel === k ? 'on' : ''}" style="left:${A[k][0]}px;top:${A[k][1]}px;opacity:${s.sel && s.sel !== k ? la * 0.55 : la}">${NAMES[k]}</div>`;
     if (s.foot && A._foot) {
       const p = A._foot.map((q) => q.join(',')).join(' ');
       h += `<svg style="position:absolute;inset:0" width="1920" height="1080"><polygon points="${p}" fill="rgba(140,185,255,.16)" stroke="#a9c8ff" stroke-width="2" stroke-dasharray="9 7"/></svg>`;
@@ -81,19 +84,21 @@
     if (s.left && s.leftA > 0) {
       const k = s.left, I = INFO[k], d = A._dims || ['', '', ''];
       h += `<div id="left" class="glass" style="opacity:${s.leftA};transform:translateX(${(1 - s.leftA) * -40}px)">`;
-      h += `<div class="lt"><b>${k === 'walls' ? 'Walls' : NAMES[k]}</b><div class="x in">✕</div></div><div class="muted" style="font-size:15px;margin-top:4px">${I.mat}</div>`;
-      if (k !== 'walls') h += `<div class="dims">${['W', 'D', 'H'].map((n, i) => `<div class="in"><span class="muted">${n}</span><b>${d[i]} m</b></div>`).join('')}</div>`;
-      if (k !== 'walls') h += `<div class="sec">${s.slider ? slider(s.slider[0], s.slider[1], s.slider[2]) : slider('Rotation', `${Math.round(s.rot || 0)}°`, (s.rot || 0) / 360)}</div>`;
-      if (k !== 'walls') h += `<div class="sec" style="padding-top:2px">${(I.tg || ['Snap to wall', 'Show clearance', 'Lock position']).map((n, i) => `<div class="tg"><span>${n}</span><div class="sw2 ${(i === 0 && (k !== 'window' || s.blindsOn)) || (i === 1 && s.clear) ? 'on' : ''}"><i></i></div></div>`).join('')}</div>`;
-      h += `<div class="sec" style="padding-top:12px"><div class="sl"><span>Finish</span><b class="muted" style="font-weight:500">${I.sw.length} options</b></div><div class="sws">${I.sw.map((c, i) => `<div class="swc ${i === (s.swOn || 0) ? 'on' : ''}" style="background:${c}"></div>`).join('')}</div></div>`;
+      h += `<div class="lt"><b>${k === 'walls' ? 'Walls' : NAMES[k]}</b><div class="x in">✕</div></div><div class="muted" style="font-size:15px;margin-top:4px">${s.leftMat || I.mat}</div>`;
+      if (k !== 'walls' && k !== 'tiles') h += `<div class="dims">${['W', 'D', 'H'].map((n, i) => `<div class="in"><span class="muted">${n}</span><b>${d[i]} m</b></div>`).join('')}</div>`;
+      if (k !== 'walls' && k !== 'tiles' && k !== 'mirror') h += `<div class="sec">${s.slider ? slider(s.slider[0], s.slider[1], s.slider[2]) : slider('Rotation', `${Math.round(s.rot || 0)}°`, (s.rot || 0) / 360)}</div>`;
+      if (k !== 'walls' && k !== 'tiles') h += `<div class="sec" style="padding-top:2px">${(I.tg || ['Snap to wall', 'Show clearance', 'Lock position']).map((n, i) => `<div class="tg"><span>${n}</span><div class="sw2 ${(s.tgOn ? s.tgOn[i] : (i === 0 && (k !== 'window' || s.blindsOn)) || (i === 1 && s.clear)) ? 'on' : ''}"${s.tgOn && s.tgOn[i] && s.tgK != null ? ` style="background:rgba(120,170,255,${0.18 + 0.37 * s.tgK})"` : ''}><i${s.tgOn && s.tgOn[i] && s.tgK != null ? ` style="left:${3 + 20 * s.tgK}px"` : ''}></i></div></div>`).join('')}</div>`;
+      if (s.swImg) h += `<div class="sec" style="padding-top:12px"><div class="sl"><span>Tile</span><b class="muted" style="font-weight:500">${s.swImg.length} options</b></div><div class="sws" style="gap:12px">${s.swImg.map((c, i) => `<div style="text-align:center"><div class="swc ${i === (s.swOn || 0) ? 'on' : ''}" style="width:62px;height:62px;background:url(${c[0]}) center/cover"></div><div class="muted" style="font-size:11px;margin-top:6px">${c[1]}</div></div>`).join('')}</div></div>`;
+      else h += `<div class="sec" style="padding-top:12px"><div class="sl"><span>Finish</span><b class="muted" style="font-weight:500">${I.sw.length} options</b></div><div class="sws">${I.sw.map((c, i) => `<div class="swc ${i === (s.swOn || 0) ? 'on' : ''}" style="background:${c}"></div>`).join('')}</div></div>`;
       h += `<div class="acts">${(k === 'walls' ? ['Paint', 'Texture', 'Compare', 'Reset'] : I.acts || ['Move', 'Rotate', 'Duplicate', 'Remove']).map((b) => `<div class="act in ${s.act === b ? 'on' : ''}">${b}</div>`).join('')}</div></div>`;
     }
     // right rooms panel
     const zone = s.left ? INFO[s.left].zone : (s.zone || '');
     h += `<div id="right" class="glass"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="muted" style="font-size:14px">Room</div></div><div class="cnt" style="text-align:right">${s.moved ? s.moved.length : 0}<div class="muted" style="font-size:13px;font-weight:500;margin-top:4px">changes</div></div></div>`;
-    h += `<div class="dd in">Bedroom<span class="muted">⌄</span></div>`;
+    h += `<div class="dd in">${s.room || 'Bedroom'}<span class="muted">⌄</span></div>`;
+    if (s.ddOpen > 0) h += `<div class="in" style="margin-top:6px;padding:6px;opacity:${s.ddOpen};background:rgba(30,31,35,.92)">${['Bedroom', 'Bathroom', 'Toilet', 'Corridor'].map((r) => `<div class="ddi" style="padding:11px 14px;font-size:18px;border-radius:12px;${s.ddHi === r ? 'background:rgba(110,160,255,.3);color:#fff' : 'color:rgba(255,255,255,.7)'}">${r}</div>`).join('')}</div>`;
     h += `<div class="tabs">${['Layout', 'Materials', 'Light', 'Other'].map((t) => `<div class="${(s.tab || 'Layout') === t ? 'on' : ''}">${t}</div>`).join('')}</div>`;
-    h += `<div class="cards">${['Sleep', 'Work', 'Storage', 'Free'].map((z) => `<div class="card in ${zone === z ? 'on' : ''}">${ic(z, 62)}<span class="nm">${z === 'Free' ? 'Free floor' : z}</span><span class="dot"></span></div>`).join('')}</div>`;
+    h += `<div class="cards">${(s.cards || ['Sleep', 'Work', 'Storage', 'Free']).map((z) => `<div class="card in ${zone === z ? 'on' : ''}">${ic(ICON[z] ? z : (s.cardIcon && s.cardIcon[z]) || 'Free', 62)}<span class="nm">${z === 'Free' ? 'Free floor' : z}</span><span class="dot"></span></div>`).join('')}</div>`;
     h += `<div class="vl"><span>View all objects</span><span>+</span></div></div>`;
     // bottom bar
     h += `<div id="bot"><div class="top glass">${['Room', 'Structure', 'Furniture'].map((t) => `<div class="bt ${(s.bot || 'Furniture') === t ? 'on' : ''}">${ic(t, 40)}${t}</div>`).join('')}</div><div class="sub glass">${['⌂ Top view', '▦ Floor plan', '⚲ Walk-through', '↺ Undo'].map((t) => `<span style="${s.sub && t.includes(s.sub) ? 'color:#fff;font-weight:600' : ''}">${t}</span>`).join('')}</div></div>`;
