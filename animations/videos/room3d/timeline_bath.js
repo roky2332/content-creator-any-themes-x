@@ -4,7 +4,7 @@ function camOn(o, d, fov = 30) { const dir = [8.35, 9.2, 8.7], L = Math.hypot(..
 const CAM_APT = camOn([2.05, 0.0, 4.7], 19.5, 30);
 const CAM_BATH = { pos: [4.7, 5.9, OZ - 0.55], tgt: [1.25, 0.5, OZ + 1.1], fov: 33 };
 const CAM_MIR = { pos: [2.05, 2.35, OZ + 0.55], tgt: [0.1, 1.3, OZ + 0.6], fov: 42 };
-const CAM_TOI = { pos: [5.2, 3.6, OZ + 2.55], tgt: [1.85, 0.55, OZ + 2.55], fov: 29 };
+const CAM_TOI = { pos: [5.2, 3.5, OZ + 2.3], tgt: [1.85, 0.6, OZ + 2.4], fov: 26 };
 const CAM_TOP = { pos: [2.05, 27, 5.3], tgt: [2.05, 0, 4.75], fov: 30 };
 const DUR = 28;
 const ez = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
@@ -44,7 +44,7 @@ function TL(t) {
     s.cam = cam;
   } else if (t < 24.1) { const k = k01(t, 19.5, 21.0); s.cam = LC(CAM_BATH, CAM_TOI, k); s.cut = ['bath', 'toilet', k]; s.bathLight = 1; }
   else { const k = k01(t, 24.1, 25.8); s.cam = LC(CAM_TOI, CAM_TOP, k); s.cut = ['toilet', 'apt', k]; s.bathLight = L(1, 0.8, k); }
-  s.iso = t >= 3.8 && t < 24.9 ? 1 : 0;
+  s.iso = t >= 3.25 && t < 24.6 ? 1 : 0;
   // ---- rooms dropdown
   s.room = t < 2.9 ? 'Bedroom' : t < 19.4 ? 'Bathroom' : t < 24.1 ? 'Toilet' : 'Bathroom';
   if (t >= 24.1) s.room = 'All rooms';
