@@ -54,3 +54,9 @@
 - Добавлять остальные комнаты квартиры: размеры, окна, двери и мебель от автора
 - Выбор комнаты в правой панели («Bedroom ⌄») переключает комнаты
 - Для каждой новой комнаты: сначала наброски, потом анимация
+
+## Квартира: коридор + ванная + туалет (2026-11-19)
+- `apt.js` пристраивает за дверью спальни коридор (ёлочка), ванную 2.6 × 2.0 м и туалет 1.5 × 1.1 м; модели `b_*.glb` в `assets/` (локально, не в git), плитка в `tex/` (Avenue Ash 75×150 стены, 60×60 пол, швы по общей сетке)
+- `page_bath.html` + `timeline_bath.js`: видео 28 с — план квартиры → Bathroom → LED-зеркало → смена плитки (Syrac, Nativa White → Avenue Ash, Apply) → Toilet → Floor plan
+- Рендер: `node render.js --page=page_bath.html` (наброски `--stills`), видео `out/page_bath.mp4`
+- Итог: `animations/videos/final/25-apartment-bathroom-toilet-60fps-track.mp4` (трек автора «i love u slowed» с 0:18)
