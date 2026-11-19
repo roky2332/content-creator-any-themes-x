@@ -79,7 +79,9 @@
 | 8 | **Тизер второго клипа** | Что ещё было в том эфире или той же неделей + «You can see it in the clip below.» / «That clip is in the comments.» | «…she revealed what he had sent her after her Playboy shoot. You can see it in the clip below.» |
 | 9 | **Вопрос «So was this X, or Y?»** | Её мотивы: сила или падение, расчёт или наивность | «So was this a wild child finally owning her body, or a girl who grew up in front of the cameras and never learned where the line was?» |
 
-**Повторяющиеся формулы в эталонах:** «one simple question», «doesn't even…», «a man who had been hosting late night for N years, could only say one thing», «You can see it in the clip below». Держать ли их дословно в каждом посте, автор пока не решил: спросить.
+**Формулы стиля 2 (решение автора, 2026-11-19: «примерно так же, как в эталонах»):** «one simple question», «In the video below, X doesn't even…», «a man who had been hosting late night for N years, could only say one thing:», «You can see it in the clip below» / «That clip is in the comments». Пишу этими формулами, как в эталонах; мелкие вариации допустимы, как в самих эталонах («tried to keep it polite» / «was still smiling», «says the line that sums up the whole night» у Courtney Love).
+
+**Формулы стиля 1 (то же решение):** «[ведущий] asked [звезда] one question about X», лесенка «N years earlier…», «In the video below, X is relaxed / in a great mood…», «Then X brings up…», «So who…: X, or Y?» (у Tarantino «So was…, or…?», у Ronaldo вопрос про чувства). Пишу так же, с теми же вариациями.
 
 ---
 
@@ -99,7 +101,7 @@
 - **Вопрос ведущего и спокойное начало обычно не входят в клип,** их пересказывает пост
 - **Второй клип стиля 2 часто сидит в конце того же ролика** (горячая линия Anna Nicole 3:21, Stone про SNL 2:26, Drew «I can't act» 1:47)
 
-**Открытый вопрос автору:** в стиле 1 абзац «In the video below, X is relaxed / in a great mood…» в эталонах описывает спокойное начало полного интервью, которого в самом клипе нет (Downey, Tarantino, Ronaldo, Musk). Пока автор не решил, при каждом посте сообщаю, что из строки «In the video below» в клипе есть, а чего нет.
+**Строка «In the video below» (решение автора, 2026-11-19: «примерно так же, как в эталонах»):** как в эталонах, она может описывать спокойное начало **полного интервью** (Downey шутит про Iron Man, Tarantino рад говорить о рабстве, Ronaldo про United, Musk про «one puff»), даже если сам клип начинается уже с кульминации. Так же в стиле 2: вопрос ведущего («one simple question») пересказывается, хотя клип начинается с ответа. Всё описанное должно быть в реальном интервью (проверяю по полному видео или источникам), выдумывать нельзя. Автору вне блока указываю, что из описанного есть в клипе, а что из полного интервью.
 
 Автору всегда: шоу и дата эфира, длина, на какой секунде герой в кадре и что делает или говорит в первые 5 секунд, где реакция ведущего, где конец, где второй клип (стиль 2).
 
