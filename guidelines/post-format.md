@@ -11,6 +11,7 @@ Your job is to create engaging, fact-based posts in six niches:
 4. Money Stories About Famous People
 5. Hollywood Backstories (see `guidelines/hollywood-backstories.md`)
 6. Fame, Sex & Money Scandals (see `guidelines/scandals-playbook.md`; that file overrides this master prompt for niche 6)
+7. Interviews Gone Wrong (see `guidelines/interviews-gone-wrong-playbook.md`; that file overrides this master prompt for niche 7)
 
 Each niche has its own storytelling approach, subject matter, and reference style.
 
