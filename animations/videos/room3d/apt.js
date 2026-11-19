@@ -67,15 +67,15 @@
       return m;
     }
     const ALL = ['apt', 'bath', 'toilet'];
-    wallSeg(0, 0, 2.6, 0, { back: extM, modes: ['apt', 'bath'] });                                  // bathroom top wall (behind bedroom wall)
+    wallSeg(0, 0, 2.6, 0, { back: extM, modes: ['bath'] });                                  // bathroom top wall (behind bedroom wall)
     wallSeg(0, 0, 0, 2.0, { f4ext: 1 });                                                    // bathroom left wall
-    wallSeg(0, 2.0, TX, 2.0, { ex: [TH / 2, 0], f4ext: 1, modes: ['apt'] });       // bath bottom wall, outer part
-    wallSeg(TX, 2.0, 2.6, 2.0, { ex: [0, TH / 2], modes: ['apt'] });               // bath / toilet partition
+    wallSeg(0, 2.0, TX, 2.0, { ex: [TH / 2, 0], f4ext: 1, modes: [] });       // bath bottom wall, outer part
+    wallSeg(TX, 2.0, 2.6, 2.0, { ex: [0, TH / 2], modes: [] });               // bath / toilet partition
     wallSeg(TX, 2.0, TX, TZ, { ex: [0, TH / 2], f4ext: 1 });                               // toilet back wall
-    wallSeg(TX, TZ, 2.6, TZ, { f4ext: 1, modes: ['apt'] });                                    // toilet bottom wall
+    wallSeg(TX, TZ, 2.6, TZ, { f4ext: 1, modes: [] });                                    // toilet bottom wall
     const RW = (z1, z2, o) => wallSeg(2.6, z1, 2.6, z2, Object.assign({ back: plaster }, o));
-    RW(0, 0.55, { ex: [TH / 2, 0], modes: ['apt', 'bath'] }); RW(1.3, 2.2, { ex: [0, 0], modes: ALL }); RW(2.9, TZ, { ex: [0, TH / 2], modes: ['apt', 'toilet'] });
-    RW(0.55, 1.3, { ex: [0, 0], y0: 2.1, modes: ['apt', 'bath'] }); RW(2.2, 2.9, { ex: [0, 0], y0: 2.1, modes: ['apt', 'toilet'] });
+    RW(0, 0.55, { ex: [TH / 2, 0], modes: ['apt', 'bath'] }); RW(1.3, 2.2, { ex: [0, 0], modes: ['bath', 'toilet'] }); RW(2.9, TZ, { ex: [0, TH / 2], modes: ['toilet'] });
+    RW(0.55, 1.3, { ex: [0, 0], y0: 2.1, modes: ['apt', 'bath'] }); RW(2.2, 2.9, { ex: [0, 0], y0: 2.1, modes: ['toilet'] });
     wallSeg(CX, -0.25, CX, TZ, { mat: plaster, modes: ALL });                               // corridor right wall
     wallSeg(2.6, TZ, CX, TZ, { mat: plaster, ex: [0, 0], modes: ALL });                     // corridor end wall
 
