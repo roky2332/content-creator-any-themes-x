@@ -67,3 +67,4 @@
 
 ## 2026-11-24
 - Внешние референсы (6 чужих профилей X, присланы автором): посты с разбором структуры и видео сохранены в examples/money-stories/04-external-profiles-style2.md (Artpredict, Ava_zinger, Kikimachan — стиль 2 «хроника по годам»), examples/dark-history/05-external-profiles.md (Draxivon, Kairoos), examples/interviews/04-external-vexfiless.md (VexFiless — оформление стиля 1, тема деньги и OnlyFans). Только справка: методички не менялись
+- Внешний референс greed (7-й профиль): 5 постов с разбором структуры и видео в examples/scandals/02-external-greed.md (ближе всего к нише 6). Только справка: методички не менялись
