@@ -300,3 +300,48 @@ When he says it was never about joy, is that the truth, or one more thing he get
 - Источник и длина: запись допроса в тюрьме 2014, 1:56
 - Первые секунды: Допрос, вшитые субтитры, с 0:00
 - Заметки: «I wasn't a serial killer» 0:09 ✅
+
+### Kairoos 5. Taylor Parker: «Yes, sir» в больничной палате (добавлено 2026-11-26)
+
+**~370 слов, 13 абзацев.**
+
+```text
+A 27-year-old woman in a hospital gown lies in an emergency room bed in Oklahoma. Two men walk in. One pulls up a chair and says he heard she brought her baby in. He asks if she gave birth on the side of the road. She says:
+
+"Yes, sir." That's Taylor Parker. She couldn't have given birth that morning. She'd had a hysterectomy in 2015.
+
+A few hours earlier, 21-year-old Reagan Simmons-Hancock was found dead in her home in New Boston, Texas. She was about 35 weeks pregnant. Her 3-year-old daughter was in the house. Her baby was gone.
+
+Taylor spells her name for the agent letter by letter. She tells him the contractions started at home, so she stayed behind and told her fiance they'd meet up after he "dropped the hogs at 7."
+
+The baby in that hospital was Reagan's daughter, Braxlynn Sage Hancock. She died there that day.
+
+Prosecutors said Taylor had faked the pregnancy for about 10 months to keep her boyfriend, Wade Griffin. She bought a fake belly online and passed off sonograms from her older kids. There was a gender reveal party.
+
+In the video below, she answers every question in the same soft, polite voice, right up until the agent tells her what Bowie County already knows.
+
+Her mother had been at the hospital for that hysterectomy. At trial she testified she knew Taylor couldn't be pregnant, and never confronted her in person: "I feared that she would keep my grandkids from me."
+
+A Bowie County jury convicted Taylor of capital murder in October 2022. A month later it sentenced her to death.
+
+This month Reagan's family wrote a bill. Texas House Bill 944, "Reagan and Braxlynn's Law," would train doctors, nurses and police to spot a faked pregnancy and make it a crime to use fake pregnancy records to commit a felony.
+
+Her mother knew it was a lie. Reagan is the one who died for it.
+
+Was her mother just scared of losing her grandkids, or the one person who could have stopped the lie before it reached Reagan?
+```
+
+**Видео:**
+- Источник и длина: бодикамера агента OSBI в больнице, без монтажа, вшитые субтитры, 3:04
+- Первые секунды: ✅ с 0:00 палата, женщина в кровати, агент: «What's your name?» — «Taylor Parker»
+- Ключевые моменты: «Yes, sir» 0:08–0:13; имя по буквам 0:27–0:35; «dropped the hog at seven» 1:08; «Did I do something wrong?» 1:51; агент про гистерэктомию и Bowie County 2:05–2:34; финал «I just told y'all what happened» 2:50
+- Заметки: хук пересказывает первые секунды ролика; читатель знает то, чего не знает «та, что в кадре» (гистерэктомия) — это главный приём
+
+## Общее по 3 видео Kairoos (просмотрены 2026-11-26)
+| Пост | Видео | Длина | Первые секунды |
+|---|---|---|---|
+| Cassie Stoddart | школьная камера + плёнка убийц | 0:27 | «Hello, Cassie» у шкафчика с 0:00 |
+| Justin Hare | dashcam + рация + интервью родных | 0:50 | мужчина у BMW в свете фар, реплика с 0:04 |
+| Taylor Parker | бодикамера в больнице, без склеек | 3:04 | агент у кровати, «What's your name?» с 0:00 |
+
+Хук поста = описание первого кадра ролика + то, что читатель знает, а человек в кадре нет. Двоеточие в конце хука, ответ из видео первой строкой 2-го абзаца, сразу за ним факт-разоблачение.
